@@ -28,32 +28,35 @@ const RoadmapSection = () => {
   const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   return (
-    <section id="roadmap" className="w-full max-w-6xl mx-auto pt-24 pb-[40vh] px-4 relative z-10 overflow-hidden">
-      <motion.div {...motionProps} className="flex flex-col items-center w-full">
-        <h2 className="font-montserrat text-2xl md:text-4xl font-black text-white text-center uppercase tracking-wider break-words w-full">
+    <section id="roadmap" className="w-full max-w-6xl mx-auto pt-16 md:pt-24 pb-[30vh] px-4 relative z-10 overflow-hidden">
+      
+      <motion.div {...motionProps} className="flex flex-col items-center w-full mb-16">
+        <h2 className="font-montserrat text-2xl md:text-4xl font-black text-white text-center uppercase tracking-widest break-words w-full drop-shadow-[0_0_10px_rgba(34,211,238,0.3)]">
           Development Roadmap
         </h2>
-        <p className="font-space-grotesk text-cyan-400/80 text-center mt-4 text-[10px] md:text-sm tracking-widest uppercase border border-cyan-500/20 bg-cyan-500/10 px-3 py-1.5 rounded-full break-words max-w-full">
-          Current and future development milestones
-        </p>
+        <div className="flex items-center gap-2 mt-4">
+          <div className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></div>
+          <p className="font-mono text-cyan-500/80 text-center text-[10px] md:text-xs tracking-[0.2em] uppercase">
+            SYS.LOG // DEPLOYMENT_PHASES
+          </p>
+        </div>
       </motion.div>
       
       <div 
         ref={containerRef} 
-        className="mt-16 relative md:px-0 px-2"
+        className="relative md:px-0 px-2"
         style={{ position: 'relative' }}
       >
         
-        {/* Garis Vertikal */}
-        <div className="absolute left-6 md:left-1/2 top-16 bottom-16 w-0.5 bg-zinc-800 -translate-x-1/2"></div>
-        <div className="absolute left-6 md:left-1/2 top-16 bottom-16 w-0.5 -translate-x-1/2 flex justify-start flex-col overflow-hidden">
+        <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[1px] bg-zinc-800 -translate-x-1/2"></div>
+        <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-[1px] -translate-x-1/2 flex justify-start flex-col overflow-hidden">
           <motion.div 
             style={{ height: lineHeight }}
-            className="w-full bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.8)]"
+            className="w-full bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,1)]"
           />
         </div>
         
-        <div className="space-y-12 md:space-y-16">
+        <div className="space-y-8 md:space-y-12">
           {phases.map((phase, index) => (
             <motion.div 
               key={index}
@@ -61,41 +64,53 @@ const RoadmapSection = () => {
               transition={{ delay: 0.1 * index, duration: 0.5, ease: "easeOut" }}
               className="relative flex items-center gap-4 md:gap-8"
             >
-              <div className="absolute left-6 md:left-1/2 top-1/2 w-6 h-6 rounded-full -translate-x-1/2 -translate-y-1/2 flex items-center justify-center z-10 bg-zinc-950">
+              <div className="absolute left-6 md:left-1/2 top-1/2 w-8 h-8 rounded-none md:-translate-x-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center z-10 bg-black rotate-45 border border-zinc-800">
                 <motion.div 
-                  initial={{ backgroundColor: "#18181b", borderColor: "#3f3f46", boxShadow: "none" }}
+                  initial={{ backgroundColor: "#000", borderColor: "#3f3f46", boxShadow: "none" }}
                   whileInView={{ 
-                    backgroundColor: "#22d3ee", 
-                    borderColor: "#22d3ee", 
-                    boxShadow: "0 0 15px rgba(6,182,212,0.8)" 
+                    backgroundColor: phase.status === 'Complete' ? "#22d3ee" : phase.status === 'In Progress' ? "#d946ef" : "#18181b", 
+                    borderColor: phase.status === 'Complete' ? "#22d3ee" : phase.status === 'In Progress' ? "#d946ef" : "#3f3f46", 
+                    boxShadow: phase.status === 'Complete' ? "0 0 20px rgba(6,182,212,0.8)" : phase.status === 'In Progress' ? "0 0 20px rgba(217,70,239,0.8)" : "none" 
                   }}
                   viewport={{ once: false, margin: "0px 0px -50% 0px" }}
                   transition={{ duration: 0.2 }}
-                  className="w-3.5 h-3.5 rounded-full border-2"
+                  className="w-3 h-3 border border-zinc-700"
                 />
               </div>
               
-              <div className={`w-full md:w-1/2 pl-14 md:pl-0 ${index % 2 === 0 ? 'md:text-right md:pr-12 md:mr-auto' : 'md:pl-12 md:ml-auto md:order-2'}`}>
+              <div className={`w-full md:w-1/2 pl-14 md:pl-0 ${index % 2 === 0 ? 'md:text-right md:pr-16 md:mr-auto' : 'md:pl-16 md:ml-auto md:order-2'}`}>
+                
                 <motion.div 
-                  initial={{ borderColor: "rgba(63, 63, 70, 0.5)", backgroundColor: "rgba(24, 24, 27, 0.6)" }}
+                  initial={{ borderColor: "rgba(63, 63, 70, 0.3)", backgroundColor: "rgba(0, 0, 0, 0.5)" }}
                   whileInView={{ 
-                    borderColor: "rgba(34, 211, 238, 0.4)",
-                    backgroundColor: "rgba(34, 211, 238, 0.05)",
-                    boxShadow: "0 0 20px rgba(6,182,212,0.1)" 
+                    borderColor: phase.status === 'Complete' ? "rgba(34, 211, 238, 0.3)" : phase.status === 'In Progress' ? "rgba(217, 70, 239, 0.3)" : "rgba(63, 63, 70, 0.3)",
+                    backgroundColor: "rgba(0, 0, 0, 0.8)",
                   }}
                   viewport={{ once: false, margin: "0px 0px -50% 0px" }}
                   transition={{ duration: 0.3 }}
-                  className={`group border-2 rounded-xl p-4 md:p-6 backdrop-blur-md transition-all duration-300 overflow-hidden ${index % 2 === 0 ? 'md:items-end flex flex-col' : 'items-start flex flex-col'}`}
+                  className={`group relative border rounded-sm p-5 md:p-6 backdrop-blur-md transition-all duration-300 overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.8)] ${index % 2 === 0 ? 'md:items-end flex flex-col' : 'items-start flex flex-col'}`}
                 >
-                  <span className={`font-space-grotesk text-[10px] md:text-xs uppercase tracking-widest font-bold px-3 py-1 rounded-full mb-2 md:mb-3 inline-block break-words text-center ${phase.status === 'Complete' ? 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20' : phase.status === 'In Progress' ? 'bg-zinc-800/80 text-cyan-300 border border-zinc-700' : 'bg-zinc-900 text-zinc-500 border border-zinc-800'}`}>
-                    {phase.status}
-                  </span>
-                  <h3 className="font-space-grotesk text-base md:text-xl font-bold text-white group-hover:text-cyan-300 transition-colors duration-300 break-words w-full">
+                  <div className={`absolute top-0 left-0 w-2 h-2 border-t border-l pointer-events-none transition-colors duration-300 ${phase.status === 'Complete' ? 'border-cyan-500' : phase.status === 'In Progress' ? 'border-fuchsia-500' : 'border-zinc-700'}`}></div>
+                  <div className={`absolute bottom-0 right-0 w-2 h-2 border-b border-r pointer-events-none transition-colors duration-300 ${phase.status === 'Complete' ? 'border-cyan-500' : phase.status === 'In Progress' ? 'border-fuchsia-500' : 'border-zinc-700'}`}></div>
+
+                  <div className={`font-mono text-[10px] md:text-xs tracking-widest uppercase mb-3 flex items-center gap-2 ${index % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                    {phase.status === 'Complete' && <><span className="text-cyan-400 font-bold">[ OK ]</span><span className="text-zinc-500">EXEC_COMPLETE</span></>}
+                    {phase.status === 'In Progress' && <><span className="text-fuchsia-400 font-bold animate-pulse">[ &gt; ]</span><span className="text-zinc-500">PROCESSING...</span></>}
+                    {phase.status === 'Planned' && <><span className="text-zinc-600 font-bold">[ - ]</span><span className="text-zinc-700">AWAITING_INPUT</span></>}
+                  </div>
+                  
+                  <h3 className="font-space-grotesk text-base md:text-xl font-bold text-white break-words w-full">
                     {phase.title}
                   </h3>
+                  
                   <p className={`font-space-grotesk text-sm md:text-base text-zinc-400 mt-2 md:mt-3 leading-relaxed break-words w-full ${index % 2 === 0 ? 'md:text-right text-left' : 'text-left'}`}>
                     {phase.description}
                   </p>
+
+                  {phase.status === 'In Progress' && (
+                    <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(217,70,239,0.03)_50%,transparent_100%)] bg-[length:100%_4px] pointer-events-none mix-blend-overlay"></div>
+                  )}
+
                 </motion.div>
               </div>
 

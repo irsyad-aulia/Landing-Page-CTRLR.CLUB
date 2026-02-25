@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { SlidersHorizontal, Layers, Code } from 'lucide-react';
+import { Terminal, Shield, Zap, Layers } from 'lucide-react';
 
 const SystemFunctionsSection = () => {
   const motionProps: any = {
@@ -12,58 +12,66 @@ const SystemFunctionsSection = () => {
     transition: { duration: 0.5 }
   };
 
+  const functions = [
+    { icon: Terminal, title: 'Command Terminal', description: 'Execute direct system commands and override protocols.', id: 'SYS.CMD.01', power: '100%' },
+    { icon: Shield, title: 'Security Protocols', description: 'Manage firewall rules and intrusion detection systems.', id: 'SEC.PRO.02', power: '85%' },
+    { icon: Zap, title: 'Power Distribution', description: 'Allocate energy resources across core modules.', id: 'PWR.DST.03', power: '92%' },
+    { icon: Layers, title: 'Data Layering', description: 'Organize and encrypted hierarchical data structures.', id: 'DAT.LYR.04', power: '78%' },
+  ];
+
   return (
-    <section id="functions" className="w-full max-w-6xl mx-auto py-16 md:py-24 px-4 overflow-hidden">
-       <motion.div {...motionProps} className="flex flex-col items-center w-full">
-        <h2 className="font-montserrat text-2xl md:text-4xl font-black text-white text-center uppercase break-words w-full">System Functions</h2>
-        <p className="font-space-grotesk text-zinc-400 text-center mt-2 text-sm md:text-base break-words max-w-full">Primary operational controls and modules.</p>
+    <section id="functions" className="w-full max-w-6xl mx-auto py-16 md:py-24 px-4 relative z-10">
+      <motion.div {...motionProps} className="text-center w-full flex flex-col items-center">
+        <h2 className="font-montserrat text-2xl md:text-4xl font-black text-white uppercase tracking-widest break-words text-center drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">
+          System Functions
+        </h2>
+        <div className="flex items-center gap-2 mt-3 mb-16">
+          <p className="font-mono text-zinc-500 text-[10px] md:text-xs tracking-[0.3em] uppercase">Core operational capabilities</p>
+        </div>
       </motion.div>
       
-      <div className="mt-10 md:mt-12 flex flex-col md:flex-row gap-8 items-center">
-        <motion.div {...motionProps} className="w-full md:w-1/2">
-          <div className="relative aspect-video bg-zinc-900 border border-zinc-800 rounded-lg p-4 sm:p-6 overflow-hidden shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-            <div className="absolute top-3 left-3 flex gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-red-500 shadow-[0_0_5px_rgba(239,68,68,0.5)]"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500 shadow-[0_0_5px_rgba(234,179,8,0.5)]"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_5px_rgba(34,197,94,0.5)]"></div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+        {functions.map((func, index) => (
+          <motion.div
+            key={index}
+            {...motionProps}
+            transition={{ delay: 0.1 * index, duration: 0.4 }}
+            className="group relative bg-black/60 border border-zinc-800/80 p-6 md:p-8 hover:border-cyan-400 hover:bg-cyan-950/20 hover:shadow-[0_0_25px_rgba(34,211,238,0.15)] transition-all duration-500 flex flex-col sm:flex-row items-start gap-5 md:gap-6 overflow-hidden backdrop-blur-md"
+          >
+            <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
+
+            <div className="relative z-10 bg-black border border-zinc-700 p-4 group-hover:border-cyan-400 group-hover:shadow-[0_0_15px_rgba(34,211,238,0.3)] transition-all shrink-0">
+              <func.icon className="w-6 h-6 md:w-8 md:h-8 text-zinc-400 group-hover:text-cyan-400 transition-colors" />
             </div>
             
-            <div className="mt-6 md:mt-8 font-mono text-[11px] sm:text-xs md:text-sm text-green-400 break-words whitespace-pre-wrap">
-              <p>&gt; CTRLR.init(module: &apos;all&apos;)</p>
-              <p className="text-zinc-500">// Initializing all system modules...</p>
-              <p className="mt-2 text-cyan-400">[OK] Module &apos;Auth&apos; initialized.</p>
-              <p className="text-cyan-400">[OK] Module &apos;API&apos; initialized.</p>
-              <p className="text-cyan-400">[OK] Module &apos;Storage&apos; initialized.</p>
-              <p className="mt-2 text-green-400 drop-shadow-[0_0_5px_rgba(34,197,94,0.8)]"> &gt; System ready.</p>
-            </div>
-          </div>
-        </motion.div>
-        
-        <motion.div {...motionProps} transition={{ delay: 0.2 }} className="w-full md:w-1/2">
-          <div className="space-y-6 md:space-y-8">
-            <div className="flex gap-3 md:gap-4 items-start">
-              <SlidersHorizontal className="w-5 h-5 md:w-6 md:h-6 text-cyan-400 mt-1 shrink-0" />
-              <div className="min-w-0 flex-1">
-                <h3 className="font-space-grotesk text-lg md:text-xl font-bold text-white break-words">Parameter Control</h3>
-                <p className="font-space-grotesk text-sm md:text-base text-zinc-400 mt-1 break-words leading-relaxed">Fine-tune operational parameters in real-time with a granular control interface.</p>
+            <div className="relative z-10 w-full">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-1">
+                <h3 className="font-space-grotesk text-lg md:text-xl font-bold text-white group-hover:text-cyan-300 transition-colors tracking-wide">
+                  {func.title}
+                </h3>
+                <span className="font-mono text-[10px] text-cyan-600/50 group-hover:text-cyan-400/80 transition-colors">
+                  ID: {func.id}
+                </span>
+              </div>
+              <p className="font-space-grotesk text-sm text-zinc-400 leading-relaxed group-hover:text-zinc-300 transition-colors mb-4">
+                {func.description}
+              </p>
+              
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-[8px] text-zinc-600 tracking-widest uppercase">PWR</span>
+                <div className="h-[2px] w-full bg-zinc-900 overflow-hidden">
+                  <div 
+                    className="h-full bg-zinc-600 group-hover:bg-cyan-400 transition-colors duration-500 relative"
+                    style={{ width: func.power }}
+                  >
+                    <div className="absolute top-0 right-0 bottom-0 w-4 bg-white/50 blur-[2px] animate-pulse"></div>
+                  </div>
+                </div>
+                <span className="font-mono text-[9px] text-zinc-500 group-hover:text-cyan-400 transition-colors">{func.power}</span>
               </div>
             </div>
-            <div className="flex gap-3 md:gap-4 items-start">
-              <Layers className="w-5 h-5 md:w-6 md:h-6 text-cyan-400 mt-1 shrink-0" />
-              <div className="min-w-0 flex-1">
-                <h3 className="font-space-grotesk text-lg md:text-xl font-bold text-white break-words">Modular Architecture</h3>
-                <p className="font-space-grotesk text-sm md:text-base text-zinc-400 mt-1 break-words leading-relaxed">Easily enable, disable, or configure system modules to adapt to mission requirements.</p>
-              </div>
-            </div>
-            <div className="flex gap-3 md:gap-4 items-start">
-              <Code className="w-5 h-5 md:w-6 md:h-6 text-cyan-400 mt-1 shrink-0" />
-              <div className="min-w-0 flex-1">
-                <h3 className="font-space-grotesk text-lg md:text-xl font-bold text-white break-words">API Integration</h3>
-                <p className="font-space-grotesk text-sm md:text-base text-zinc-400 mt-1 break-words leading-relaxed">Connect external services and data sources through a secure and well-documented API.</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+          </motion.div>
+        ))}
       </div>
     </section>
   );
