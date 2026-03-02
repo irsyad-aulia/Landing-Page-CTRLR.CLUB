@@ -36,9 +36,9 @@ const HeroSection = () => {
       <motion.p
         {...motionProps}
         transition={{ duration: 0.7, delay: 0.2, ease: "easeOut" }}
-        className="mt-6 font-space-grotesk text-base sm:text-lg md:text-xl text-zinc-400 max-w-2xl px-4"
+        className="mt-6 font-space-grotesk text-base sm:text-lg md:text-xl text-zinc-400 max-w-2xl px-4 uppercase tracking-wider"
       >
-        An integrated diagnostics and control interface for advanced system management and operational oversight.
+        Neuro-Training Interface for Competitive Controller Reflex
       </motion.p>
       
       <motion.div
@@ -46,12 +46,12 @@ const HeroSection = () => {
         transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
         className="mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6 w-full sm:w-auto px-6 sm:px-0"
       >
-        <button className="w-full sm:w-auto font-space-grotesk uppercase text-xs sm:text-sm font-bold bg-cyan-500 text-zinc-950 px-4 sm:px-8 py-3.5 sm:py-3.5 rounded-md hover:bg-cyan-400 transition-all duration-300 hover:shadow-[0_0_20px_rgba(6,182,212,0.6)] active:scale-95 flex items-center justify-center text-center min-h-[50px] leading-tight">
+        <button className="w-full sm:w-auto font-space-grotesk uppercase text-xs sm:text-sm font-bold bg-cyan-500 text-zinc-950 px-4 sm:px-8 py-3.5 sm:py-3.5 rounded-md hover:bg-cyan-400 transition-all duration-300 hover:shadow-[0_0_20px_rgba(6,182,212,0.6)] active:scale-95 flex items-center justify-center text-center min-h-[50px] leading-tight tracking-widest">
           Initialize Training
         </button>
         
-        <button className="w-full sm:w-auto font-space-grotesk uppercase text-xs sm:text-sm font-bold border border-zinc-700 text-zinc-300 px-4 sm:px-8 py-3.5 sm:py-3.5 rounded-md hover:border-cyan-500/50 hover:text-white hover:bg-cyan-500/10 transition-all duration-300 active:scale-95 flex items-center justify-center text-center min-h-[50px] leading-tight">
-          View Documentation
+        <button className="w-full sm:w-auto font-space-grotesk uppercase text-xs sm:text-sm font-bold border border-zinc-700 text-zinc-300 px-4 sm:px-8 py-3.5 sm:py-3.5 rounded-md hover:border-cyan-500/50 hover:text-white hover:bg-cyan-500/10 transition-all duration-300 active:scale-95 flex items-center justify-center text-center min-h-[50px] leading-tight tracking-widest">
+          View System Overview
         </button>
       </motion.div>
 

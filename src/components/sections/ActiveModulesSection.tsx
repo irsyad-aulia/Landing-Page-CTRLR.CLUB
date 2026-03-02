@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const ActiveModulesSection = () => {
-  const motionProps: any = {
+  const motionProps = {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
     viewport: { once: false, margin: "-50px" },
@@ -12,12 +12,9 @@ const ActiveModulesSection = () => {
   };
 
   const modules = [
-    { name: 'Quantum Core', status: 'Online', load: '42%' },
-    { name: 'Neural Net', status: 'Online', load: '68%' },
-    { name: 'Firewall', status: 'Online', load: '15%' },
-    { name: 'Data Sync', status: 'Standby', load: '0%' },
-    { name: 'Predictive AI', status: 'Online', load: '89%' },
-    { name: 'Stealth Ops', status: 'Offline', load: 'N/A' },
+    { name: 'Pulse Run', target: 'Reaction', frequency: 'Daily', status: 'ACTIVE' },
+    { name: 'Ghost Tap', target: 'Timing', frequency: 'Daily', status: 'ACTIVE' },
+    { name: 'Rhythm Lock', target: 'Consistency', frequency: 'Daily', status: 'ACTIVE' },
   ];
 
   return (
@@ -58,8 +55,10 @@ const ActiveModulesSection = () => {
               <thead className="bg-black/60 border-b border-zinc-800/80">
                 <tr>
                   <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] md:text-xs uppercase text-zinc-600 font-bold tracking-widest">Module Name</th>
+                  <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] md:text-xs uppercase text-zinc-600 font-bold tracking-widest">Target Parameter</th>
+                  <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] md:text-xs uppercase text-zinc-600 font-bold tracking-widest">Frequency</th>
                   <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] md:text-xs uppercase text-zinc-600 font-bold tracking-widest">Status</th>
-                  <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] md:text-xs uppercase text-zinc-600 font-bold tracking-widest text-right">CPU Load</th>
+                  <th className="px-4 md:px-6 py-3 md:py-4 text-[10px] md:text-xs uppercase text-zinc-600 font-bold tracking-widest text-right">System Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-zinc-800/30">
@@ -69,17 +68,21 @@ const ActiveModulesSection = () => {
                       <span className="text-zinc-700 font-mono text-[10px] hidden md:inline-block">[{index.toString().padStart(2, '0')}]</span>
                       {mod.name}
                     </td>
+                    <td className="px-4 md:px-6 py-3 md:py-4 text-sm md:text-base text-zinc-400 group-hover:text-zinc-300 transition-colors">
+                      {mod.target}
+                    </td>
+                    <td className="px-4 md:px-6 py-3 md:py-4 text-sm md:text-base text-zinc-500 font-mono group-hover:text-zinc-400 transition-colors">
+                      {mod.frequency}
+                    </td>
                     <td className="px-4 md:px-6 py-3 md:py-4">
-                      <span className={`px-2 md:px-3 py-1 text-[9px] md:text-[10px] border uppercase tracking-widest font-bold ${
-                        mod.status === 'Online' ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/30 shadow-[0_0_10px_rgba(34,211,238,0.1)]' : 
-                        mod.status === 'Standby' ? 'bg-yellow-500/10 text-yellow-400 border-yellow-500/30' : 
-                        'bg-zinc-900/80 text-zinc-600 border-zinc-800'
-                      }`}>
+                      <span className="px-2 md:px-3 py-1 text-[9px] md:text-[10px] border uppercase tracking-widest font-bold bg-cyan-500/10 text-cyan-400 border-cyan-500/30 shadow-[0_0_10px_rgba(34,211,238,0.1)]">
                         {mod.status}
                       </span>
                     </td>
-                    <td className="px-4 md:px-6 py-3 md:py-4 text-sm md:text-base text-zinc-500 font-mono text-right group-hover:text-cyan-400 transition-colors">
-                      {mod.load}
+                    <td className="px-4 md:px-6 py-3 md:py-4 text-right">
+                      <button className="text-[10px] md:text-xs font-mono tracking-widest text-cyan-500 border border-cyan-900/50 bg-cyan-950/30 px-3 py-1.5 hover:bg-cyan-500 hover:text-black hover:border-cyan-400 transition-all duration-300 uppercase">
+                        Load Module
+                      </button>
                     </td>
                   </tr>
                 ))}
