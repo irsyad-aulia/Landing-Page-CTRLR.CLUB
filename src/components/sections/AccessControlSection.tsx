@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { motion, Variants } from 'framer-motion';
-import { Fingerprint, Lock, Unlock } from 'lucide-react';
 
 const AccessControlSection = () => {
   const containerVariants: Variants = {
@@ -10,132 +9,126 @@ const AccessControlSection = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.15,
+        staggerChildren: 0.1,
         delayChildren: 0.1,
       }
     }
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
       y: 0,
-      filter: "blur(0px)",
       transition: {
         type: "spring",
-        stiffness: 100,
-        damping: 14,
+        stiffness: 120,
+        damping: 15,
       }
     }
   };
 
   return (
-    <section id="access" className="w-full max-w-4xl mx-auto py-24 px-4 text-center overflow-hidden">
+    <section id="access" className="w-full max-w-6xl mx-auto py-24 md:py-32 px-4 relative z-10 bg-black">
+      
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, margin: "-50px" }}
+        transition={{ duration: 0.5 }}
+        className="text-center md:text-left w-full mb-16 md:mb-20 border-l-0 md:border-l-2 border-zinc-700 pl-0 md:pl-6 flex flex-col items-center md:items-start"
+      >
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-1.5 h-1.5 bg-zinc-600"></div>
+          <p className="font-mono text-zinc-500 text-[10px] md:text-xs tracking-[0.3em] uppercase">Security Protocol</p>
+        </div>
+        <h2 className="font-montserrat text-3xl md:text-5xl font-black text-white uppercase tracking-tighter mb-4">
+          ACCESS LEVELS
+        </h2>
+      </motion.div>
+
       <motion.div 
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: false, margin: "-50px" }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-0 max-w-5xl mx-auto relative"
       >
         
-        <motion.div variants={itemVariants} className="relative inline-block mb-6">
-          <Fingerprint className="w-12 h-12 text-cyan-400 mx-auto relative z-10" />
-          <motion.div 
-            animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.5, 0.2] }}
-            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute inset-0 bg-cyan-400 blur-xl rounded-full"
-          />
-        </motion.div>
-        
-        <motion.h2 variants={itemVariants} className="font-mono text-4xl font-black text-white uppercase tracking-widest">
-          Access Control
-        </motion.h2>
-        
-        <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8 text-left max-w-4xl mx-auto">
+        <div className="hidden md:block absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[2px] h-full bg-zinc-900 z-20"></div>
+
+        <motion.div 
+          variants={itemVariants}
+          className="relative bg-zinc-950/50 border border-zinc-900 p-8 md:p-12 flex flex-col group overflow-hidden opacity-50 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div className="absolute top-0 left-0 w-3 h-[1px] bg-zinc-700 transition-colors duration-300"></div>
+          <div className="absolute top-0 left-0 w-[1px] h-3 bg-zinc-700 transition-colors duration-300"></div>
+
+          <h3 className="text-xl md:text-2xl font-black text-zinc-500 mb-8 uppercase tracking-widest font-montserrat">
+            LIMITED MODE
+          </h3>
           
-          <motion.div 
-            variants={itemVariants}
-            whileHover={{ scale: 1.02, y: -5, transition: { type: "spring", stiffness: 300, damping: 20 } }}
-            className="relative border border-zinc-700 bg-zinc-900/50 backdrop-blur-md p-8 rounded-xl flex flex-col hover:border-zinc-500 hover:bg-zinc-800/60 transition-all duration-300 group overflow-hidden cursor-default min-h-[320px]"
-          >
-            <motion.div 
-              className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-zinc-500/30 to-transparent"
-              animate={{ top: ["0%", "100%", "0%"] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-            />
+          <ul className="text-zinc-600 space-y-4 font-mono text-sm flex-grow relative z-10 uppercase tracking-wider">
+            <li className="flex items-start">
+              <span className="text-zinc-700 mr-4 font-bold">/</span>
+              <span>Evaluation only.</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-zinc-700 mr-4 font-bold">/</span>
+              <span>No retention.</span>
+            </li>
+            <li className="flex items-start">
+              <span className="text-zinc-700 mr-4 font-bold">/</span>
+              <span>No persistent data.</span>
+            </li>
+          </ul>
 
-            <h3 className="text-xl font-bold text-zinc-300 mb-8 uppercase tracking-wider flex items-center gap-3">
-              <Lock className="w-5 h-5 text-zinc-500 group-hover:text-zinc-300 transition-colors duration-300" />
-              Limited Access
-            </h3>
-            
-            <ul className="text-zinc-400 space-y-4 font-mono text-sm flex-grow relative z-10">
-              <li className="flex items-center group-hover:translate-x-1 transition-transform duration-300">
-                <span className="text-zinc-600 mr-3 text-lg group-hover:text-zinc-400">›</span>Evaluation mode
-              </li>
-              <li className="flex items-center group-hover:translate-x-1 transition-transform duration-300 delay-75">
-                <span className="text-zinc-600 mr-3 text-lg group-hover:text-zinc-400">›</span>No retention
-              </li>
-              <li className="flex items-center group-hover:translate-x-1 transition-transform duration-300 delay-150">
-                <span className="text-zinc-600 mr-3 text-lg group-hover:text-zinc-400">›</span>No persistent data
-              </li>
-            </ul>
+          <div className="mt-12 pt-6 border-t border-zinc-900 relative z-10">
+            <span className="text-[10px] md:text-xs font-mono text-zinc-500 uppercase tracking-[0.2em] flex items-center gap-3">
+              <span className="w-2 h-2 bg-zinc-700"></span>
+              STATUS: RESTRICTED
+            </span>
+          </div>
+        </motion.div>
 
-            <div className="mt-6 pt-4 border-t border-zinc-800 relative z-10">
-                <span className="text-xs font-mono text-zinc-500 uppercase tracking-widest flex items-center gap-2 group-hover:text-zinc-300 transition-colors">
-                    <span className="w-2 h-2 rounded-full bg-zinc-600 group-hover:bg-zinc-400"></span>
-                    STATUS: RESTRICTED
-                </span>
-            </div>
-          </motion.div>
+        <motion.div 
+          variants={itemVariants}
+          className="relative bg-black border border-cyan-500/30 p-8 md:p-12 flex flex-col group overflow-hidden shadow-[0_0_30px_rgba(34,211,238,0.05)] hover:border-cyan-400 hover:shadow-[0_0_40px_rgba(34,211,238,0.15)] transition-all duration-500 z-10"
+        >
+          <div className="absolute top-0 right-0 w-4 h-[2px] bg-cyan-500 group-hover:bg-cyan-400 transition-colors"></div>
+          <div className="absolute top-0 right-0 w-[2px] h-4 bg-cyan-500 group-hover:bg-cyan-400 transition-colors"></div>
+          <div className="absolute bottom-0 right-0 w-4 h-[2px] bg-cyan-500 group-hover:bg-cyan-400 transition-colors"></div>
+          <div className="absolute bottom-0 right-0 w-[2px] h-4 bg-cyan-500 group-hover:bg-cyan-400 transition-colors"></div>
+          <div className="absolute bottom-0 left-0 w-4 h-[2px] bg-cyan-500 group-hover:bg-cyan-400 transition-colors"></div>
+          <div className="absolute bottom-0 left-0 w-[2px] h-4 bg-cyan-500 group-hover:bg-cyan-400 transition-colors"></div>
 
-          <motion.div 
-            variants={itemVariants}
-            whileHover={{ scale: 1.02, y: -5, transition: { type: "spring", stiffness: 300, damping: 20 } }}
-            className="relative border border-cyan-500/50 bg-cyan-950/20 backdrop-blur-md p-8 rounded-xl flex flex-col hover:border-cyan-400 hover:shadow-[0_0_30px_rgba(6,182,212,0.15)] hover:bg-cyan-900/30 transition-all duration-300 cursor-pointer group overflow-hidden min-h-[320px]"
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 to-magenta-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-magenta-500 to-cyan-500 opacity-70 group-hover:opacity-100 transition-opacity"></div>
-            
-            <motion.div 
-              className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"
-              animate={{ top: ["0%", "100%", "0%"] }}
-              transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
-            />
+          <h3 className="text-xl md:text-2xl font-black text-white mb-8 uppercase tracking-widest font-montserrat drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+            TRAINING MODE
+          </h3>
+          
+          <ul className="text-zinc-300 space-y-4 font-mono text-sm flex-grow relative z-10 uppercase tracking-wider">
+            <li className="flex items-start group-hover:text-white transition-colors">
+              <span className="text-cyan-500 mr-4 font-bold">/</span>
+              <span>Full execution.</span>
+            </li>
+            <li className="flex items-start group-hover:text-white transition-colors">
+              <span className="text-cyan-500 mr-4 font-bold">/</span>
+              <span>Persistent R-Index.</span>
+            </li>
+            <li className="flex items-start group-hover:text-white transition-colors">
+              <span className="text-cyan-500 mr-4 font-bold">/</span>
+              <span>Milestone progression.</span>
+            </li>
+          </ul>
 
-            <h3 className="text-xl font-bold text-cyan-300 mb-8 uppercase tracking-wider flex items-center justify-between relative z-10">
-              <div className="flex items-center gap-3">
-                <Unlock className="w-5 h-5 text-cyan-500 group-hover:text-cyan-300 transition-colors duration-300 drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]" />
-                Training Access
-              </div>
-              <span className="text-[10px] bg-cyan-950/80 text-cyan-400 px-3 py-1 rounded border border-cyan-800 group-hover:bg-cyan-900 group-hover:border-cyan-500 transition-all duration-300">
-                DEFAULT STATE
-              </span>
-            </h3>
-            
-            <ul className="text-zinc-200 space-y-4 font-mono text-sm flex-grow relative z-10">
-              <li className="flex items-center group-hover:translate-x-2 transition-transform duration-300">
-                <span className="text-cyan-500 mr-3 text-lg group-hover:text-magenta-400 transition-colors">›</span>Full execution
-              </li>
-              <li className="flex items-center group-hover:translate-x-2 transition-transform duration-300 delay-75">
-                <span className="text-cyan-500 mr-3 text-lg group-hover:text-magenta-400 transition-colors">›</span>Persistent R-Index
-              </li>
-              <li className="flex items-center group-hover:translate-x-2 transition-transform duration-300 delay-150">
-                <span className="text-cyan-500 mr-3 text-lg group-hover:text-magenta-400 transition-colors">›</span>Milestone tracking
-              </li>
-            </ul>
+          <div className="mt-12 pt-6 border-t border-cyan-900/50 relative z-10">
+            <span className="text-[10px] md:text-xs font-mono text-cyan-400 uppercase tracking-[0.2em] flex items-center gap-3 font-bold">
+              <span className="w-2 h-2 bg-cyan-400 animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.8)]"></span>
+              STATUS: READY
+            </span>
+          </div>
+        </motion.div>
 
-            <div className="mt-6 pt-4 border-t border-cyan-900/50 relative z-10">
-                <span className="text-xs font-mono text-cyan-500 uppercase tracking-widest flex items-center gap-2 group-hover:text-cyan-300 transition-colors">
-                    <span className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(6,182,212,1)] animate-pulse"></span>
-                    STATUS: READY
-                </span>
-            </div>
-          </motion.div>
-
-        </div>
       </motion.div>
     </section>
   );

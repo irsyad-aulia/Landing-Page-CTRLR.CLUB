@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Scan, Crosshair, Activity, Lock } from 'lucide-react';
 
 const RIndexSection = () => {
   const motionProps: any = {
@@ -13,82 +12,67 @@ const RIndexSection = () => {
   };
 
   return (
-    <section id="r-index" className="w-full max-w-6xl mx-auto py-16 md:py-24 px-4 relative z-10 overflow-hidden">
+    <section id="r-index" className="w-full mx-auto py-24 md:py-32 px-4 relative z-10 overflow-hidden bg-black">
       
-      <motion.div {...motionProps} className="flex flex-col items-center w-full mb-10 md:mb-16">
-        <div className="flex items-center gap-3 mb-4">
-          <Scan className="w-6 h-6 text-fuchsia-500 animate-pulse" />
-          <span className="font-space-grotesk text-xs md:text-sm tracking-[0.3em] text-fuchsia-400 uppercase font-bold">
-            Measurement System
-          </span>
-        </div>
-        <h2 className="font-montserrat text-3xl md:text-5xl font-black text-white text-center uppercase tracking-widest break-words w-full drop-shadow-[0_0_15px_rgba(34,211,238,0.5)]">
-          Resilience Index
-        </h2>
-        <p className="font-space-grotesk text-zinc-400 mt-4 text-sm md:text-base text-center max-w-2xl leading-relaxed uppercase tracking-wider">
-          Your execution produces a reflex signature.
-        </p>
-      </motion.div>
+      <div className="absolute inset-0 z-0 pointer-events-none">
+         <div className="absolute inset-0 bg-[url('/assets/tactical-hands.png')] bg-cover bg-center bg-no-repeat opacity-20 mix-blend-screen" />
+         <div className="absolute inset-0 bg-gradient-to-b from-black via-black/80 to-black z-0" />
+      </div>
 
-      <motion.div 
-        {...motionProps} 
-        transition={{ delay: 0.2, duration: 0.7 }}
-        className="relative w-full max-w-5xl mx-auto"
-      >
-        <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 via-transparent to-fuchsia-500 rounded-2xl blur-xl opacity-30 group-hover:opacity-50 transition duration-1000"></div>
-        
-        <div className="relative bg-zinc-950/80 border border-zinc-800 p-2 md:p-4 rounded-xl backdrop-blur-xl shadow-2xl overflow-hidden group">
-          
-          <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-500/70 rounded-tl-xl pointer-events-none"></div>
-          <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-fuchsia-500/70 rounded-tr-xl pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-cyan-500/70 rounded-bl-xl pointer-events-none"></div>
-          <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-fuchsia-500/70 rounded-br-xl pointer-events-none"></div>
-          
-          <div className="absolute inset-0 bg-[linear-gradient(to_bottom,transparent_0%,rgba(34,211,238,0.05)_50%,transparent_100%)] bg-[length:100%_4px] pointer-events-none opacity-50 mix-blend-overlay z-20"></div>
+      <div className="relative z-10 max-w-6xl mx-auto">
+        <motion.div {...motionProps} className="flex flex-col items-start w-full mb-16 border-l-2 border-cyan-500 pl-6 relative">
+          <div className="absolute top-0 -left-[2px] w-[2px] h-4 bg-white"></div>
+          <div className="absolute bottom-0 -left-[2px] w-[2px] h-4 bg-white"></div>
 
-          <div className="relative rounded-lg overflow-hidden border border-zinc-800/50 bg-black">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-2 h-2 bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,1)]"></div>
+            <span className="font-mono text-[10px] md:text-xs tracking-[0.3em] text-cyan-500 uppercase font-bold">
+              Identity Protocol
+            </span>
+          </div>
+          <h2 className="font-montserrat text-3xl md:text-5xl font-black text-white uppercase tracking-tighter break-words drop-shadow-[0_0_15px_rgba(255,255,255,0.1)] mb-4">
+            R-INDEX
+          </h2>
+          <p className="font-mono text-xs md:text-sm text-zinc-400 tracking-[0.1em] uppercase">
+            Your execution produces a measurable signature.
+          </p>
+        </motion.div>
+
+        <motion.div 
+          {...motionProps} 
+          transition={{ delay: 0.2, duration: 0.7 }}
+          className="relative w-full"
+        >
+          <div className="relative bg-zinc-950 border border-zinc-800 p-2 backdrop-blur-md overflow-hidden group">
             
-            <div className="absolute inset-0 bg-black/40 z-10 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 backdrop-blur-[2px]">
-                <Lock className="w-12 h-12 text-zinc-500 mb-4" />
-                <span className="font-mono text-sm tracking-widest text-zinc-300 uppercase border border-zinc-700 bg-black/60 px-6 py-2">
-                    Historical Data Locked
-                </span>
-            </div>
+            <div className="absolute top-0 left-0 w-4 h-[1px] bg-cyan-500"></div>
+            <div className="absolute top-0 left-0 w-[1px] h-4 bg-cyan-500"></div>
+            <div className="absolute top-0 right-0 w-4 h-[1px] bg-cyan-500"></div>
+            <div className="absolute top-0 right-0 w-[1px] h-4 bg-cyan-500"></div>
+            <div className="absolute bottom-0 left-0 w-4 h-[1px] bg-cyan-500"></div>
+            <div className="absolute bottom-0 left-0 w-[1px] h-4 bg-cyan-500"></div>
+            <div className="absolute bottom-0 right-0 w-4 h-[1px] bg-cyan-500"></div>
+            <div className="absolute bottom-0 right-0 w-[1px] h-4 bg-cyan-500"></div>
 
-            <img 
-              src="/assets/r-index.jpg" 
-              alt="CTRLR.CLUB Resilience Index Dashboard" 
-              className="w-full h-auto object-cover transform hover:scale-[1.02] transition-transform duration-700 ease-out filter brightness-75 contrast-125"
-            />
-            
-            <div className="absolute top-4 right-4 flex items-center gap-2 bg-black/80 backdrop-blur-md px-3 py-1.5 border border-zinc-700 z-20">
-              <div className="w-2 h-2 rounded-full bg-cyan-500 shadow-[0_0_8px_rgba(34,211,238,0.8)]"></div>
-              <span className="font-mono text-[10px] uppercase tracking-widest text-zinc-300">Partial Visualization</span>
+            <div className="relative overflow-hidden border border-zinc-900 bg-black">
+              <img 
+                src="/assets/tactical-hands.png" 
+                alt="CTRLRCLUB R-Index Dashboard" 
+                className="w-full h-auto object-cover transform hover:scale-[1.02] transition-transform duration-700 ease-out filter brightness-90 contrast-125"
+              />
+              
+              <div className="absolute bottom-6 left-6 flex items-center gap-3 bg-black/90 border border-zinc-800 px-4 py-2">
+                <div className="flex gap-1 items-end h-3">
+                  <div className="w-1 h-1 bg-cyan-500"></div>
+                  <div className="w-1 h-2 bg-cyan-500"></div>
+                  <div className="w-1 h-3 bg-cyan-500"></div>
+                </div>
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-cyan-500 font-bold">Rising Signal = Adaptive Response</span>
+              </div>
             </div>
           </div>
-          
-        </div>
-      </motion.div>
-
-      <motion.div 
-        {...motionProps} 
-        transition={{ delay: 0.4 }}
-        className="flex flex-wrap justify-center gap-6 mt-12"
-      >
-        <div className="flex items-center gap-2 opacity-50">
-          <Activity className="w-4 h-4 text-cyan-400" />
-          <span className="font-space-grotesk text-xs uppercase tracking-widest text-zinc-500">Calm</span>
-        </div>
-        <div className="flex items-center gap-2 opacity-50">
-          <Crosshair className="w-4 h-4 text-fuchsia-400" />
-          <span className="font-space-grotesk text-xs uppercase tracking-widest text-zinc-500">Focus</span>
-        </div>
-        <div className="flex items-center gap-2 opacity-50">
-          <Scan className="w-4 h-4 text-purple-400" />
-          <span className="font-space-grotesk text-xs uppercase tracking-widest text-zinc-500">Overclock</span>
-        </div>
-      </motion.div>
-
+        </motion.div>
+      </div>
     </section>
   );
 };
