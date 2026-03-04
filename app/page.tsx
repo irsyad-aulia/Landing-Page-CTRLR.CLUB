@@ -1,7 +1,7 @@
 import BackgroundVideo from '@/components/ui/BackgroundVideo';
 import HeroSection from '@/components/sections/HeroSection';
 import DiagnosticSection from '@/components/sections/DiagnosticSection';
-import SystemFunctionsSection from '@/components/sections/CoreFunctionsSection';
+import CoreFunctionsSection from '@/components/sections/CoreFunctionsSection';
 import ActiveModulesSection from '@/components/sections/ActiveModulesSection';
 import RIndexSection from '@/components/sections/RIndexSection';
 import AccessControlSection from '@/components/sections/AccessControlSection';
@@ -14,7 +14,7 @@ export default function Home() {
       <BackgroundVideo />
       <HeroSection />
       <DiagnosticSection />
-      <SystemFunctionsSection />
+      <CoreFunctionsSection />
       <ActiveModulesSection />
       <RIndexSection />
       <AccessControlSection />
