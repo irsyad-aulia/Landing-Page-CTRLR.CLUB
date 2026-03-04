@@ -123,29 +123,29 @@ const HeroSection = () => {
           variants={childReveal}
           className="mt-14 flex flex-col sm:flex-row gap-5 w-full sm:w-auto px-6 sm:px-0 relative z-10"
         >
-          {/* Primary CTA (Cyan) */}
+          {/* Primary CTA (Cyan) - Ditambahkan active: dan group-active: */}
           <button 
             onClick={scrollToAccess}
-            className="group relative w-full sm:w-auto font-mono uppercase text-xs sm:text-sm font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 px-10 py-4 hover:bg-cyan-400 hover:text-black transition-all duration-300 shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_40px_rgba(34,211,238,0.6)] active:scale-95 flex items-center justify-center text-center overflow-hidden tracking-[0.2em]"
+            className="group relative w-full sm:w-auto font-mono uppercase text-xs sm:text-sm font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 px-10 py-4 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_40px_rgba(34,211,238,0.6)] active:shadow-[0_0_40px_rgba(34,211,238,0.8)] flex items-center justify-center text-center overflow-hidden tracking-[0.2em] scale-100 active:scale-95"
           >
             <motion.div 
               className="absolute top-0 bottom-0 w-12 bg-white/30 skew-x-12 blur-[4px]"
               animate={{ left: ['-50%', '150%'] }}
               transition={{ duration: 2, ease: "easeInOut", repeat: Infinity, repeatDelay: 3 }}
             />
-            <span className="absolute w-2 h-2 bg-cyan-400 top-0 left-0 group-hover:bg-black transition-colors z-10"></span>
-            <span className="absolute w-2 h-2 bg-cyan-400 bottom-0 right-0 group-hover:bg-black transition-colors z-10"></span>
+            <span className="absolute w-2 h-2 bg-cyan-400 top-0 left-0 group-hover:bg-black group-active:bg-black transition-colors z-10"></span>
+            <span className="absolute w-2 h-2 bg-cyan-400 bottom-0 right-0 group-hover:bg-black group-active:bg-black transition-colors z-10"></span>
             <span className="relative z-10">ENGAGE TRAINING</span>
           </button>
           
-          {/* Secondary CTA (Fuchsia Hover) */}
+          {/* Secondary CTA (Fuchsia Hover) - Ditambahkan active: dan group-active: */}
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="group relative w-full sm:w-auto font-mono uppercase text-xs sm:text-sm font-bold border border-zinc-600 text-zinc-300 px-10 py-4 hover:border-fuchsia-500 hover:text-fuchsia-400 bg-black/50 backdrop-blur-sm transition-all duration-300 active:scale-95 flex items-center justify-center text-center tracking-[0.2em] shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(217,70,239,0.3)]"
+            className="group relative w-full sm:w-auto font-mono uppercase text-xs sm:text-sm font-bold border border-zinc-600 text-zinc-300 px-10 py-4 hover:border-fuchsia-500 active:border-fuchsia-500 hover:text-fuchsia-400 active:text-fuchsia-400 bg-black/50 active:bg-zinc-900 backdrop-blur-sm transition-all duration-300 flex items-center justify-center text-center tracking-[0.2em] shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(217,70,239,0.3)] active:shadow-[0_0_30px_rgba(217,70,239,0.5)] scale-100 active:scale-95"
           >
-            <span className="absolute w-1.5 h-1.5 bg-zinc-600 top-0 left-0 group-hover:bg-fuchsia-500 transition-colors"></span>
-            <span className="absolute w-1.5 h-1.5 bg-zinc-600 bottom-0 right-0 group-hover:bg-fuchsia-500 transition-colors"></span>
-            <span className="absolute inset-0 border border-fuchsia-500/0 group-hover:border-fuchsia-500/50 group-hover:animate-pulse pointer-events-none transition-all duration-300"></span>
+            <span className="absolute w-1.5 h-1.5 bg-zinc-600 top-0 left-0 group-hover:bg-fuchsia-500 group-active:bg-fuchsia-500 transition-colors"></span>
+            <span className="absolute w-1.5 h-1.5 bg-zinc-600 bottom-0 right-0 group-hover:bg-fuchsia-500 group-active:bg-fuchsia-500 transition-colors"></span>
+            <span className="absolute inset-0 border border-fuchsia-500/0 group-hover:border-fuchsia-500/50 group-active:border-fuchsia-500/50 group-hover:animate-pulse group-active:animate-pulse pointer-events-none transition-all duration-300"></span>
             ACCESS PROTOCOL
           </button>
         </motion.div>
@@ -160,6 +160,7 @@ const HeroSection = () => {
         <ChevronDown className="w-8 h-8 text-fuchsia-500/50 drop-shadow-[0_0_8px_rgba(217,70,239,0.5)] cursor-pointer hover:text-cyan-400 transition-colors" onClick={scrollToAccess} />
       </motion.div>
 
+      {/* Modal disingkat untuk fokus pada tombol... kode modal tetap sama seperti sebelumnya */}
       <AnimatePresence>
         {isModalOpen && (
           <motion.div 
@@ -194,7 +195,7 @@ const HeroSection = () => {
                     CTRLRCLUB // ACCESS PROTOCOL v2.5
                   </h3>
                 </div>
-                <button onClick={() => setIsModalOpen(false)} className="text-zinc-500 hover:text-fuchsia-400 transition-colors">
+                <button onClick={() => setIsModalOpen(false)} className="text-zinc-500 hover:text-fuchsia-400 active:text-fuchsia-400 transition-colors">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -231,13 +232,13 @@ const HeroSection = () => {
               <div className="border-t border-zinc-800/80 bg-black px-6 py-5 flex flex-col sm:flex-row gap-4 justify-between items-center">
                 <button 
                   onClick={() => setIsModalOpen(false)}
-                  className="w-full sm:w-auto font-mono text-xs uppercase tracking-[0.2em] text-zinc-500 hover:text-fuchsia-400 transition-colors"
+                  className="w-full sm:w-auto font-mono text-xs uppercase tracking-[0.2em] text-zinc-500 hover:text-fuchsia-400 active:text-fuchsia-400 transition-colors"
                 >
                   CLOSE PROTOCOL
                 </button>
                 <button 
                   onClick={scrollToAccess}
-                  className="w-full sm:w-auto font-mono uppercase text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/50 px-8 py-3 hover:bg-cyan-500 hover:text-black transition-all shadow-[0_0_15px_rgba(34,211,238,0.15)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] tracking-[0.2em]"
+                  className="w-full sm:w-auto font-mono uppercase text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/50 px-8 py-3 hover:bg-cyan-500 active:bg-cyan-500 hover:text-black active:text-black transition-all shadow-[0_0_15px_rgba(34,211,238,0.15)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] active:shadow-[0_0_30px_rgba(34,211,238,0.6)] tracking-[0.2em]"
                 >
                   ENTER TRAINING MODE
                 </button>

@@ -20,7 +20,6 @@ const ActiveModulesSection = () => {
   return (
     <section id="modules" className="w-full max-w-6xl mx-auto py-24 md:py-32 px-4 relative z-10 bg-black">
       
-      {/* Background Telemetry Scanline */}
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-fuchsia-500/20 to-transparent"></div>
 
       <motion.div {...motionProps} className="flex flex-col items-start w-full mb-12 border-l-2 border-fuchsia-500 pl-6 relative">
@@ -35,7 +34,7 @@ const ActiveModulesSection = () => {
         <h2 className="font-montserrat text-2xl sm:text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-300 uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(217,70,239,0.1)] mb-2 md:mb-4 hyphens-none">
           ACTIVE DRILLS
         </h2>
-                <p className="font-mono text-xs md:text-sm text-zinc-400 tracking-[0.1em] uppercase">
+        <p className="font-mono text-xs md:text-sm text-zinc-400 tracking-[0.1em] uppercase">
           Live execution modules. Updated daily.
         </p>
       </motion.div>
@@ -45,15 +44,12 @@ const ActiveModulesSection = () => {
         transition={{ delay: 0.2 }}
         className="relative w-full p-[1px] group z-10"
       >
-        {/* Animated Gradient Border Wrapper */}
         <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 to-zinc-900 group-hover:from-cyan-500/40 group-hover:via-zinc-800 group-hover:to-fuchsia-500/40 transition-all duration-700 opacity-80 group-hover:opacity-100 shadow-none group-hover:shadow-[0_0_30px_rgba(34,211,238,0.1)]"></div>
 
         <div className="relative bg-black w-full overflow-hidden transition-colors duration-500 flex flex-col h-full">
           
-          {/* Inner Hover Glow */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(34,211,238,0.05),transparent_50%),radial-gradient(ellipse_at_bottom_left,rgba(217,70,239,0.05),transparent_50%)] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
 
-          {/* Neon Corner Accents */}
           <div className="absolute top-0 left-0 w-4 h-[2px] bg-zinc-800 group-hover:bg-cyan-400 transition-colors duration-500 z-20 pointer-events-none"></div>
           <div className="absolute top-0 left-0 w-[2px] h-4 bg-zinc-800 group-hover:bg-cyan-400 transition-colors duration-500 z-20 pointer-events-none"></div>
           <div className="absolute top-0 right-0 w-4 h-[2px] bg-zinc-800 group-hover:bg-cyan-400 transition-colors duration-500 z-20 pointer-events-none"></div>
@@ -90,27 +86,26 @@ const ActiveModulesSection = () => {
               </thead>
               <tbody className="divide-y divide-zinc-900/50">
                 {modules.map((mod, index) => (
-                  <tr key={index} className="hover:bg-zinc-900/80 transition-all duration-300 group/row relative">
-                    <td className="px-6 py-5 text-sm md:text-base text-zinc-300 font-medium group-hover/row:text-cyan-400 transition-colors flex items-center gap-4 group-hover/row:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)]">
-                      {/* Left highlight indicator on hover */}
-                      <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-transparent group-hover/row:bg-cyan-400 transition-colors"></div>
-                      <span className="text-zinc-600 font-mono text-[10px] hidden md:inline-block group-hover/row:text-cyan-600 transition-colors">[{index.toString().padStart(2, '0')}]</span>
+                  <tr key={index} className="hover:bg-zinc-900/80 active:bg-zinc-800/60 cursor-pointer transition-all duration-300 group/row relative">
+                    <td className="px-6 py-5 text-sm md:text-base text-zinc-300 font-medium group-hover/row:text-cyan-400 group-active/row:text-cyan-300 transition-colors flex items-center gap-4 group-hover/row:drop-shadow-[0_0_8px_rgba(34,211,238,0.6)] group-active/row:drop-shadow-[0_0_12px_rgba(34,211,238,0.9)]">
+                      <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-transparent group-hover/row:bg-cyan-400 group-active/row:bg-cyan-400 transition-colors"></div>
+                      <span className="text-zinc-600 font-mono text-[10px] hidden md:inline-block group-hover/row:text-cyan-600 group-active/row:text-cyan-400 transition-colors">[{index.toString().padStart(2, '0')}]</span>
                       {mod.name}
                     </td>
-                    <td className="px-6 py-5 text-xs md:text-sm text-zinc-500 group-hover/row:text-zinc-300 transition-colors font-mono tracking-wider">
+                    <td className="px-6 py-5 text-xs md:text-sm text-zinc-500 group-hover/row:text-zinc-300 group-active/row:text-zinc-200 transition-colors font-mono tracking-wider">
                       {mod.target}
                     </td>
-                    <td className="px-6 py-5 text-xs md:text-sm text-zinc-600 font-mono group-hover/row:text-zinc-400 transition-colors tracking-wider">
+                    <td className="px-6 py-5 text-xs md:text-sm text-zinc-600 font-mono group-hover/row:text-zinc-400 group-active/row:text-zinc-300 transition-colors tracking-wider">
                       {mod.frequency}
                     </td>
                     <td className="px-6 py-5">
-                      <span className="px-3 py-1.5 text-[9px] md:text-[10px] border uppercase tracking-[0.2em] font-bold bg-zinc-900 text-zinc-500 border-zinc-800 group-hover/row:bg-cyan-500/10 group-hover/row:text-cyan-400 group-hover/row:border-cyan-500/30 transition-all duration-300 group-hover/row:shadow-[0_0_10px_rgba(34,211,238,0.1)]">
+                      <span className="px-3 py-1.5 text-[9px] md:text-[10px] border uppercase tracking-[0.2em] font-bold bg-zinc-900 text-zinc-500 border-zinc-800 group-hover/row:bg-cyan-500/10 group-active/row:bg-cyan-500/20 group-hover/row:text-cyan-400 group-active/row:text-cyan-300 group-hover/row:border-cyan-500/30 group-active/row:border-cyan-500/50 transition-all duration-300 group-hover/row:shadow-[0_0_10px_rgba(34,211,238,0.1)] group-active/row:shadow-[0_0_15px_rgba(34,211,238,0.3)]">
                         {mod.status}
                       </span>
                     </td>
                     <td className="px-6 py-5 text-right">
-                      <button className="text-[10px] md:text-xs font-mono tracking-[0.2em] text-zinc-500 border border-zinc-800 bg-black px-4 py-2 hover:bg-fuchsia-500 hover:text-white hover:border-fuchsia-400 hover:shadow-[0_0_15px_rgba(217,70,239,0.4)] transition-all duration-300 uppercase font-bold relative overflow-hidden group/btn">
-                        <span className="absolute inset-0 bg-fuchsia-500/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 ease-out"></span>
+                      <button className="text-[10px] md:text-xs font-mono tracking-[0.2em] text-zinc-500 border border-zinc-800 bg-black px-4 py-2 hover:bg-fuchsia-500 active:bg-fuchsia-600 hover:text-white active:text-white hover:border-fuchsia-400 active:border-fuchsia-400 hover:shadow-[0_0_15px_rgba(217,70,239,0.4)] active:shadow-[0_0_20px_rgba(217,70,239,0.6)] active:scale-95 transition-all duration-300 uppercase font-bold relative overflow-hidden group/btn">
+                        <span className="absolute inset-0 bg-fuchsia-500/20 translate-y-full group-hover/btn:translate-y-0 group-active/btn:translate-y-0 transition-transform duration-300 ease-out"></span>
                         <span className="relative z-10">EXECUTE</span>
                       </button>
                     </td>
