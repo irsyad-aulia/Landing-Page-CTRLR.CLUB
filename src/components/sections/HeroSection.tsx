@@ -44,7 +44,7 @@ const HeroSection = () => {
   return (
     <section id="hero" className="relative min-h-[100dvh] w-full flex flex-col items-center justify-center pb-20 text-center text-white overflow-hidden px-4 bg-transparent">
       
-      {/* Global Scanline Pass (Kini dengan perpaduan Cyan & Magenta) */}
+      {/* Global Scanline Pass */}
       <motion.div
         className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-cyan-500/10 via-fuchsia-500/20 to-cyan-500/10 blur-[2px] pointer-events-none z-50"
         animate={{ top: ['-10%', '110%'] }}
@@ -95,7 +95,7 @@ const HeroSection = () => {
 
         <motion.h1
           variants={childReveal}
-          className="relative z-10 font-montserrat text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] font-black uppercase tracking-tighter leading-none px-2 text-white"
+          className="relative z-10 font-montserrat text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] sm:leading-none px-2 text-white"
           style={{
             textShadow: `
               0px -3px 20px rgba(34,211,238,0.5), 
@@ -104,14 +104,18 @@ const HeroSection = () => {
             `
           }}
         >
-          CTRLRCLUB
+          <span className="block sm:inline">
+            <span className="pr-1 sm:pr-0">C</span>TRLR
+          </span>
+          {/* PERBAIKAN: Membuang -mt-2 agar jarak vertikal di mobile melonggar */}
+          <span className="block sm:inline sm:mt-0">CLUB</span>
         </motion.h1>
-        
+
         <motion.div
           variants={childReveal}
-          className="mt-8 border-l-2 border-fuchsia-500 pl-5 text-left max-w-2xl relative z-10"
+          className="mt-8 border-l-2 border-fuchsia-500 pl-5 text-left w-full md:w-max max-w-none relative z-10"
         >
-          <p className="font-mono text-sm sm:text-base md:text-lg text-zinc-300 uppercase tracking-[0.1em] drop-shadow-lg">
+          <p className="font-mono text-sm sm:text-base md:text-lg text-zinc-300 uppercase tracking-[0.1em] drop-shadow-lg md:whitespace-nowrap">
             Performance architecture for elite controller execution.
           </p>
         </motion.div>

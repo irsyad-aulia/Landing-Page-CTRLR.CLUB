@@ -32,10 +32,10 @@ const ActiveModulesSection = () => {
           <p className="font-mono text-fuchsia-400 text-[10px] md:text-xs tracking-[0.3em] uppercase">Deployment</p>
         </div>
         
-        <h2 className="font-montserrat text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-300 uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(217,70,239,0.1)] mb-4">
+        <h2 className="font-montserrat text-2xl sm:text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-300 uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(217,70,239,0.1)] mb-2 md:mb-4 hyphens-none">
           ACTIVE DRILLS
         </h2>
-        <p className="font-mono text-xs md:text-sm text-zinc-400 tracking-[0.1em] uppercase">
+                <p className="font-mono text-xs md:text-sm text-zinc-400 tracking-[0.1em] uppercase">
           Live execution modules. Updated daily.
         </p>
       </motion.div>
