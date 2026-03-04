@@ -95,7 +95,7 @@ const HeroSection = () => {
 
         <motion.h1
           variants={childReveal}
-          className="relative z-10 font-montserrat text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] font-black uppercase tracking-tighter leading-[0.85] sm:leading-none px-2 text-white"
+          className="relative z-10 font-montserrat text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] font-extrabold uppercase tracking-tight leading-[0.85] sm:leading-none px-2 text-white"
           style={{
             textShadow: `
               0px -3px 20px rgba(34,211,238,0.5), 
@@ -107,7 +107,6 @@ const HeroSection = () => {
           <span className="block sm:inline">
             <span className="pr-1 sm:pr-0">C</span>TRLR
           </span>
-          {/* PERBAIKAN: Membuang -mt-2 agar jarak vertikal di mobile melonggar */}
           <span className="block sm:inline sm:mt-0">CLUB</span>
         </motion.h1>
 
