@@ -74,21 +74,18 @@ const RIndexSection = () => {
                   playsInline
                   className="absolute inset-0 w-full h-full object-cover opacity-90 group-hover:opacity-100 transition-all duration-700 group-hover:scale-[1.02] transform ease-out"
                 >
-                  <source src="/assets/r-index.mp4" type="video/mp4" />
+                  <source src="/assets/r-index.webm" type="video/webm" />
                   <img src="/assets/tactical-hands.png" alt="Fallback" className="w-full h-full object-cover" />
                 </video>
                 
-                {/* Dark Gradient Overlay for Text Readability */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
 
-                {/* Tactical HUD Tag (Dikalibrasi agar tidak menutupi video di Mobile) */}
                 <div className="absolute bottom-3 left-3 md:bottom-6 md:left-6 flex items-center gap-2 md:gap-3 bg-black/70 backdrop-blur-md border border-fuchsia-500/40 px-2 py-1.5 md:px-4 md:py-2 z-20">
                   <div className="flex gap-0.5 md:gap-1 items-end h-2 md:h-3">
                     <div className="w-0.5 md:w-1 h-1 bg-cyan-400 animate-pulse"></div>
                     <div className="w-0.5 md:w-1 h-1.5 md:h-2 bg-cyan-400 animate-pulse" style={{ animationDelay: '150ms' }}></div>
                     <div className="w-0.5 md:w-1 h-2 md:h-3 bg-fuchsia-500 animate-pulse" style={{ animationDelay: '300ms' }}></div>
                   </div>
-                  {/* Penambahan whitespace-nowrap agar teks tidak turun baris menjadi kotak raksasa */}
                   <span className="font-mono text-[7px] sm:text-[9px] md:text-xs uppercase tracking-[0.1em] md:tracking-[0.2em] text-white font-bold whitespace-nowrap">
                     <span className="text-cyan-400">SYNC:</span> ACTIVE <span className="text-fuchsia-500 mx-1 md:mx-2">|</span> ADAPTIVE RESPONSE
                   </span>
