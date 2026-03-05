@@ -80,14 +80,19 @@ const RIndexSection = () => {
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
 
-                <div className="absolute bottom-3 left-3 md:bottom-6 md:left-6 flex items-center gap-2 md:gap-3 bg-black/70 backdrop-blur-md border border-fuchsia-500/40 px-2 py-1.5 md:px-4 md:py-2 z-20">
-                  <div className="flex gap-0.5 md:gap-1 items-end h-2 md:h-3">
-                    <div className="w-0.5 md:w-1 h-1 bg-cyan-400 animate-pulse"></div>
-                    <div className="w-0.5 md:w-1 h-1.5 md:h-2 bg-cyan-400 animate-pulse" style={{ animationDelay: '150ms' }}></div>
-                    <div className="w-0.5 md:w-1 h-2 md:h-3 bg-fuchsia-500 animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                {/* PERBAIKAN TOTAL: Posisi mepet sudut (bottom-1.5 left-1.5), padding super tipis (px-1 py-0.5), gap minimum (gap-1) */}
+                <div className="absolute bottom-1.5 left-1.5 md:bottom-6 md:left-6 flex items-center gap-1 bg-black/40 md:bg-black/70 backdrop-blur-sm border border-fuchsia-500/20 px-1 py-0.5 z-20 max-w-[calc(100%-1rem)] md:max-w-none">
+                  
+                  {/* Grafik Bar Audio/Sync: Tinggi h-2 yang sangat kecil di mobile */}
+                  <div className="flex gap-0.5 items-end h-2 md:h-3 shrink-0">
+                    <div className="w-0.5 h-1 bg-cyan-400 animate-pulse"></div>
+                    <div className="w-0.5 h-1.5 bg-cyan-400 animate-pulse" style={{ animationDelay: '150ms' }}></div>
+                    <div className="w-0.5 h-2 bg-fuchsia-500 animate-pulse" style={{ animationDelay: '300ms' }}></div>
                   </div>
-                  <span className="font-mono text-[7px] sm:text-[9px] md:text-xs uppercase tracking-[0.1em] md:tracking-[0.2em] text-white font-bold whitespace-nowrap">
-                    <span className="text-cyan-400">SYNC:</span> ACTIVE <span className="text-fuchsia-500 mx-1 md:mx-2">|</span> ADAPTIVE RESPONSE
+                  
+                  {/* PERBAIKAN TEKS: Ukuran taktistext-[7px] di mobile, leading-none agar rapat vertikal jika melipat */}
+                  <span className="font-mono text-[7px] md:text-xs uppercase tracking-tight md:tracking-[0.2em] text-white/90 font-bold whitespace-normal md:whitespace-nowrap leading-none">
+                    <span className="text-cyan-400">SYNC:</span> ACTIVE <span className="text-fuchsia-500/50 mx-1">|</span> ADAPTIVE RESPONSE
                   </span>
                 </div>
 
