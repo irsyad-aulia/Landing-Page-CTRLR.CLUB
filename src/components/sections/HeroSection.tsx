@@ -42,7 +42,6 @@ const HeroSection = () => {
   };
 
   return (
-    // PERBAIKAN: min-h-[80dvh] di mobile memangkas ruang kosong bawah. Desktop tetap 100dvh.
     <section id="hero" className="relative min-h-[80dvh] md:min-h-[100dvh] w-full flex flex-col justify-start md:justify-center items-center text-center text-white overflow-hidden bg-transparent pt-12 pb-16 md:py-0 px-2 sm:px-4">
       
       <motion.div
@@ -93,9 +92,11 @@ const HeroSection = () => {
           </motion.span>
         </motion.div>
 
+        {/* PERBAIKAN: Seluruh kelas Flexbox layout statis DICABUT (flex flex-col items-center justify-center) */}
+        {/* UKURAN MUTLAK DIKUNCI: text-[11.5vw] min-[400px]:text-[12vw] sm:text-7xl md:text-8xl lg:text-[10rem] */}
         <motion.h1
           variants={childReveal}
-          className="relative z-10 font-montserrat flex flex-col items-center justify-center text-[13vw] min-[400px]:text-[14vw] sm:text-7xl md:text-8xl lg:text-[10rem] font-extrabold uppercase tracking-tight leading-[0.9] text-white w-full text-center px-0 mb-2 sm:mb-0 pr-1 md:pr-0 transform sm:transform-none"
+          className="relative z-10 font-montserrat text-[11.5vw] min-[400px]:text-[12vw] sm:text-7xl md:text-8xl lg:text-[10rem] font-extrabold uppercase tracking-tight leading-[0.9] text-white w-full text-center px-0 mb-2 sm:mb-0 transform sm:transform-none sm:whitespace-nowrap"
           style={{
             textShadow: `
               0px -3px 20px rgba(34,211,238,0.5), 
@@ -104,8 +105,12 @@ const HeroSection = () => {
             `
           }}
         >
-          <span className="block sm:inline">CTRLR</span>
-          <span className="block sm:inline">CLUB</span>
+          {/* block di mobile, inline di desktop */}
+          <span className="block sm:inline whitespace-normal">CTRLR</span>
+          {/* Spasi taktis hanya muncul di desktop untuk memisahkan kata saat 1 baris */}
+          <span className="hidden sm:inline"> </span>
+          {/* block di mobile, inline di desktop */}
+          <span className="block sm:inline whitespace-normal">CLUB</span>
         </motion.h1>
 
         <motion.div
@@ -147,7 +152,6 @@ const HeroSection = () => {
         </motion.div>
       </motion.div>
 
-      {/* PERBAIKAN: Anak panah dilindungi dengan z-30 agar kebal dari elemen yang menindih */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
