@@ -92,8 +92,6 @@ const HeroSection = () => {
           </motion.span>
         </motion.div>
 
-        {/* PERBAIKAN: Seluruh kelas Flexbox layout statis DICABUT (flex flex-col items-center justify-center) */}
-        {/* UKURAN MUTLAK DIKUNCI: text-[11.5vw] min-[400px]:text-[12vw] sm:text-7xl md:text-8xl lg:text-[10rem] */}
         <motion.h1
           variants={childReveal}
           className="relative z-10 font-montserrat text-[11.5vw] min-[400px]:text-[12vw] sm:text-7xl md:text-8xl lg:text-[10rem] font-extrabold uppercase tracking-tight leading-[0.9] text-white w-full text-center px-0 mb-2 sm:mb-0 transform sm:transform-none sm:whitespace-nowrap"
@@ -105,11 +103,8 @@ const HeroSection = () => {
             `
           }}
         >
-          {/* block di mobile, inline di desktop */}
           <span className="block sm:inline whitespace-normal">CTRLR</span>
-          {/* Spasi taktis hanya muncul di desktop untuk memisahkan kata saat 1 baris */}
           <span className="hidden sm:inline"> </span>
-          {/* block di mobile, inline di desktop */}
           <span className="block sm:inline whitespace-normal">CLUB</span>
         </motion.h1>
 
@@ -122,33 +117,66 @@ const HeroSection = () => {
           </p>
         </motion.div>
         
+        {/* PERBAIKAN: Form Email MailChimp menggantikan tombol Engage Training */}
         <motion.div
           variants={childReveal}
-          className="mt-10 sm:mt-14 flex flex-col sm:flex-row gap-4 sm:gap-5 w-full sm:w-auto px-4 sm:px-0 relative z-10"
+          className="mt-10 sm:mt-14 flex flex-col items-center gap-6 w-full px-4 sm:px-0 relative z-10"
         >
-          <button 
-            onClick={scrollToAccess}
-            className="group relative w-full sm:w-auto font-mono uppercase text-xs sm:text-sm font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 px-8 py-3 sm:px-10 sm:py-4 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:shadow-[0_0_40px_rgba(34,211,238,0.6)] active:shadow-[0_0_40px_rgba(34,211,238,0.8)] flex items-center justify-center text-center overflow-hidden tracking-[0.2em] scale-100 active:scale-95"
+          <form 
+            action="https://club.us5.list-manage.com/subscribe/post?u=b0027597e58976d72ab32ed15&amp;id=ac9be7be9e&amp;f_id=00bfc2e1f0" 
+            method="POST" 
+            target="_blank"
+            className="flex flex-col sm:flex-row w-full max-w-2xl relative group"
           >
-            <motion.div 
-              className="absolute top-0 bottom-0 w-12 bg-white/30 skew-x-12 blur-[4px]"
-              animate={{ left: ['-50%', '150%'] }}
-              transition={{ duration: 2, ease: "easeInOut", repeat: Infinity, repeatDelay: 3 }}
+            {/* Dekorasi HUD Sudut Form */}
+            <div className="absolute -top-[1px] -left-[1px] w-2 h-[1px] bg-cyan-400 z-20 pointer-events-none"></div>
+            <div className="absolute -top-[1px] -left-[1px] w-[1px] h-2 bg-cyan-400 z-20 pointer-events-none"></div>
+            <div className="absolute -bottom-[1px] -right-[1px] w-2 h-[1px] bg-fuchsia-500 z-20 pointer-events-none"></div>
+            <div className="absolute -bottom-[1px] -right-[1px] w-[1px] h-2 bg-fuchsia-500 z-20 pointer-events-none"></div>
+
+            {/* Input Email */}
+            <input 
+              type="email" 
+              name="EMAIL" 
+              placeholder="ENTER COMM LINK (EMAIL)" 
+              required
+              className="w-full bg-black/50 border border-zinc-600 sm:border-r-0 focus:border-cyan-400 text-white font-mono text-xs sm:text-sm px-6 py-4 outline-none transition-colors backdrop-blur-sm placeholder:text-zinc-600 tracking-widest"
             />
-            <span className="absolute w-2 h-2 bg-cyan-400 top-0 left-0 group-hover:bg-black group-active:bg-black transition-colors z-10"></span>
-            <span className="absolute w-2 h-2 bg-cyan-400 bottom-0 right-0 group-hover:bg-black group-active:bg-black transition-colors z-10"></span>
-            <span className="relative z-10">ENGAGE TRAINING</span>
-          </button>
-          
-          <button 
-            onClick={() => setIsModalOpen(true)}
-            className="group relative w-full sm:w-auto font-mono uppercase text-xs sm:text-sm font-bold border border-zinc-600 text-zinc-300 px-8 py-3 sm:px-10 sm:py-4 hover:border-fuchsia-500 active:border-fuchsia-500 hover:text-fuchsia-400 active:text-fuchsia-400 bg-black/50 active:bg-zinc-900 backdrop-blur-sm transition-all duration-300 flex items-center justify-center text-center tracking-[0.2em] shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(217,70,239,0.3)] active:shadow-[0_0_30px_rgba(217,70,239,0.5)] scale-100 active:scale-95"
-          >
-            <span className="absolute w-1.5 h-1.5 bg-zinc-600 top-0 left-0 group-hover:bg-fuchsia-500 group-active:bg-fuchsia-500 transition-colors"></span>
-            <span className="absolute w-1.5 h-1.5 bg-zinc-600 bottom-0 right-0 group-hover:bg-fuchsia-500 group-active:bg-fuchsia-500 transition-colors"></span>
-            <span className="absolute inset-0 border border-fuchsia-500/0 group-hover:border-fuchsia-500/50 group-active:border-fuchsia-500/50 group-hover:animate-pulse group-active:animate-pulse pointer-events-none transition-all duration-300"></span>
-            ACCESS PROTOCOL
-          </button>
+
+            {/* Tombol STAND BY (Submit Form) */}
+            <button 
+              type="submit"
+              className="relative shrink-0 font-mono uppercase text-xs sm:text-sm font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 mt-2 sm:mt-0 px-8 py-4 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] tracking-[0.2em] overflow-hidden group-hover:border-cyan-400"
+            >
+              <motion.div 
+                className="absolute top-0 bottom-0 w-12 bg-white/30 skew-x-12 blur-[4px]"
+                animate={{ left: ['-50%', '150%'] }}
+                transition={{ duration: 2.5, ease: "easeInOut", repeat: Infinity, repeatDelay: 4 }}
+              />
+              <span className="relative z-10">STAND BY</span>
+            </button>
+          </form>
+
+          {/* Subteks Informasional & Access Protocol */}
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 mt-2">
+            <div className="flex items-center gap-2">
+                <div className="w-1.5 h-1.5 bg-fuchsia-500 animate-pulse shadow-[0_0_8px_rgba(217,70,239,0.8)]"></div>
+                <p className="font-mono text-[9px] sm:text-[10px] text-zinc-400 tracking-[0.2em] uppercase">
+                Platform build in progress
+                </p>
+            </div>
+            
+            <span className="hidden sm:block text-zinc-600">|</span>
+
+            <button 
+                onClick={() => setIsModalOpen(true)}
+                className="group relative font-mono uppercase text-[10px] sm:text-xs font-bold text-zinc-400 hover:text-fuchsia-400 transition-colors tracking-[0.2em] flex items-center gap-2"
+            >
+                <span className="w-1 h-1 bg-zinc-600 group-hover:bg-fuchsia-500 transition-colors"></span>
+                ACCESS PROTOCOL
+                <span className="w-1 h-1 bg-zinc-600 group-hover:bg-fuchsia-500 transition-colors"></span>
+            </button>
+          </div>
         </motion.div>
       </motion.div>
 
@@ -236,11 +264,12 @@ const HeroSection = () => {
                 >
                   CLOSE PROTOCOL
                 </button>
+                {/* PERBAIKAN: Tombol di dalam Modal diganti menjadi STAND BY */}
                 <button 
                   onClick={scrollToAccess}
                   className="w-full sm:w-auto font-mono uppercase text-xs font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-500/50 px-8 py-3 hover:bg-cyan-500 active:bg-cyan-500 hover:text-black active:text-black transition-all shadow-[0_0_15px_rgba(34,211,238,0.15)] hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] active:shadow-[0_0_30px_rgba(34,211,238,0.6)] tracking-[0.2em]"
                 >
-                  ENTER TRAINING MODE
+                  STAND BY
                 </button>
               </div>
             </motion.div>
