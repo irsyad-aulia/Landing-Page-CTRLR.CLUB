@@ -2,7 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
 body {
   @apply bg-zinc-950 font-space-grotesk;
+  -ms-overflow-style: none;  /* Taktik Stealth untuk IE dan Edge */
+  scrollbar-width: none;  /* Taktik Stealth untuk Firefox */
 }
 
+/* Taktik Stealth Ekstrim untuk Chrome, Safari, dan Opera */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none; 
+}
