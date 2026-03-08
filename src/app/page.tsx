@@ -12,7 +12,8 @@ export default function Home() {
   return (
     <>
       <BackgroundVideo />
-      <main className="flex min-h-screen flex-col items-center justify-start">
+      {/* PERBAIKAN: Menambahkan w-full dan overflow-x-hidden untuk mencegah kebocoran lebar di mobile */}
+      <main className="flex min-h-screen flex-col items-center justify-start w-full overflow-x-hidden">
         <HeroSection />
         <DiagnosticSection />
         <SystemFunctionsSection />

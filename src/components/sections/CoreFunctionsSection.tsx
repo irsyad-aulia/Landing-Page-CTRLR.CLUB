@@ -77,12 +77,15 @@ const CoreFunctionsSection = () => {
 
         <div className="flex items-center gap-3 mb-4">
           <div className="w-1.5 h-1.5 bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.8)] animate-pulse"></div>
-          <p className="font-mono text-cyan-400 text-[10px] md:text-xs tracking-[0.3em] uppercase">Architecture</p>
+          {/* PERBAIKAN: Lencana kategori diperbesar */}
+          <p className="font-mono text-cyan-400 text-xs md:text-sm tracking-[0.3em] uppercase font-bold">Architecture</p>
         </div>
-        <h2 className="font-montserrat text-2xl sm:text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-300 uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(34,211,238,0.1)] mb-2 md:mb-4 hyphens-none">
+        {/* PERBAIKAN: Judul utama diperbesar */}
+        <h2 className="font-montserrat text-3xl sm:text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-zinc-300 uppercase tracking-tighter drop-shadow-[0_0_15px_rgba(34,211,238,0.1)] mb-2 md:mb-4 hyphens-none leading-tight">
           CORE PERFORMANCE LAYERS
         </h2>
-        <p className="font-mono text-[10px] sm:text-xs md:text-sm text-zinc-400 tracking-[0.1em] uppercase">
+        {/* PERBAIKAN: Deskripsi diperbesar */}
+        <p className="font-mono text-sm md:text-base text-zinc-400 tracking-[0.1em] uppercase">
           Every drill targets a specific execution variable.
         </p>
       </motion.div>
@@ -114,24 +117,28 @@ const CoreFunctionsSection = () => {
 
               {/* Kotak Ikon group-active */}
               <div className="relative z-10 bg-zinc-950/80 border border-zinc-800/80 p-3 md:p-4 group-hover:border-cyan-500/50 group-active:border-cyan-500/60 group-hover:bg-black group-active:bg-black group-hover:shadow-[0_0_15px_rgba(34,211,238,0.2)] group-active:shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all duration-500 shrink-0">
-                <layer.icon className="w-5 h-5 md:w-6 md:h-6 text-zinc-500 group-hover:text-cyan-400 group-active:text-cyan-400 group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.8)] group-active:drop-shadow-[0_0_12px_rgba(34,211,238,1)] transition-all duration-500" />
+                <layer.icon className="w-6 h-6 md:w-8 md:h-8 text-zinc-500 group-hover:text-cyan-400 group-active:text-cyan-400 group-hover:drop-shadow-[0_0_8px_rgba(34,211,238,0.8)] group-active:drop-shadow-[0_0_12px_rgba(34,211,238,1)] transition-all duration-500" />
               </div>
               
               <div className="relative z-10 w-full flex flex-col h-full justify-between">
                 <div>
-                  <div className="flex items-center justify-between mb-3 md:mb-4 gap-2 border-b border-zinc-800/50 group-hover:border-fuchsia-500/30 group-active:border-fuchsia-500/50 transition-colors duration-500 pb-2 md:pb-3">
-                    <span className="font-mono text-[9px] md:text-[10px] text-zinc-600 group-hover:text-cyan-400 group-active:text-cyan-400 transition-colors uppercase tracking-[0.2em] flex items-center gap-2 font-bold">
+                  <div className="flex items-center justify-between mb-4 gap-2 border-b border-zinc-800/50 group-hover:border-fuchsia-500/30 group-active:border-fuchsia-500/50 transition-colors duration-500 pb-3">
+                    {/* PERBAIKAN: ID Modul diperbesar */}
+                    <span className="font-mono text-[10px] md:text-xs text-zinc-600 group-hover:text-cyan-400 group-active:text-cyan-400 transition-colors uppercase tracking-[0.2em] flex items-center gap-2 font-bold">
                       <div className="w-1.5 h-1.5 bg-zinc-700 group-hover:bg-cyan-400 group-active:bg-cyan-400 transition-colors"></div>
                       {layer.id}
                     </span>
-                    <span className="font-mono text-[9px] md:text-[10px] text-zinc-600 group-hover:text-fuchsia-400 group-active:text-fuchsia-400 font-bold uppercase tracking-wider transition-colors drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(217,70,239,0.5)] group-active:drop-shadow-[0_0_10px_rgba(217,70,239,0.8)]">
+                    {/* PERBAIKAN: Angka metrik diperbesar */}
+                    <span className="font-mono text-[10px] md:text-xs text-zinc-600 group-hover:text-fuchsia-400 group-active:text-fuchsia-400 font-bold uppercase tracking-wider transition-colors drop-shadow-none group-hover:drop-shadow-[0_0_8px_rgba(217,70,239,0.5)] group-active:drop-shadow-[0_0_10px_rgba(217,70,239,0.8)]">
                       {layer.metric}
                     </span>
                   </div>
-                  <h3 className="font-mono text-sm md:text-base font-bold text-zinc-300 group-hover:text-white group-active:text-white transition-colors tracking-widest uppercase mb-2 md:mb-3 group-hover:drop-shadow-[0_0_5px_rgba(255,255,255,0.3)] group-active:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]">
+                  {/* PERBAIKAN: Judul kartu diperbesar */}
+                  <h3 className="font-mono text-base md:text-xl font-bold text-zinc-300 group-hover:text-white group-active:text-white transition-colors tracking-widest uppercase mb-3 group-hover:drop-shadow-[0_0_5px_rgba(255,255,255,0.3)] group-active:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]">
                     {layer.title}
                   </h3>
-                  <p className="font-space-grotesk text-xs md:text-sm text-zinc-500 group-hover:text-zinc-300 group-active:text-zinc-200 transition-colors leading-relaxed uppercase tracking-wider font-medium">
+                  {/* PERBAIKAN: Deskripsi di dalam kartu diperbesar */}
+                  <p className="font-space-grotesk text-sm md:text-base text-zinc-500 group-hover:text-zinc-300 group-active:text-zinc-200 transition-colors leading-relaxed uppercase tracking-wider font-medium">
                     {layer.description}
                   </p>
                 </div>

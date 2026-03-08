@@ -1,7 +1,7 @@
 import BackgroundVideo from '@/components/ui/BackgroundVideo';
 import HeroSection from '@/components/sections/HeroSection';
 import DiagnosticSection from '@/components/sections/DiagnosticSection';
-import CoreFunctionsSection from '@/components/sections/CoreFunctionsSection';
+import SystemFunctionsSection from '@/components/sections/CoreFunctionsSection';
 import ActiveModulesSection from '@/components/sections/ActiveModulesSection';
 import RIndexSection from '@/components/sections/RIndexSection';
 import AccessControlSection from '@/components/sections/AccessControlSection';
@@ -10,16 +10,19 @@ import FooterSection from '@/components/sections/FooterSection';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <>
       <BackgroundVideo />
-      <HeroSection />
-      <DiagnosticSection />
-      <CoreFunctionsSection />
-      <ActiveModulesSection />
-      <RIndexSection />
-      <AccessControlSection />
-      <RoadmapSection />
-      <FooterSection />
-    </main>
+      {/* PERBAIKAN: Menambahkan w-full dan overflow-x-hidden untuk mencegah kebocoran lebar di mobile */}
+      <main className="flex min-h-screen flex-col items-center justify-start w-full overflow-x-hidden">
+        <HeroSection />
+        <DiagnosticSection />
+        <SystemFunctionsSection />
+        <ActiveModulesSection />
+        <RIndexSection />
+        <AccessControlSection />
+        <RoadmapSection />
+        <FooterSection />
+      </main>
+    </>
   );
 }

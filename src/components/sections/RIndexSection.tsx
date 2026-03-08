@@ -22,17 +22,20 @@ const RIndexSection = () => {
           <div className="absolute bottom-0 -left-[2px] w-[2px] h-4 bg-cyan-400"></div>
 
           <div className="flex items-center gap-3 mb-3 md:mb-4">
-            <div className="w-2 h-2 bg-fuchsia-500 shadow-[0_0_10px_rgba(217,70,239,0.8)] animate-pulse"></div>
-            <span className="font-mono text-[10px] md:text-xs tracking-[0.3em] text-fuchsia-400 uppercase font-bold">
+            <div className="w-2.5 h-2.5 bg-fuchsia-500 shadow-[0_0_10px_rgba(217,70,239,0.8)] animate-pulse"></div>
+            {/* PERBAIKAN: Lencana font diperbesar */}
+            <span className="font-mono text-xs md:text-sm tracking-[0.3em] text-fuchsia-400 uppercase font-bold">
               Identity Protocol
             </span>
           </div>
-          <h2 className="font-montserrat text-3xl sm:text-4xl md:text-5xl font-black text-white uppercase tracking-tighter break-words mb-2 md:mb-4"
+          {/* PERBAIKAN: Judul diperbesar */}
+          <h2 className="font-montserrat text-4xl sm:text-5xl md:text-7xl font-black text-white uppercase tracking-tighter break-words mb-2 md:mb-4"
               style={{ textShadow: '0px 0px 20px rgba(34,211,238,0.4), 0px 4px 15px rgba(217,70,239,0.3)' }}
           >
             R-INDEX
           </h2>
-          <p className="font-mono text-[10px] sm:text-xs md:text-sm text-zinc-300 tracking-[0.1em] uppercase">
+          {/* PERBAIKAN: Deskripsi diperbesar */}
+          <p className="font-mono text-sm md:text-base text-zinc-300 tracking-[0.1em] uppercase">
             Your execution produces a measurable signature.
           </p>
         </motion.div>
@@ -59,7 +62,7 @@ const RIndexSection = () => {
             {/* 2. Inner HUD Container */}
             <div className="relative bg-black overflow-hidden h-full w-full border border-zinc-900/80 z-10">
               
-              {/* Corner HUD Accents (Disesuaikan untuk Mobile) */}
+              {/* Corner HUD Accents */}
               <div className="absolute top-0 left-0 w-4 md:w-8 h-[2px] bg-cyan-400 z-20"></div>
               <div className="absolute top-0 left-0 w-[2px] h-4 md:h-8 bg-cyan-400 z-20"></div>
               <div className="absolute bottom-0 right-0 w-4 md:w-8 h-[2px] bg-fuchsia-500 z-20"></div>
@@ -80,19 +83,19 @@ const RIndexSection = () => {
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent pointer-events-none" />
 
-                {/* PERBAIKAN TOTAL: Posisi mepet sudut (bottom-1.5 left-1.5), padding super tipis (px-1 py-0.5), gap minimum (gap-1) */}
-                <div className="absolute bottom-1.5 left-1.5 md:bottom-6 md:left-6 flex items-center gap-1 bg-black/40 md:bg-black/70 backdrop-blur-sm border border-fuchsia-500/20 px-1 py-0.5 z-20 max-w-[calc(100%-1rem)] md:max-w-none">
+                {/* HUD Label inside video */}
+                <div className="absolute bottom-2 left-2 md:bottom-6 md:left-6 flex items-center gap-1.5 md:gap-3 bg-black/40 md:bg-black/70 backdrop-blur-sm border border-fuchsia-500/20 px-2 py-1 md:px-4 md:py-2 z-20 max-w-[calc(100%-1rem)] md:max-w-none">
                   
-                  {/* Grafik Bar Audio/Sync: Tinggi h-2 yang sangat kecil di mobile */}
-                  <div className="flex gap-0.5 items-end h-2 md:h-3 shrink-0">
-                    <div className="w-0.5 h-1 bg-cyan-400 animate-pulse"></div>
-                    <div className="w-0.5 h-1.5 bg-cyan-400 animate-pulse" style={{ animationDelay: '150ms' }}></div>
-                    <div className="w-0.5 h-2 bg-fuchsia-500 animate-pulse" style={{ animationDelay: '300ms' }}></div>
+                  {/* Grafik Bar Audio/Sync */}
+                  <div className="flex gap-1 items-end h-3 md:h-4 shrink-0">
+                    <div className="w-0.5 md:w-1 h-1.5 md:h-2 bg-cyan-400 animate-pulse"></div>
+                    <div className="w-0.5 md:w-1 h-2 md:h-3 bg-cyan-400 animate-pulse" style={{ animationDelay: '150ms' }}></div>
+                    <div className="w-0.5 md:w-1 h-3 md:h-4 bg-fuchsia-500 animate-pulse" style={{ animationDelay: '300ms' }}></div>
                   </div>
                   
-                  {/* PERBAIKAN TEKS: Ukuran taktistext-[7px] di mobile, leading-none agar rapat vertikal jika melipat */}
-                  <span className="font-mono text-[7px] md:text-xs uppercase tracking-tight md:tracking-[0.2em] text-white/90 font-bold whitespace-normal md:whitespace-nowrap leading-none">
-                    <span className="text-cyan-400">SYNC:</span> ACTIVE <span className="text-fuchsia-500/50 mx-1">|</span> ADAPTIVE RESPONSE
+                  {/* PERBAIKAN: Font di dalam video diperbesar dari text-[7px] menjadi text-[10px] md:text-sm */}
+                  <span className="font-mono text-[10px] md:text-sm uppercase tracking-tight md:tracking-[0.2em] text-white/90 font-bold whitespace-normal md:whitespace-nowrap leading-none">
+                    <span className="text-cyan-400">SYNC:</span> ACTIVE <span className="text-fuchsia-500/50 mx-1 md:mx-2">|</span> ADAPTIVE RESPONSE
                   </span>
                 </div>
 

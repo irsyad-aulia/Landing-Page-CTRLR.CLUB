@@ -46,7 +46,7 @@ const HeroSection = () => {
   return (
     <section id="hero" className="relative min-h-[80dvh] md:min-h-[100dvh] w-full flex flex-col justify-start md:justify-center items-center text-center text-white overflow-x-hidden bg-transparent pt-12 pb-24 md:py-0 px-2 sm:px-4">
       
-      {/* BUNGKUSAN PENGAMAN LASER: Mencegah laser menembus batas bawah dan memicu scrollbar */}
+      {/* BUNGKUSAN PENGAMAN LASER */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-50">
         <motion.div
           className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-cyan-500/10 via-fuchsia-500/20 to-cyan-500/10 blur-[2px]"
@@ -55,16 +55,16 @@ const HeroSection = () => {
         />
       </div>
 
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 1 }} className="absolute top-6 left-4 md:left-6 z-20 hidden md:block font-mono text-[10px] text-cyan-500/60 tracking-[0.3em] uppercase">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1, duration: 1 }} className="absolute top-6 left-4 md:left-6 z-20 hidden md:block font-mono text-xs text-cyan-500/60 tracking-[0.3em] uppercase">
         [SYS.INIT] // v2.5.1
       </motion.div>
       
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 1 }} className="absolute top-6 right-4 md:right-6 z-20 hidden md:block font-mono text-[10px] text-fuchsia-500/60 tracking-[0.3em] uppercase">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.2, duration: 1 }} className="absolute top-6 right-4 md:right-6 z-20 hidden md:block font-mono text-xs text-fuchsia-500/60 tracking-[0.3em] uppercase">
         ID: 0x88F9A
       </motion.div>
 
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4, duration: 1 }} className="absolute bottom-6 left-4 md:left-6 z-20 hidden md:block font-mono text-[10px] text-zinc-500 tracking-[0.2em] uppercase flex items-center">
-        <span className="inline-block w-1.5 h-1.5 bg-fuchsia-500 animate-pulse mr-2 shadow-[0_0_8px_rgba(217,70,239,0.8)]"></span>
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1.4, duration: 1 }} className="absolute bottom-6 left-4 md:left-6 z-20 hidden md:block font-mono text-xs text-zinc-500 tracking-[0.2em] uppercase flex items-center">
+        <span className="inline-block w-2 h-2 bg-fuchsia-500 animate-pulse mr-2 shadow-[0_0_8px_rgba(217,70,239,0.8)]"></span>
         System Active
       </motion.div>
 
@@ -80,26 +80,27 @@ const HeroSection = () => {
 
         <motion.div
           variants={childReveal}
-          className="mb-4 sm:mb-8 flex items-center gap-1.5 sm:gap-3 px-2.5 sm:px-5 py-1.5 sm:py-2 border border-cyan-500/30 bg-black/60 backdrop-blur-md relative z-10 w-auto max-w-[95vw] mx-4 sm:mx-0"
+          className="mb-4 sm:mb-8 flex items-center justify-center gap-1.5 sm:gap-3 px-3 sm:px-6 py-2 border border-cyan-500/30 bg-black/60 backdrop-blur-md relative z-10 w-auto max-w-[90vw] mx-auto text-center"
         >
           <div className="absolute -top-[1px] -left-[1px] w-2 h-[1px] bg-cyan-400"></div>
           <div className="absolute -top-[1px] -left-[1px] w-[1px] h-2 bg-cyan-400"></div>
           <div className="absolute -bottom-[1px] -right-[1px] w-2 h-[1px] bg-fuchsia-500"></div>
           <div className="absolute -bottom-[1px] -right-[1px] w-[1px] h-2 bg-fuchsia-500"></div>
           
-          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 shrink-0 bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,1)] animate-pulse" />
+          <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 shrink-0 bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,1)] animate-pulse hidden min-[375px]:block" />
           <motion.span 
             animate={{ opacity: [1, 0.7, 1, 0.4, 1, 1, 1] }}
             transition={{ duration: 5, repeat: Infinity, times: [0, 0.05, 0.1, 0.15, 0.2, 0.5, 1] }}
-            className="font-mono text-[7px] min-[375px]:text-[8px] sm:text-[10px] md:text-xs text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-400 font-bold tracking-widest sm:tracking-[0.2em] uppercase whitespace-nowrap"
+            className="font-mono text-[9px] sm:text-xs md:text-sm text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-400 font-bold tracking-widest sm:tracking-[0.2em] uppercase leading-tight whitespace-normal"
           >
             ONLINE • LOW LATENCY • LIVE BUILD
           </motion.span>
         </motion.div>
 
+        {/* PERBAIKAN: Kalibrasi Sweet Spot Ukuran & Pemaksaan 1 Baris di Desktop */}
         <motion.h1
           variants={childReveal}
-          className="relative z-10 font-montserrat text-[11.5vw] min-[400px]:text-[12vw] sm:text-7xl md:text-8xl lg:text-[10rem] font-extrabold uppercase tracking-tight leading-[0.9] text-white w-full text-center px-0 mb-2 sm:mb-0 transform sm:transform-none sm:whitespace-nowrap"
+          className="relative z-10 font-montserrat text-[18vw] min-[400px]:text-[20vw] sm:text-[8vw] md:text-[9vw] lg:text-[11rem] font-black uppercase tracking-tighter leading-[0.85] text-white w-full text-center px-0 mb-4 sm:mb-2 transform sm:transform-none sm:whitespace-nowrap"
           style={{
             textShadow: `
               0px -3px 20px rgba(34,211,238,0.5), 
@@ -108,16 +109,16 @@ const HeroSection = () => {
             `
           }}
         >
-          <span className="block sm:inline whitespace-normal">CTRLR</span>
+          <span className="block sm:inline">CTRLR</span>
           <span className="hidden sm:inline"> </span>
-          <span className="block sm:inline whitespace-normal">CLUB</span>
+          <span className="block sm:inline">CLUB</span>
         </motion.h1>
 
         <motion.div
           variants={childReveal}
-          className="mt-6 sm:mt-8 border-l-2 border-fuchsia-500 pl-3 sm:pl-5 text-left w-[calc(100%-2rem)] mx-4 md:w-max max-w-none sm:mx-0 relative z-10 bg-transparent"
+          className="mt-6 sm:mt-10 border-l-[3px] border-fuchsia-500 pl-4 sm:pl-6 text-left w-[calc(100%-2rem)] mx-4 md:w-max max-w-none sm:mx-0 relative z-10 bg-transparent"
         >
-          <p className="font-mono text-[10px] sm:text-sm md:text-lg text-zinc-400 sm:text-zinc-300 uppercase tracking-[0.1em] drop-shadow-none sm:drop-shadow-lg pr-1 sm:pr-0">
+          <p className="font-mono text-xs sm:text-base md:text-xl text-zinc-400 sm:text-zinc-300 uppercase tracking-[0.15em] drop-shadow-none sm:drop-shadow-lg pr-1 sm:pr-0 leading-relaxed">
             Performance architecture for elite controller execution.
           </p>
         </motion.div>
@@ -125,12 +126,12 @@ const HeroSection = () => {
         {/* AREA KONTROL: DUA TOMBOL STATIS */}
         <motion.div
           variants={childReveal}
-          className="mt-10 sm:mt-14 min-h-[120px] flex flex-col items-center justify-start w-full px-4 sm:px-0 relative z-10"
+          className="mt-12 sm:mt-16 min-h-[120px] flex flex-col items-center justify-start w-full px-4 sm:px-0 relative z-10"
         >
-          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full justify-center">
+          <div className="flex flex-col sm:flex-row items-center gap-5 sm:gap-6 w-full justify-center">
             <button
               onClick={scrollToAccess}
-              className="relative group font-mono uppercase text-xs sm:text-sm font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 px-8 py-4 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] tracking-[0.2em] overflow-hidden w-full sm:w-auto"
+              className="relative group font-mono uppercase text-sm sm:text-base font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 px-10 py-5 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] tracking-[0.2em] overflow-hidden w-full sm:w-auto"
             >
               <motion.div
                 className="absolute top-0 bottom-0 w-12 bg-white/30 skew-x-12 blur-[4px]"
@@ -142,7 +143,7 @@ const HeroSection = () => {
 
             <button
               onClick={() => setIsModalOpen(true)}
-              className="relative font-mono uppercase text-xs sm:text-sm font-bold bg-zinc-950/50 text-zinc-400 border border-zinc-700 px-8 py-4 hover:bg-zinc-800 hover:text-white active:text-white transition-all duration-300 tracking-[0.2em] w-full sm:w-auto"
+              className="relative font-mono uppercase text-sm sm:text-base font-bold bg-zinc-950/50 text-zinc-400 border border-zinc-700 px-10 py-5 hover:bg-zinc-800 hover:text-white active:text-white transition-all duration-300 tracking-[0.2em] w-full sm:w-auto"
             >
               ACCESS PROTOCOL
             </button>
@@ -156,7 +157,7 @@ const HeroSection = () => {
         transition={{ delay: 2.5, duration: 1.5, repeat: Infinity, repeatType: "reverse", ease: "easeInOut" }}
         className="absolute bottom-6 sm:bottom-8 z-30"
       >
-        <ChevronDown className="w-8 h-8 text-fuchsia-500/50 drop-shadow-[0_0_8px_rgba(217,70,239,0.5)] cursor-pointer hover:text-cyan-400 transition-colors" onClick={scrollToAccess} />
+        <ChevronDown className="w-10 h-10 text-fuchsia-500/50 drop-shadow-[0_0_8px_rgba(217,70,239,0.5)] cursor-pointer hover:text-cyan-400 transition-colors" onClick={scrollToAccess} />
       </motion.div>
 
       <AnimatePresence>
@@ -186,35 +187,35 @@ const HeroSection = () => {
               <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-fuchsia-500"></div>
               <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-fuchsia-500"></div>
 
-              <div className="flex justify-between items-center border-b border-zinc-800/80 bg-black px-6 py-4">
+              <div className="flex justify-between items-center border-b border-zinc-800/80 bg-black px-6 py-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-fuchsia-500 animate-pulse" />
-                  <h3 className="font-mono text-xs md:text-sm text-cyan-400 tracking-[0.2em] font-bold uppercase">
+                  <div className="w-2.5 h-2.5 bg-fuchsia-500 animate-pulse" />
+                  <h3 className="font-mono text-sm md:text-base text-cyan-400 tracking-[0.2em] font-bold uppercase">
                     CTRLRCLUB // ACCESS PROTOCOL v2.5
                   </h3>
                 </div>
                 <button onClick={() => setIsModalOpen(false)} className="text-zinc-500 hover:text-fuchsia-400 active:text-fuchsia-400 transition-colors">
-                  <X className="w-5 h-5" />
+                  <X className="w-6 h-6" />
                 </button>
               </div>
 
               <div className="p-6 md:p-8 space-y-8 bg-gradient-to-br from-zinc-950 to-black relative">
                 <div className="relative z-10 space-y-6">
                   <div>
-                    <h4 className="font-mono text-[10px] text-fuchsia-400 tracking-widest uppercase mb-2">WHAT THIS IS</h4>
-                    <p className="font-space-grotesk text-sm md:text-base text-zinc-300">CTRLRCLUB is performance architecture for elite controller execution.</p>
+                    <h4 className="font-mono text-xs text-fuchsia-400 tracking-widest uppercase mb-2">WHAT THIS IS</h4>
+                    <p className="font-space-grotesk text-base md:text-lg text-zinc-300">CTRLRCLUB is performance architecture for elite controller execution.</p>
                   </div>
                   <div>
-                    <h4 className="font-mono text-[10px] text-fuchsia-400 tracking-widest uppercase mb-2">WHO IT'S FOR</h4>
-                    <p className="font-space-grotesk text-sm md:text-base text-zinc-300">Competitive players seeking measurable improvement.</p>
+                    <h4 className="font-mono text-xs text-fuchsia-400 tracking-widest uppercase mb-2">WHO IT'S FOR</h4>
+                    <p className="font-space-grotesk text-base md:text-lg text-zinc-300">Competitive players seeking measurable improvement.</p>
                   </div>
                   <div>
-                    <h4 className="font-mono text-[10px] text-fuchsia-400 tracking-widest uppercase mb-2">WHAT IT MEASURES</h4>
-                    <p className="font-space-grotesk text-sm md:text-base text-zinc-300 font-mono tracking-tight text-cyan-100">Reaction stability, timing precision, consistency, R-Index.</p>
+                    <h4 className="font-mono text-xs text-fuchsia-400 tracking-widest uppercase mb-2">WHAT IT MEASURES</h4>
+                    <p className="font-space-grotesk text-base md:text-lg text-zinc-300 font-mono tracking-tight text-cyan-100">Reaction stability, timing precision, consistency, R-Index.</p>
                   </div>
                   <div>
-                    <h4 className="font-mono text-[10px] text-fuchsia-400 tracking-widest uppercase mb-2">HOW IT WORKS</h4>
-                    <p className="font-space-grotesk text-sm md:text-base text-zinc-400 flex flex-wrap items-center gap-2 font-medium">
+                    <h4 className="font-mono text-xs text-fuchsia-400 tracking-widest uppercase mb-2">HOW IT WORKS</h4>
+                    <p className="font-space-grotesk text-base md:text-lg text-zinc-400 flex flex-wrap items-center gap-2 font-medium">
                       <span className="text-cyan-500">Deploy drill</span> 
                       <span className="text-zinc-600">→</span> 
                       <span className="text-cyan-500">Generate data</span> 
@@ -230,7 +231,7 @@ const HeroSection = () => {
               <div className="border-t border-zinc-800/80 bg-black px-6 py-5 flex flex-col sm:flex-row gap-4 justify-between items-center">
                 <button 
                   onClick={() => setIsModalOpen(false)}
-                  className="w-full sm:w-auto font-mono text-xs uppercase tracking-[0.2em] text-zinc-500 hover:text-fuchsia-400 active:text-fuchsia-400 transition-colors"
+                  className="w-full sm:w-auto font-mono text-sm uppercase tracking-[0.2em] text-zinc-500 hover:text-fuchsia-400 active:text-fuchsia-400 transition-colors"
                 >
                   CLOSE PROTOCOL
                 </button>
