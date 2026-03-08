@@ -7,14 +7,12 @@ import { ChevronDown, X } from 'lucide-react';
 const HeroSection = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [showEmailForm, setShowEmailForm] = useState(false); // State baru untuk transisi form
 
   useEffect(() => {
     setIsMounted(true);
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setIsModalOpen(false);
-        setShowEmailForm(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -124,90 +122,31 @@ const HeroSection = () => {
           </p>
         </motion.div>
         
-        {/* PERBAIKAN: AREA KONTROL DINAMIS (TOMBOL -> FORM) */}
+        {/* AREA KONTROL: DUA TOMBOL STATIS */}
         <motion.div
           variants={childReveal}
           className="mt-10 sm:mt-14 min-h-[120px] flex flex-col items-center justify-start w-full px-4 sm:px-0 relative z-10"
         >
-          <AnimatePresence mode="wait">
-            {!showEmailForm ? (
-              // TAMPILAN 1: DUA TOMBOL ASLI
+          <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full justify-center">
+            <button
+              onClick={scrollToAccess}
+              className="relative group font-mono uppercase text-xs sm:text-sm font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 px-8 py-4 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] tracking-[0.2em] overflow-hidden w-full sm:w-auto"
+            >
               <motion.div
-                key="buttons"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full justify-center"
-              >
-                <button
-                  onClick={() => setShowEmailForm(true)}
-                  className="relative group font-mono uppercase text-xs sm:text-sm font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 px-8 py-4 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] tracking-[0.2em] overflow-hidden w-full sm:w-auto"
-                >
-                  <motion.div
-                    className="absolute top-0 bottom-0 w-12 bg-white/30 skew-x-12 blur-[4px]"
-                    animate={{ left: ['-50%', '150%'] }}
-                    transition={{ duration: 2.5, ease: "easeInOut", repeat: Infinity, repeatDelay: 4 }}
-                  />
-                  <span className="relative z-10">ENGAGE TRAINING</span>
-                </button>
+                className="absolute top-0 bottom-0 w-12 bg-white/30 skew-x-12 blur-[4px]"
+                animate={{ left: ['-50%', '150%'] }}
+                transition={{ duration: 2.5, ease: "easeInOut", repeat: Infinity, repeatDelay: 4 }}
+              />
+              <span className="relative z-10">ENGAGE TRAINING</span>
+            </button>
 
-                <button
-                  onClick={() => setIsModalOpen(true)}
-                  className="relative font-mono uppercase text-xs sm:text-sm font-bold bg-zinc-950/50 text-zinc-400 border border-zinc-700 px-8 py-4 hover:bg-zinc-800 hover:text-white active:text-white transition-all duration-300 tracking-[0.2em] w-full sm:w-auto"
-                >
-                  ACCESS PROTOCOL
-                </button>
-              </motion.div>
-            ) : (
-              // TAMPILAN 2: FORM MAILCHIMP
-              <motion.div
-                key="form"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.3 }}
-                className="flex flex-col items-center gap-6 w-full max-w-2xl"
-              >
-                <form 
-                  action="https://club.us5.list-manage.com/subscribe/post?u=b0027597e58976d72ab32ed15&amp;id=ac9be7be9e&amp;f_id=00bfc2e1f0" 
-                  method="POST" 
-                  target="_blank"
-                  className="flex flex-col sm:flex-row w-full relative group"
-                >
-                  <div className="absolute -top-[1px] -left-[1px] w-2 h-[1px] bg-cyan-400 z-20 pointer-events-none"></div>
-                  <div className="absolute -top-[1px] -left-[1px] w-[1px] h-2 bg-cyan-400 z-20 pointer-events-none"></div>
-                  <div className="absolute -bottom-[1px] -right-[1px] w-2 h-[1px] bg-fuchsia-500 z-20 pointer-events-none"></div>
-                  <div className="absolute -bottom-[1px] -right-[1px] w-[1px] h-2 bg-fuchsia-500 z-20 pointer-events-none"></div>
-
-                  <input 
-                    type="email" 
-                    name="EMAIL" 
-                    placeholder="ENTER COMM LINK (EMAIL)" 
-                    required
-                    className="w-full bg-black/50 border border-zinc-600 sm:border-r-0 focus:border-cyan-400 text-white font-mono text-xs sm:text-sm px-6 py-4 outline-none transition-colors backdrop-blur-sm placeholder:text-zinc-600 tracking-widest"
-                  />
-                  <button 
-                    type="submit"
-                    className="relative shrink-0 font-mono uppercase text-xs sm:text-sm font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 mt-2 sm:mt-0 px-8 py-4 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] tracking-[0.2em] overflow-hidden group-hover:border-cyan-400"
-                  >
-                    <span className="relative z-10">STAND BY</span>
-                  </button>
-                </form>
-
-                <div className="flex items-center gap-6 mt-2">
-                  <button 
-                    onClick={() => setShowEmailForm(false)}
-                    className="group relative font-mono uppercase text-[10px] sm:text-xs font-bold text-zinc-500 hover:text-fuchsia-400 transition-colors tracking-[0.2em] flex items-center gap-2"
-                  >
-                    <span className="w-1 h-1 bg-zinc-700 group-hover:bg-fuchsia-500 transition-colors"></span>
-                    ABORT / BACK
-                    <span className="w-1 h-1 bg-zinc-700 group-hover:bg-fuchsia-500 transition-colors"></span>
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="relative font-mono uppercase text-xs sm:text-sm font-bold bg-zinc-950/50 text-zinc-400 border border-zinc-700 px-8 py-4 hover:bg-zinc-800 hover:text-white active:text-white transition-all duration-300 tracking-[0.2em] w-full sm:w-auto"
+            >
+              ACCESS PROTOCOL
+            </button>
+          </div>
         </motion.div>
       </motion.div>
 

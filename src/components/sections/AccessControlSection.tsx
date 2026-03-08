@@ -144,7 +144,7 @@ const AccessControlSection = () => {
             <div className="mt-12 pt-6 border-t border-cyan-900/30 group-hover:border-fuchsia-900/50 transition-colors duration-500 relative z-10">
               <span className="text-[10px] md:text-xs font-mono text-cyan-400 group-hover:text-fuchsia-400 uppercase tracking-[0.2em] flex items-center gap-3 font-bold transition-colors duration-500">
                 <span className="w-2 h-2 bg-cyan-400 group-hover:bg-fuchsia-400 animate-pulse shadow-[0_0_8px_rgba(34,211,238,0.8)] group-hover:shadow-[0_0_8px_rgba(217,70,239,0.8)] transition-colors duration-500"></span>
-                STATUS: READY
+                STATUS: STANDBY
               </span>
             </div>
           </div>

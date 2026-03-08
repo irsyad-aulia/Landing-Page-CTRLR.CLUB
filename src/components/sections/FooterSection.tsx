@@ -1,9 +1,15 @@
 "use client";
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const FooterSection = () => {
+  const [showEmailForm, setShowEmailForm] = useState(false);
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   const motionProps: any = {
     initial: { opacity: 0, y: 20 },
     whileInView: { opacity: 1, y: 0 },
@@ -43,20 +49,86 @@ const FooterSection = () => {
           SYSTEM INITIALIZATION COMPLETE
         </h2>
         
-        <div className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center w-full max-w-lg mb-16 md:mb-20 relative z-10 px-4 sm:px-0">
-          {/* Efek taktil pada tombol Engage Training */}
-          <button className="group relative w-full sm:w-auto font-mono uppercase text-xs sm:text-sm font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 px-8 py-4 md:px-10 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.6)] active:shadow-[0_0_40px_rgba(34,211,238,0.8)] active:scale-95 flex items-center justify-center text-center leading-tight tracking-[0.2em] overflow-hidden">
-            <span className="absolute w-2 h-2 bg-cyan-400 top-0 left-0 group-hover:bg-black group-active:bg-black transition-colors z-10"></span>
-            <span className="absolute w-2 h-2 bg-cyan-400 bottom-0 right-0 group-hover:bg-black group-active:bg-black transition-colors z-10"></span>
-            <span className="relative z-10">ENGAGE TRAINING</span>
-          </button>
-          
-          {/* Efek taktil pada tombol Exit Protocol */}
-          <button className="group relative w-full sm:w-auto font-mono uppercase text-xs sm:text-sm font-bold border border-zinc-700 text-zinc-400 px-8 py-4 md:px-10 hover:border-fuchsia-500 active:border-fuchsia-500 hover:text-fuchsia-400 active:text-fuchsia-400 bg-black/50 active:bg-zinc-900 backdrop-blur-sm transition-all duration-300 active:scale-95 flex items-center justify-center text-center leading-tight tracking-[0.2em] shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(217,70,239,0.2)] active:shadow-[0_0_30px_rgba(217,70,239,0.4)]">
-            <span className="absolute w-1.5 h-1.5 bg-zinc-700 top-0 left-0 group-hover:bg-fuchsia-500 group-active:bg-fuchsia-500 transition-colors"></span>
-            <span className="absolute w-1.5 h-1.5 bg-zinc-700 bottom-0 right-0 group-hover:bg-fuchsia-500 group-active:bg-fuchsia-500 transition-colors"></span>
-            EXIT PROTOCOL
-          </button>
+        {/* AREA KONTROL DINAMIS: TOMBOL & FORMULIR MAILCHIMP */}
+        <div className="flex flex-col items-center justify-start w-full max-w-2xl mb-16 md:mb-20 min-h-[120px] relative z-10 px-4 sm:px-0">
+          <AnimatePresence mode="wait">
+            {!showEmailForm ? (
+              <motion.div
+                key="buttons"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col sm:flex-row gap-4 md:gap-6 justify-center items-center w-full"
+              >
+                {/* Tombol Request Access (Membuka Form) */}
+                <button 
+                  onClick={() => setShowEmailForm(true)} 
+                  className="group relative w-full sm:w-auto font-mono uppercase text-xs sm:text-sm font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 px-8 py-4 md:px-10 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.6)] active:shadow-[0_0_40px_rgba(34,211,238,0.8)] active:scale-95 flex items-center justify-center text-center leading-tight tracking-[0.2em] overflow-hidden"
+                >
+                  <span className="absolute w-2 h-2 bg-cyan-400 top-0 left-0 group-hover:bg-black group-active:bg-black transition-colors z-10"></span>
+                  <span className="absolute w-2 h-2 bg-cyan-400 bottom-0 right-0 group-hover:bg-black group-active:bg-black transition-colors z-10"></span>
+                  <span className="relative z-10">REQUEST ACCESS</span>
+                </button>
+                
+                {/* Tombol Exit Protocol (Scroll ke Atas) */}
+                <button 
+                  onClick={scrollToTop} 
+                  className="group relative w-full sm:w-auto font-mono uppercase text-xs sm:text-sm font-bold border border-zinc-700 text-zinc-400 px-8 py-4 md:px-10 hover:border-fuchsia-500 active:border-fuchsia-500 hover:text-fuchsia-400 active:text-fuchsia-400 bg-black/50 active:bg-zinc-900 backdrop-blur-sm transition-all duration-300 active:scale-95 flex items-center justify-center text-center leading-tight tracking-[0.2em] shadow-[0_0_15px_rgba(0,0,0,0.5)] hover:shadow-[0_0_20px_rgba(217,70,239,0.2)] active:shadow-[0_0_30px_rgba(217,70,239,0.4)]"
+                >
+                  <span className="absolute w-1.5 h-1.5 bg-zinc-700 top-0 left-0 group-hover:bg-fuchsia-500 group-active:bg-fuchsia-500 transition-colors"></span>
+                  <span className="absolute w-1.5 h-1.5 bg-zinc-700 bottom-0 right-0 group-hover:bg-fuchsia-500 group-active:bg-fuchsia-500 transition-colors"></span>
+                  EXIT PROTOCOL
+                </button>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="form"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+                className="flex flex-col items-center gap-6 w-full max-w-2xl"
+              >
+                <form 
+                  action="https://club.us5.list-manage.com/subscribe/post?u=b0027597e58976d72ab32ed15&amp;id=ac9be7be9e&amp;f_id=00bfc2e1f0" 
+                  method="POST" 
+                  target="_blank"
+                  className="flex flex-col sm:flex-row w-full relative group"
+                >
+                  <div className="absolute -top-[1px] -left-[1px] w-2 h-[1px] bg-cyan-400 z-20 pointer-events-none"></div>
+                  <div className="absolute -top-[1px] -left-[1px] w-[1px] h-2 bg-cyan-400 z-20 pointer-events-none"></div>
+                  <div className="absolute -bottom-[1px] -right-[1px] w-2 h-[1px] bg-fuchsia-500 z-20 pointer-events-none"></div>
+                  <div className="absolute -bottom-[1px] -right-[1px] w-[1px] h-2 bg-fuchsia-500 z-20 pointer-events-none"></div>
+
+                  <input 
+                    type="email" 
+                    name="EMAIL" 
+                    placeholder="ENTER COMM LINK (EMAIL)" 
+                    required
+                    className="w-full bg-black/50 border border-zinc-600 sm:border-r-0 focus:border-cyan-400 text-white font-mono text-xs sm:text-sm px-6 py-4 outline-none transition-colors backdrop-blur-sm placeholder:text-zinc-600 tracking-widest"
+                  />
+                  <button 
+                    type="submit"
+                    className="relative shrink-0 font-mono uppercase text-xs sm:text-sm font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 mt-2 sm:mt-0 px-8 py-4 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] tracking-[0.2em] overflow-hidden group-hover:border-cyan-400"
+                  >
+                    <span className="relative z-10">STAND BY</span>
+                  </button>
+                </form>
+
+                <div className="flex items-center gap-6 mt-2">
+                  <button 
+                    onClick={() => setShowEmailForm(false)}
+                    className="group relative font-mono uppercase text-[10px] sm:text-xs font-bold text-zinc-500 hover:text-fuchsia-400 transition-colors tracking-[0.2em] flex items-center gap-2"
+                  >
+                    <span className="w-1 h-1 bg-zinc-700 group-hover:bg-fuchsia-500 transition-colors"></span>
+                    ABORT / BACK
+                    <span className="w-1 h-1 bg-zinc-700 group-hover:bg-fuchsia-500 transition-colors"></span>
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
         
         <div className="w-full max-w-3xl mx-auto mb-10 md:mb-12 px-2">
