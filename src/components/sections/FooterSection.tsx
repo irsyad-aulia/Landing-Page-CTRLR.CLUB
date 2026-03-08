@@ -102,7 +102,6 @@ const FooterSection = () => {
                   <div className="absolute -bottom-[1px] -right-[1px] w-2 h-[1px] bg-fuchsia-500 z-20 pointer-events-none"></div>
                   <div className="absolute -bottom-[1px] -right-[1px] w-[1px] h-2 bg-fuchsia-500 z-20 pointer-events-none"></div>
 
-                  {/* PERBAIKAN: Input field font diperbesar */}
                   <input 
                     type="email" 
                     name="EMAIL" 
@@ -110,12 +109,12 @@ const FooterSection = () => {
                     required
                     className="w-full bg-black/50 border border-zinc-600 sm:border-r-0 focus:border-cyan-400 text-white font-mono text-sm md:text-base px-6 py-5 outline-none transition-colors backdrop-blur-sm placeholder:text-zinc-500 tracking-widest"
                   />
-                  {/* PERBAIKAN: Tombol submit font diperbesar */}
+                  {/* PERBAIKAN: Tombol submit diubah menjadi "TRANSMIT" */}
                   <button 
                     type="submit"
                     className="relative shrink-0 font-mono uppercase text-sm md:text-base font-bold bg-cyan-500/10 text-cyan-400 border border-cyan-400 mt-2 sm:mt-0 px-10 py-5 hover:bg-cyan-400 active:bg-cyan-400 hover:text-black active:text-black transition-all duration-300 shadow-[0_0_15px_rgba(34,211,238,0.2)] hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] tracking-[0.2em] overflow-hidden group-hover:border-cyan-400"
                   >
-                    <span className="relative z-10">STAND BY</span>
+                    <span className="relative z-10">TRANSMIT</span>
                   </button>
                 </form>
 
@@ -137,7 +136,6 @@ const FooterSection = () => {
         <div className="w-full max-w-3xl mx-auto mb-10 md:mb-12 px-2">
           <div className="flex items-center gap-3 md:gap-4 justify-center mb-6 md:mb-8 opacity-80">
             <div className="w-8 md:w-12 h-[1px] bg-gradient-to-r from-transparent to-cyan-500/50"></div>
-            {/* PERBAIKAN: Font "Comms Network" diperbesar */}
             <span className="font-mono text-xs md:text-sm text-cyan-500 tracking-[0.3em] md:tracking-[0.4em] uppercase font-bold drop-shadow-[0_0_5px_rgba(34,211,238,0.5)]">Comms Network</span>
             <div className="w-8 md:w-12 h-[1px] bg-gradient-to-l from-transparent to-fuchsia-500/50"></div>
           </div>
@@ -171,7 +169,6 @@ const FooterSection = () => {
         
         <div className="border border-zinc-900 bg-black/50 px-5 md:px-8 py-3 md:py-4 inline-block relative overflow-hidden group">
           <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-cyan-500 via-fuchsia-500 to-cyan-500 opacity-20 group-hover:opacity-100 transition-opacity duration-500"></div>
-          {/* PERBAIKAN: Font motto diperbesar */}
           <p className="font-mono text-zinc-500 text-xs md:text-sm tracking-[0.2em] md:tracking-[0.3em] uppercase group-hover:text-white transition-colors duration-500">
             Calm. Controlled. Dominant.
           </p>
@@ -182,7 +179,6 @@ const FooterSection = () => {
         {...motionProps}
         className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center font-mono text-zinc-600 border-t border-zinc-900/80 pt-6 md:pt-8 gap-4 md:gap-0"
       >
-        {/* PERBAIKAN: Font copyright diperbesar */}
         <p className="text-[10px] md:text-xs uppercase tracking-widest hover:text-cyan-500 transition-colors text-center md:text-left">
           &copy; {new Date().getFullYear()} CTRLRCLUB. ALL RIGHTS RESERVED.
         </p>
