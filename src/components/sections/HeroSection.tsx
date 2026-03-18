@@ -145,7 +145,7 @@ const HeroSection = () => {
               onClick={() => setIsModalOpen(true)}
               className="relative font-mono uppercase text-sm sm:text-base font-bold bg-zinc-950/50 text-zinc-400 border border-zinc-700 px-10 py-5 hover:bg-zinc-800 hover:text-white active:text-white transition-all duration-300 tracking-[0.2em] w-full sm:w-auto"
             >
-              ACCESS PROTOCOL
+              INITIALIZE TRAINING
             </button>
           </div>
         </motion.div>
@@ -191,7 +191,7 @@ const HeroSection = () => {
                 <div className="flex items-center gap-3">
                   <div className="w-2.5 h-2.5 bg-fuchsia-500 animate-pulse" />
                   <h3 className="font-mono text-sm md:text-base text-cyan-400 tracking-[0.2em] font-bold uppercase">
-                    CTRLRCLUB // ACCESS PROTOCOL v2.5
+                    CTRLRCLUB // TRAINING INITIALIZATION v2.5
                   </h3>
                 </div>
                 <button onClick={() => setIsModalOpen(false)} className="text-zinc-500 hover:text-fuchsia-400 active:text-fuchsia-400 transition-colors">
@@ -233,7 +233,7 @@ const HeroSection = () => {
                   onClick={() => setIsModalOpen(false)}
                   className="w-full sm:w-auto font-mono text-sm uppercase tracking-[0.2em] text-zinc-500 hover:text-fuchsia-400 active:text-fuchsia-400 transition-colors"
                 >
-                  CLOSE PROTOCOL
+                  CLOSE INITIALIZATION
                 </button>
               </div>
             </motion.div>
