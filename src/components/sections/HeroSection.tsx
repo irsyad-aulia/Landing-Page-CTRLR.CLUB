@@ -97,10 +97,10 @@ const HeroSection = () => {
           </motion.span>
         </motion.div>
 
-        {/* PERBAIKAN: Kalibrasi Sweet Spot Ukuran & Pemaksaan 1 Baris di Desktop */}
+        {/* JUDUL UTAMA */}
         <motion.h1
           variants={childReveal}
-          className="relative z-10 font-montserrat text-[18vw] min-[400px]:text-[20vw] sm:text-[8vw] md:text-[9vw] lg:text-[11rem] font-black uppercase tracking-tighter leading-[0.85] text-white w-full text-center px-0 mb-4 sm:mb-2 transform sm:transform-none sm:whitespace-nowrap"
+          className="relative z-10 font-montserrat text-[18vw] min-[400px]:text-[20vw] sm:text-[8vw] md:text-[9vw] lg:text-[11rem] font-black uppercase tracking-tighter leading-[0.85] text-white w-full text-center px-0 transform sm:transform-none sm:whitespace-nowrap"
           style={{
             textShadow: `
               0px -3px 20px rgba(34,211,238,0.5), 
@@ -113,6 +113,18 @@ const HeroSection = () => {
           <span className="hidden sm:inline"> </span>
           <span className="block sm:inline">CLUB</span>
         </motion.h1>
+
+{/* NEW & IMPROVED V5.0: MICRO-POSITIONING (GAME. LEVEL. BOSS.) */}
+        <motion.div
+          variants={childReveal}
+          // Perhatikan penambahan mt-8 dan translate-x-3 di bawah ini
+          className="relative z-10 font-mono text-base min-[400px]:text-lg sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white opacity-100 tracking-wider uppercase w-full text-center mt-8 mb-12 translate-x-3"
+          style={{
+            textShadow: '0px 2px 10px rgba(255,255,255,0.3)'
+          }}
+        >
+          Game. Level. Boss.
+        </motion.div>
 
         <motion.div
           variants={childReveal}
