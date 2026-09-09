@@ -112,11 +112,40 @@ export default function Home() {
     const images: HTMLImageElement[] = [];
     const sequence = { frame: 0 };
 
-    for (let i = 1; i <= frameCount; i++) {
-      const img = new Image();
-      img.src = currentFrame(i);
-      images.push(img);
-    }
+    // 1. Inisialisasi HANYA Frame Pertama
+    const firstImage = new Image();
+    firstImage.src = currentFrame(1);
+    images.push(firstImage);
+
+    // 2. Tunggu Frame Pertama Selesai Diunduh
+    firstImage.onload = () => {
+      // Eksekusi render kanvas awal
+      render();
+
+      // Pemicu UI: Munculkan teks hanya SETELAH gambar latar belakang siap
+      setIsReady(true);
+      requestAnimationFrame(() => {
+        if (typeof ScrollTrigger !== 'undefined') {
+          ScrollTrigger.refresh();
+        }
+      });
+
+      // 3. Muat Sisa 1199 Frame Secara Asinkron di Latar Belakang (Non-Blocking)
+      // Menggunakan requestIdleCallback agar tidak mengganggu performa guliran pengguna
+      const loadRestOfFrames = () => {
+        for (let i = 2; i <= frameCount; i++) {
+          const img = new Image();
+          img.src = currentFrame(i);
+          images.push(img);
+        }
+      };
+
+      if ('requestIdleCallback' in window) {
+        requestIdleCallback(loadRestOfFrames);
+      } else {
+        setTimeout(loadRestOfFrames, 100);
+      }
+    };
 
     const getLifecycleStyle = (frame: number, entryStart: number, exitStart: number) => {
       const entryDuration = 8;
