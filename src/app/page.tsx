@@ -83,15 +83,6 @@ export default function Home() {
   const hud2_4Ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsReady(true);
-      requestAnimationFrame(() => {
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.refresh();
-        }
-      });
-    }, 300);
-
     const canvas = canvasRef.current;
     if (!canvas) return;
     const context = canvas.getContext('2d');
@@ -108,21 +99,23 @@ export default function Home() {
     window.addEventListener('resize', updateCanvasSize);
 
     const frameCount = 1200;
-    const currentFrame = (index: number) => `/assets/sequence/Frame (${index}).jpg`;
-    const images: HTMLImageElement[] = [];
+    // Kalibrasi Ekstensi: Menargetkan format WebP yang sudah Anda siapkan
+    const currentFrame = (index: number) => `/assets/sequence/Frame (${index}).webp`;
+
+    // Alokasikan memori kosong tanpa memblokir thread
+    const images: HTMLImageElement[] = new Array(frameCount);
     const sequence = { frame: 0 };
 
-    // 1. Inisialisasi HANYA Frame Pertama
-    const firstImage = new Image();
-    firstImage.src = currentFrame(1);
-    images.push(firstImage);
+    // ==========================================
+    // OPTIMASI PERFORMA: LAZY LOAD CHUNKING
+    // ==========================================
+    const firstImg = new Image();
+    firstImg.src = currentFrame(1);
+    firstImg.onload = () => {
+      images[0] = firstImg;
+      render(); // Paksa render frame 1 secepatnya
 
-    // 2. Tunggu Frame Pertama Selesai Diunduh
-    firstImage.onload = () => {
-      // Eksekusi render kanvas awal
-      render();
-
-      // Pemicu UI: Munculkan teks hanya SETELAH gambar latar belakang siap
+      // Sinkronisasi FCP: Munculkan UI HANYA saat background sudah terlukis
       setIsReady(true);
       requestAnimationFrame(() => {
         if (typeof ScrollTrigger !== 'undefined') {
@@ -130,21 +123,30 @@ export default function Home() {
         }
       });
 
-      // 3. Muat Sisa 1199 Frame Secara Asinkron di Latar Belakang (Non-Blocking)
-      // Menggunakan requestIdleCallback agar tidak mengganggu performa guliran pengguna
-      const loadRestOfFrames = () => {
-        for (let i = 2; i <= frameCount; i++) {
+      // Jalankan unduhan sisa frame di belakang layar
+      loadRestInChunks();
+    };
+
+    const loadRestInChunks = () => {
+      let currentIndex = 1;
+      const chunkSize = 25; // 25 gambar per batch untuk mencegah lock CPU
+
+      const loadNext = () => {
+        if (currentIndex >= frameCount) return;
+        const end = Math.min(currentIndex + chunkSize, frameCount);
+
+        for (let i = currentIndex; i < end; i++) {
           const img = new Image();
-          img.src = currentFrame(i);
-          images.push(img);
+          img.src = currentFrame(i + 1);
+          images[i] = img;
         }
+
+        currentIndex = end;
+        // Jeda 50ms untuk memberi ruang Main Thread bernapas
+        setTimeout(loadNext, 50);
       };
 
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(loadRestOfFrames);
-      } else {
-        setTimeout(loadRestOfFrames, 100);
-      }
+      loadNext();
     };
 
     const getLifecycleStyle = (frame: number, entryStart: number, exitStart: number) => {
@@ -180,20 +182,18 @@ export default function Home() {
 
     const render = () => {
       const frameIndex = Math.round(sequence.frame);
-      if (!images[frameIndex]) return;
       const img = images[frameIndex];
 
-      if (img.complete) {
-        const hRatio = canvas.width / img.width;
-        const vRatio = canvas.height / img.height;
-        const ratio = Math.max(hRatio, vRatio);
-        const centerShift_x = (canvas.width - img.width * ratio) / 2;
-        const centerShift_y = (canvas.height - img.height * ratio) / 2;
-        context.clearRect(0, 0, canvas.width, canvas.height);
-        context.drawImage(img, 0, 0, img.width, img.height, centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
-      } else {
-        img.onload = render;
-      }
+      // Proteksi Dinamis: Jika user scroll cepat dan gambar belum termuat, tahan layar di frame terakhir yang ada
+      if (!img || !img.complete) return;
+
+      const hRatio = canvas.width / img.width;
+      const vRatio = canvas.height / img.height;
+      const ratio = Math.max(hRatio, vRatio);
+      const centerShift_x = (canvas.width - img.width * ratio) / 2;
+      const centerShift_y = (canvas.height - img.height * ratio) / 2;
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.drawImage(img, 0, 0, img.width, img.height, centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
 
       // Render Phase 3 HUD Groups
       if (frameIndex >= 341 && frameIndex <= 375) {
@@ -235,8 +235,6 @@ export default function Home() {
         if (hudGroup2Ref.current) hudGroup2Ref.current.style.opacity = "0";
       }
     };
-
-    images[0].onload = render;
 
     // Timeline Masuk Fase 1
     const entryTl = gsap.timeline({ delay: 0.2 });
@@ -319,7 +317,6 @@ export default function Home() {
 
     return () => {
       window.removeEventListener('resize', updateCanvasSize);
-      clearTimeout(timer);
       st.kill();
       tl.kill();
       ScrollTrigger.getAll().forEach(t => t.kill());
@@ -429,54 +426,38 @@ export default function Home() {
         {/* KELOMPOK 1: The Core Reboot */}
         <div ref={hudGroup1Ref} className="absolute inset-0 w-full h-full opacity-0">
 
-          {/* 1. Tengah Atas - Posisi desktop (lg) dinaikkan ekstrem ke top-[8%] dan ukuran font didongkrak ke text-5xl/6xl */}
           <div ref={hud1_1Ref} className="absolute top-[10%] md:top-[12%] lg:top-[8%] left-1/2 -translate-x-1/2 font-mono text-lg sm:text-xl md:text-2xl lg:text-4xl xl:text-5xl font-bold tracking-[0.2em] lg:tracking-[0.3em] text-white whitespace-nowrap opacity-0 animate-hud-pulse" style={{ textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(34,211,238,0.8)' }}>
             <span>[ SYSTEM OVERRIDE ]</span>
           </div>
 
-          {/* 2. Sisi Kanan Atas (SYNC) */}
           <div ref={hud1_2Ref} className="absolute top-[30%] md:top-[33%] lg:top-[30%] left-[62%] md:left-[62%] lg:left-[60%] font-mono text-[9px] sm:text-[10px] md:text-xs lg:text-lg font-medium text-fuchsia-400 whitespace-nowrap opacity-0 animate-hud-pulse" style={{ textShadow: '0 0 8px rgba(217,70,239,0.8)' }}>
             <span>&gt;</span> <span className="ml-1">SYNC</span> <span className="ml-1">CASCADE:</span> <span className="ml-1">INITIATED</span>
           </div>
 
-          {/* 3. Sisi Kiri Tengah (CORRUPTION) - Desktop didorong keluar ke lg:right-[63%] */}
           <div ref={hud1_3Ref} className="absolute top-[43%] md:top-[46%] lg:top-[45%] right-[65%] md:right-[65%] lg:right-[63%] font-mono text-[9px] sm:text-[10px] md:text-xs lg:text-lg font-medium text-cyan-400 whitespace-nowrap opacity-0 animate-hud-pulse" style={{ textShadow: '0 0 8px rgba(34,211,238,0.8)' }}>
             <span>&gt;</span> <span className="ml-1">CORRUPTION:</span> <span className="ml-1">PURGED</span>
           </div>
 
-          {/* 4. Sisi Kanan Bawah (DIAMOND) */}
           <div ref={hud1_4Ref} className="absolute top-[60%] md:top-[62%] lg:top-[60%] left-[62%] md:left-[62%] lg:left-[60%] font-mono text-[9px] sm:text-[10px] md:text-xs lg:text-lg font-bold text-white whitespace-nowrap opacity-0 animate-hud-pulse" style={{ textShadow: '0 0 8px rgba(255,255,255,0.8), 0 0 15px rgba(34,211,238,0.8)' }}>
             <span>&gt;</span> <span className="ml-1">DIAMOND</span> <span className="ml-1">CORE:</span> <span className="ml-1">RESTORED</span>
           </div>
 
         </div>
 
-
         {/* KELOMPOK 2: Tunnel Transition */}
-        {/* Kalibrasi: Skala font dinaikkan (text-xl sm:text-2xl md:text-3xl) agar lebih tegas di mobile, jarak antar kata disesuaikan proporsional */}
         <div ref={hudGroup2Ref} className="absolute top-[8%] md:top-[12%] lg:top-[15%] left-1/2 -translate-x-1/2 flex flex-row justify-center items-center gap-x-2 md:gap-x-3 lg:gap-x-5 w-full px-4 text-center text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl tracking-wide opacity-0 animate-ghost-float whitespace-nowrap">
-
-          <span ref={hud2_1Ref} className={`text-white opacity-0 font-bold ${rajdhani.className}`}
-            style={{ textShadow: '0 4px 15px rgba(15,23,42,0.8), 0 10px 30px rgba(88,28,135,0.5), 0 0 15px rgba(255,255,255,0.9)' }}>
+          <span ref={hud2_1Ref} className={`text-white opacity-0 font-bold ${rajdhani.className}`} style={{ textShadow: '0 4px 15px rgba(15,23,42,0.8), 0 10px 30px rgba(88,28,135,0.5), 0 0 15px rgba(255,255,255,0.9)' }}>
             SYSTEM
           </span>
-
-          {/* Margin-right disesuaikan dengan skala font baru */}
-          <span ref={hud2_2Ref} className={`text-white opacity-0 mr-1.5 md:mr-4 lg:mr-6 font-bold ${rajdhani.className}`}
-            style={{ textShadow: '0 4px 15px rgba(15,23,42,0.8), 0 10px 30px rgba(88,28,135,0.5), 0 0 15px rgba(255,255,255,0.9)' }}>
+          <span ref={hud2_2Ref} className={`text-white opacity-0 mr-1.5 md:mr-4 lg:mr-6 font-bold ${rajdhani.className}`} style={{ textShadow: '0 4px 15px rgba(15,23,42,0.8), 0 10px 30px rgba(88,28,135,0.5), 0 0 15px rgba(255,255,255,0.9)' }}>
             STABLE.
           </span>
-
-          <span ref={hud2_3Ref} className={`text-cyan-400 opacity-0 font-bold ${rajdhani.className}`}
-            style={{ textShadow: '0 4px 15px rgba(8,51,68,0.8), 0 10px 30px rgba(6,182,212,0.3), 0 0 15px rgba(34,211,238,0.9)' }}>
+          <span ref={hud2_3Ref} className={`text-cyan-400 opacity-0 font-bold ${rajdhani.className}`} style={{ textShadow: '0 4px 15px rgba(8,51,68,0.8), 0 10px 30px rgba(6,182,212,0.3), 0 0 15px rgba(34,211,238,0.9)' }}>
             WELCOME,
           </span>
-
-          <span ref={hud2_4Ref} className={`text-fuchsia-400 opacity-0 font-bold ${rajdhani.className}`}
-            style={{ textShadow: '0 4px 15px rgba(74,4,78,0.8), 0 10px 30px rgba(192,38,211,0.3), 0 0 15px rgba(217,70,239,0.9)' }}>
+          <span ref={hud2_4Ref} className={`text-fuchsia-400 opacity-0 font-bold ${rajdhani.className}`} style={{ textShadow: '0 4px 15px rgba(74,4,78,0.8), 0 10px 30px rgba(192,38,211,0.3), 0 0 15px rgba(217,70,239,0.9)' }}>
             OPERATOR.
           </span>
-
         </div>
       </div>
 
@@ -488,13 +469,7 @@ export default function Home() {
         {/* FASE 1: THE INITIATION (Diperbarui untuk Mobile) */}
         <div ref={phase1Ref} className="fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-center pointer-events-none px-4" style={{ perspective: '1200px' }}>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.7)_0%,transparent_70%)] -z-10"></div>
-
           <div className="max-w-6xl mx-auto flex flex-col items-center justify-center w-full px-2">
-            {/* 
-              Kalibrasi Ulang Ukuran Judul:
-              - Skala dasar & md dinaikkan ke text-3xl dan md:text-4xl (Hierarki utama kembali kuat)
-              - Jarak bawah (mb) sedikit diperlebar agar tidak menabrak badge
-            */}
             <h1 ref={titleRef}
               className={`text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl text-white text-center uppercase mb-4 md:mb-6 lg:mb-10 relative z-10 leading-tight lg:leading-relaxed tracking-[0.1em] lg:tracking-[0.15em] opacity-0 ${corruptedFont.className}`}
               style={{ textShadow: `0 0 5px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.3), 0 5px 20px rgba(0,0,0,0.9)` }}>
@@ -505,19 +480,12 @@ export default function Home() {
           </div>
 
           <div ref={badgeRef} className="relative mt-0 lg:mt-2 opacity-0">
-            {/* Sudut Partikel Badge */}
             <div className="ui-particle absolute -top-[2px] -left-[2px] w-4 h-[2px] bg-cyan-400 z-20"></div>
             <div className="ui-particle absolute -top-[2px] -left-[2px] w-[2px] h-4 bg-cyan-400 z-20"></div>
             <div className="ui-particle absolute -bottom-[2px] -right-[2px] w-4 h-[2px] bg-fuchsia-500 z-20"></div>
             <div className="ui-particle absolute -bottom-[2px] -right-[2px] w-[2px] h-4 bg-fuchsia-500 z-20"></div>
             <div className="ui-particle absolute top-1/2 -left-[6px] w-[6px] h-[1px] bg-cyan-400/50 z-20"></div>
             <div className="ui-particle absolute top-1/3 -right-[6px] w-[6px] h-[1px] bg-fuchsia-500/50 z-20"></div>
-
-            {/* 
-              Kalibrasi Badge:
-              - Padding dikurangi ekstrem untuk mobile (px-3 py-1.5)
-              - Ukuran teks dipaksa sangat kecil di mobile (text-[10px] & md:text-xs)
-            */}
             <div className="ui-particle flex items-center gap-2 lg:gap-4 bg-black/40 px-3 py-1.5 md:px-4 md:py-2 lg:px-6 lg:py-3 relative z-10 border border-zinc-800/80 backdrop-blur-md shadow-[0_4px_20px_rgba(0,0,0,0.8)]">
               <span className="w-1.5 h-1.5 md:w-2 md:h-2 lg:w-2.5 lg:h-2.5 bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]"></span>
               <p className={`text-cyan-400 text-[10px] md:text-xs lg:text-base tracking-[0.1em] lg:tracking-[0.2em] uppercase ${corruptedFont.className}`} style={{ textShadow: 'none' }}>
@@ -529,8 +497,6 @@ export default function Home() {
 
         {/* FASE 2: THE TEARDOWN */}
         <div ref={phase2Ref} className="fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-center pointer-events-none px-2 md:px-12 lg:px-24 opacity-0">
-
-          {/* Judul Utama Atas */}
           <div className="absolute top-[6%] md:top-[14%] flex flex-col items-center w-full px-4">
             <h2 ref={phase2TitleRef}
               className="animate-core-breathe text-xl sm:text-2xl md:text-4xl lg:text-5xl xl:text-[3.5rem] text-white font-extrabold italic uppercase tracking-tight flex flex-wrap justify-center gap-x-2 md:gap-x-5 gap-y-1 leading-none text-center"
@@ -546,37 +512,26 @@ export default function Home() {
               0%, 100% { opacity: 0.4; }
               50% { opacity: 1; filter: brightness(1.5); }
             }
-            .animate-circuit {
-              animation: circuit-pulse 2s ease-in-out infinite;
-            }
+            .animate-circuit { animation: circuit-pulse 2s ease-in-out infinite; }
           `}</style>
 
-          {/* Panel Kiri (Posisi Y dinaikkan ke top-[47%] untuk Mobile Landscape) */}
           <div className="absolute left-[2%] md:left-[5%] lg:left-[14%] xl:left-[16%] top-[47%] lg:top-[50%] -translate-y-1/2 w-[42%] sm:w-[35%] lg:max-w-[300px] flex flex-col justify-center border-l-[2px] lg:border-l-[3px] border-cyan-400/50 pl-2 md:pl-3 lg:pl-5 text-left">
             <div className="absolute top-0 -left-[1px] lg:-left-[2px] w-2 lg:w-4 h-[2px] bg-cyan-400 shadow-[0_0_8px_#22d3ee] animate-circuit"></div>
             <div className="absolute bottom-0 -left-[1px] lg:-left-[2px] w-2 lg:w-4 h-[2px] bg-cyan-400 shadow-[0_0_8px_#22d3ee] animate-circuit" style={{ animationDelay: '1s' }}></div>
             <p className="text-zinc-100 text-[9px] sm:text-[10px] md:text-xs lg:text-base xl:text-lg leading-[1.4] lg:leading-snug font-sans font-medium tracking-tight lg:tracking-normal"
               style={{ textShadow: '0 2px 5px rgba(0,0,0,1), 0 0 15px rgba(0,0,0,1), 0 0 30px rgba(0,0,0,0.9)' }}>
-              {renderTerminalText(
-                "Your controller is the command device. Every run is an Operation inside a corrupted neon hex grid.",
-                "term-word-cyan"
-              )}
+              {renderTerminalText("Your controller is the command device. Every run is an Operation inside a corrupted neon hex grid.", "term-word-cyan")}
             </p>
           </div>
 
-          {/* Panel Kanan (Posisi Y dinaikkan ke top-[47%] untuk Mobile Landscape) */}
           <div className="absolute right-[2%] md:right-[5%] lg:right-[14%] xl:right-[16%] top-[47%] lg:top-[50%] -translate-y-1/2 w-[42%] sm:w-[35%] lg:max-w-[300px] flex flex-col justify-center border-r-[2px] lg:border-r-[3px] border-fuchsia-500/50 pr-2 md:pr-3 lg:pr-5 text-right">
             <div className="absolute top-0 -right-[1px] lg:-right-[2px] w-2 lg:w-4 h-[2px] bg-fuchsia-500 shadow-[0_0_8px_#d946ef] animate-circuit"></div>
             <div className="absolute bottom-0 -right-[1px] lg:-right-[2px] w-2 lg:w-4 h-[2px] bg-fuchsia-500 shadow-[0_0_8px_#d946ef] animate-circuit" style={{ animationDelay: '1s' }}></div>
             <p className="text-zinc-100 text-[9px] sm:text-[10px] md:text-xs lg:text-base xl:text-lg leading-[1.4] lg:leading-snug font-sans font-medium tracking-tight lg:tracking-normal"
               style={{ textShadow: '0 2px 5px rgba(0,0,0,1), 0 0 15px rgba(0,0,0,1), 0 0 30px rgba(0,0,0,1)' }}>
-              {renderTerminalText(
-                "Your job is simple: command the board, route clean energy, purge virus tiles, and restore the Diamond Core before instability takes over.",
-                "term-word-magenta"
-              )}
+              {renderTerminalText("Your job is simple: command the board, route clean energy, purge virus tiles, and restore the Diamond Core before instability takes over.", "term-word-magenta")}
             </p>
           </div>
-
         </div>
 
         {/* FASE 4 (Kosong) */}
@@ -584,28 +539,19 @@ export default function Home() {
 
         {/* FASE 5: THE FINAL HOOK & CTA */}
         <div ref={phase5Ref} className="fixed inset-0 w-full h-[100dvh] pointer-events-none z-20 opacity-0 flex flex-col items-center justify-between py-2 sm:py-3 lg:py-16">
-
-          {/* 1. TAJUK ULTIMATUM */}
-          {/* Kalibrasi: Ukuran font diperbesar (text-xl sm:text-2xl) dan posisi diturunkan lagi (mt-6 sm:mt-8) */}
           <div className="w-full text-center px-4 mt-6 sm:mt-8 lg:mt-0">
             <h2 className={`text-xl sm:text-2xl md:text-4xl lg:text-6xl font-bold text-zinc-100 tracking-[0.15em] uppercase animate-dual-core ${rajdhani.className}`}>
               THE GRID IS OPEN
             </h2>
           </div>
-
-          {/* 2. AREA AKSI (Tengah Bawah) */}
           <div className="w-full flex flex-col items-center pb-1 lg:pb-0">
-
             <button className={`btn-shimmer pointer-events-auto mb-1.5 sm:mb-2 lg:mb-6 px-4 py-1.5 sm:px-5 sm:py-2 lg:px-8 lg:py-3.5 border border-cyan-400/80 bg-black/40 backdrop-blur-md text-cyan-400 font-bold text-[9px] sm:text-[10px] md:text-xs lg:text-base tracking-[0.2em] uppercase transition-all duration-300 hover:bg-cyan-400 hover:text-black hover:shadow-[0_0_25px_rgba(34,211,238,0.8)] ${rajdhani.className}`}>
               Secure Early Access
             </button>
-
             <div className="pointer-events-auto scale-[0.55] sm:scale-75 lg:scale-100 origin-bottom">
               <SocialIcons />
             </div>
-
           </div>
-
         </div>
 
       </div>
