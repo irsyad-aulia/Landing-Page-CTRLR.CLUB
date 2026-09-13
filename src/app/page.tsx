@@ -19,7 +19,7 @@ const rajdhani = Rajdhani({
 gsap.registerPlugin(ScrollTrigger);
 
 // ==========================================
-// FUNGSI PEMBANTU (Di luar komponen utama)
+// HELPER FUNCTIONS (Outside main component)
 // ==========================================
 const explodeText = (text: string) => {
   const words = text.split(' ');
@@ -27,7 +27,8 @@ const explodeText = (text: string) => {
     <React.Fragment key={`word-${wordIndex}`}>
       <span className="inline-block whitespace-nowrap">
         {word.split('').map((char, charIndex) => (
-          <span key={`char-${wordIndex}-${charIndex}`} className="ui-particle inline-block">
+          // Added will-change for GPU Hardware Acceleration
+          <span key={`char-${wordIndex}-${charIndex}`} className="ui-particle inline-block" style={{ willChange: "transform, opacity" }}>
             {char}
           </span>
         ))}
@@ -41,35 +42,35 @@ const explodeText = (text: string) => {
 
 const renderTerminalText = (text: string, colorClass: string) => {
   return text.split(' ').map((word, index) => (
-    <span key={index} className={`inline-block mr-[0.3em] opacity-0 blur-[8px] translate-y-2 ${colorClass}`}>
+    <span key={index} className={`inline-block mr-[0.3em] opacity-0 blur-[8px] translate-y-2 ${colorClass}`} style={{ willChange: "opacity, filter, transform" }}>
       {word}
     </span>
   ));
 };
 
 // ==========================================
-// KOMPONEN UTAMA
+// MAIN COMPONENT
 // ==========================================
 export default function Home() {
   const [isReady, setIsReady] = useState(false);
 
-  // Referensi Media & Kontainer
+  // Media & Container References
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Referensi Fase Utama
+  // Main Phase References
   const phase1Ref = useRef<HTMLDivElement>(null);
   const phase2Ref = useRef<HTMLDivElement>(null);
   const phase2TitleRef = useRef<HTMLHeadingElement>(null);
   const phase4Ref = useRef<HTMLDivElement>(null);
   const phase5Ref = useRef<HTMLDivElement>(null);
 
-  // Referensi Elemen Fase 1
+  // Phase 1 Element References
   const titleRef = useRef<HTMLHeadingElement>(null);
   const badgeRef = useRef<HTMLDivElement>(null);
 
-  // Referensi Elemen Fase 3 (HUD)
+  // Phase 3 Element References (HUD)
   const hudGroup1Ref = useRef<HTMLDivElement>(null);
   const hud1_1Ref = useRef<HTMLDivElement>(null);
   const hud1_2Ref = useRef<HTMLDivElement>(null);
@@ -99,23 +100,23 @@ export default function Home() {
     window.addEventListener('resize', updateCanvasSize);
 
     const frameCount = 1200;
-    // Kalibrasi Ekstensi: Menargetkan format WebP yang sudah Anda siapkan
+    // Extension Calibration: Targeting the prepared WebP format
     const currentFrame = (index: number) => `/assets/sequence/Frame (${index}).webp`;
 
-    // Alokasikan memori kosong tanpa memblokir thread
+    // Allocate empty memory without blocking the thread
     const images: HTMLImageElement[] = new Array(frameCount);
     const sequence = { frame: 0 };
 
     // ==========================================
-    // OPTIMASI PERFORMA: LAZY LOAD CHUNKING
+    // PERFORMANCE OPTIMIZATION: LAZY LOAD CHUNKING
     // ==========================================
     const firstImg = new Image();
     firstImg.src = currentFrame(1);
     firstImg.onload = () => {
       images[0] = firstImg;
-      render(); // Paksa render frame 1 secepatnya
+      render(); // Force render frame 1 immediately
 
-      // Sinkronisasi FCP: Munculkan UI HANYA saat background sudah terlukis
+      // FCP Synchronization: Reveal UI ONLY when background is painted
       setIsReady(true);
       requestAnimationFrame(() => {
         if (typeof ScrollTrigger !== 'undefined') {
@@ -123,26 +124,35 @@ export default function Home() {
         }
       });
 
-      // Jalankan unduhan sisa frame di belakang layar
+      // Run the rest of the frame downloads in the background
       loadRestInChunks();
     };
 
     const loadRestInChunks = () => {
       let currentIndex = 1;
-      const chunkSize = 25; // 25 gambar per batch untuk mencegah lock CPU
+      const chunkSize = 25; // 25 images per batch to prevent CPU lock
 
-      const loadNext = () => {
+      const loadNext = async () => {
         if (currentIndex >= frameCount) return;
         const end = Math.min(currentIndex + chunkSize, frameCount);
 
         for (let i = currentIndex; i < end; i++) {
           const img = new Image();
           img.src = currentFrame(i + 1);
+
+          try {
+            // CRITICAL FIX: Decode the image in the background thread before storing
+            // This prevents the CPU from choking when canvas.drawImage is called
+            await img.decode();
+          } catch (e) {
+            // Silently catch decoding errors for missing frames
+          }
+
           images[i] = img;
         }
 
         currentIndex = end;
-        // Jeda 50ms untuk memberi ruang Main Thread bernapas
+        // 50ms pause to give the Main Thread room to breathe
         setTimeout(loadNext, 50);
       };
 
@@ -184,7 +194,7 @@ export default function Home() {
       const frameIndex = Math.round(sequence.frame);
       const img = images[frameIndex];
 
-      // Proteksi Dinamis: Jika user scroll cepat dan gambar belum termuat, tahan layar di frame terakhir yang ada
+      // Dynamic Protection: If user scrolls fast and image isn't loaded, hold at last available frame
       if (!img || !img.complete) return;
 
       const hRatio = canvas.width / img.width;
@@ -192,6 +202,7 @@ export default function Home() {
       const ratio = Math.max(hRatio, vRatio);
       const centerShift_x = (canvas.width - img.width * ratio) / 2;
       const centerShift_y = (canvas.height - img.height * ratio) / 2;
+
       context.clearRect(0, 0, canvas.width, canvas.height);
       context.drawImage(img, 0, 0, img.width, img.height, centerShift_x, centerShift_y, img.width * ratio, img.height * ratio);
 
@@ -236,7 +247,7 @@ export default function Home() {
       }
     };
 
-    // Timeline Masuk Fase 1
+    // Phase 1 Entry Timeline
     const entryTl = gsap.timeline({ delay: 0.2 });
     entryTl.fromTo(titleRef.current,
       { opacity: 0, scaleY: 0.01, scaleX: 1.5 },
@@ -261,7 +272,7 @@ export default function Home() {
       .to(flickerTargets, { opacity: 1, duration: 0.1, ease: "power1.inOut" })
       .to(flickerTargets, { opacity: 1, duration: 4 });
 
-    // Timeline Scroll (GSAP)
+    // Scroll Timeline (GSAP)
     const st = gsap.to(sequence, {
       frame: frameCount - 1,
       snap: "frame",
@@ -284,10 +295,12 @@ export default function Home() {
       }
     });
 
+    // CRITICAL FIX: Removed heavy filter: blur() from the scatter animation
+    // Animating 3D transforms + opacity is fast, animating blur on dozens of DOM elements crushes the GPU
     tl.to(".ui-particle", {
       x: "random(-1500, 1500)", y: "random(-1000, 1000)", z: "random(-1000, 1000)",
       rotationX: "random(-720, 720)", rotationY: "random(-720, 720)", rotationZ: "random(-720, 720)",
-      scale: "random(0.1, 4)", opacity: 0, filter: "blur(15px)", duration: "random(4, 8)", ease: "power4.out",
+      scale: "random(0.1, 4)", opacity: 0, duration: "random(4, 8)", ease: "power4.out",
     }, 8)
       .to(phase1Ref.current, { opacity: 0, duration: 1 }, 12);
 
@@ -327,7 +340,7 @@ export default function Home() {
     <main className={`relative min-h-screen bg-black text-white overflow-x-hidden font-mono selection:bg-green-500/30 transition-opacity duration-1000 ease-in-out ${isReady ? 'opacity-100' : 'opacity-0'}`}>
 
       {/* ========================================== */}
-      {/* PUSAT KENDALI CSS (Centralized Keyframes)  */}
+      {/* CENTRALIZED CSS CONTROL (Keyframes)          */}
       {/* ========================================== */}
       <style>{`
         /* Phase 4: Lockdown Mobile */
@@ -387,7 +400,7 @@ export default function Home() {
       `}</style>
 
       {/* ========================================== */}
-      {/* LOCKDOWN ORIENTASI PERANGKAT (Hanya Mobile Portrait) */}
+      {/* DEVICE ORIENTATION LOCKDOWN (Mobile Portrait Only) */}
       {/* ========================================== */}
       <div className={`fixed inset-0 z-[9999] hidden max-md:portrait:flex flex-col items-center justify-center bg-black px-6 text-center ${rajdhani.className}`}>
         <div className="relative w-16 h-28 border-2 border-cyan-400 rounded-xl mb-8 flex items-center justify-center animate-mechanical-rotate shadow-[0_0_20px_rgba(34,211,238,0.2)] bg-black">
@@ -408,7 +421,7 @@ export default function Home() {
       </div>
 
       {/* ========================================== */}
-      {/* MEDIA LATAR BELAKANG */}
+      {/* BACKGROUND MEDIA                           */}
       {/* ========================================== */}
       <video
         ref={videoRef}
@@ -419,11 +432,11 @@ export default function Home() {
       <canvas ref={canvasRef} className="fixed inset-0 w-screen h-[100dvh] z-0 object-cover pointer-events-none" />
 
       {/* ========================================== */}
-      {/* FASE 3: FRAME-PERFECT HUD OVERLAY */}
+      {/* PHASE 3: FRAME-PERFECT HUD OVERLAY         */}
       {/* ========================================== */}
       <div className="fixed inset-0 w-full h-full pointer-events-none z-50 overflow-hidden">
 
-        {/* KELOMPOK 1: The Core Reboot */}
+        {/* GROUP 1: The Core Reboot */}
         <div ref={hudGroup1Ref} className="absolute inset-0 w-full h-full opacity-0">
 
           <div ref={hud1_1Ref} className="absolute top-[10%] md:top-[12%] lg:top-[8%] left-1/2 -translate-x-1/2 font-mono text-lg sm:text-xl md:text-2xl lg:text-4xl xl:text-5xl font-bold tracking-[0.2em] lg:tracking-[0.3em] text-white whitespace-nowrap opacity-0 animate-hud-pulse" style={{ textShadow: '0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(34,211,238,0.8)' }}>
@@ -444,7 +457,7 @@ export default function Home() {
 
         </div>
 
-        {/* KELOMPOK 2: Tunnel Transition */}
+        {/* GROUP 2: Tunnel Transition */}
         <div ref={hudGroup2Ref} className="absolute top-[8%] md:top-[12%] lg:top-[15%] left-1/2 -translate-x-1/2 flex flex-row justify-center items-center gap-x-2 md:gap-x-3 lg:gap-x-5 w-full px-4 text-center text-xl sm:text-2xl md:text-3xl lg:text-5xl xl:text-6xl tracking-wide opacity-0 animate-ghost-float whitespace-nowrap">
           <span ref={hud2_1Ref} className={`text-white opacity-0 font-bold ${rajdhani.className}`} style={{ textShadow: '0 4px 15px rgba(15,23,42,0.8), 0 10px 30px rgba(88,28,135,0.5), 0 0 15px rgba(255,255,255,0.9)' }}>
             SYSTEM
@@ -462,11 +475,11 @@ export default function Home() {
       </div>
 
       {/* ========================================== */}
-      {/* KONTAINER GULIRAN UTAMA (Scroll Sections)  */}
+      {/* MAIN SCROLL CONTAINER                      */}
       {/* ========================================== */}
       <div ref={containerRef} className="relative z-10 h-[1500vh] w-full">
 
-        {/* FASE 1: THE INITIATION (Diperbarui untuk Mobile) */}
+        {/* PHASE 1: THE INITIATION (Updated for Mobile) */}
         <div ref={phase1Ref} className="fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-center pointer-events-none px-4" style={{ perspective: '1200px' }}>
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.7)_0%,transparent_70%)] -z-10"></div>
           <div className="max-w-6xl mx-auto flex flex-col items-center justify-center w-full px-2">
@@ -495,7 +508,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* FASE 2: THE TEARDOWN */}
+        {/* PHASE 2: THE TEARDOWN */}
         <div ref={phase2Ref} className="fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-center pointer-events-none px-2 md:px-12 lg:px-24 opacity-0">
           <div className="absolute top-[6%] md:top-[14%] flex flex-col items-center w-full px-4">
             <h2 ref={phase2TitleRef}
@@ -534,10 +547,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* FASE 4 (Kosong) */}
+        {/* PHASE 4 (Empty) */}
         <div ref={phase4Ref} className="fixed top-0 left-0 w-full h-screen flex flex-col items-center justify-center pointer-events-none px-4 opacity-0"></div>
 
-        {/* FASE 5: THE FINAL HOOK & CTA */}
+        {/* PHASE 5: THE FINAL HOOK & CTA */}
         <div ref={phase5Ref} className="fixed inset-0 w-full h-[100dvh] pointer-events-none z-20 opacity-0 flex flex-col items-center justify-between py-2 sm:py-3 lg:py-16">
           <div className="w-full text-center px-4 mt-6 sm:mt-8 lg:mt-0">
             <h2 className={`text-xl sm:text-2xl md:text-4xl lg:text-6xl font-bold text-zinc-100 tracking-[0.15em] uppercase animate-dual-core ${rajdhani.className}`}>
