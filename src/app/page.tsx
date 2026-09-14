@@ -5,8 +5,9 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SocialIcons from '@/components/sections/SocialIcons';
 import { Rubik_Glitch, Rajdhani } from 'next/font/google';
-import NeonRunner from '@/components/NeonRunner';
+import CalibrationScanner from '@/components/CalibrationScanner';
 import ScrollIndicator from '@/components/ScrollIndicator';
+import ScrambleText from '@/components/ScrambleText';
 
 const corruptedFont = Rubik_Glitch({
   weight: '400',
@@ -33,18 +34,10 @@ const explodeText = (text: string) => {
           <span key={`char-${wordIndex}-${charIndex}`} className="ui-particle inline-block" style={{ willChange: "transform, opacity" }}>
             {char}
           </span>
-        ))}
-      </span>
-      {wordIndex < words.length - 1 && (
-        <span className="inline-block w-[0.25em]">&nbsp;</span>
-      )}
-    </React.Fragment>
-  ));
-};
-
-const renderTerminalText = (text: string, colorClass: string) => {
-  return text.split(' ').map((word, index) => (
-    <span key={index} className={`inline-block mr-[0.3em] opacity-0 blur-[8px] translate-y-2 ${colorClass}`} style={{ willChange: "opacity, filter, transform" }}>
+// Utility to render terminal text word by word
+const renderTerminalText = (text: string, baseClass: string) => {
+  return text.split(' ').map((word, i) => (
+    <span key={i} className={`${baseClass} inline-block opacity-0 blur-[8px] transform translate-y-4`} style={{ marginRight: '0.25em' }}>
       {word}
     </span>
   ));
@@ -89,12 +82,23 @@ export default function Home() {
   const isFullyLoaded = loadingProgress >= 100;
 
   useEffect(() => {
+    // Force scroll to top instantly on mount
+    window.scrollTo(0, 0);
+    
     // Disable automatic browser scroll restoration (fixes the issue where refreshing the page keeps you at the bottom)
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
-    // Force scroll to top instantly on mount
-    window.scrollTo(0, 0);
+
+    // STRICT SCROLL RESET: Force scroll reset immediately before unload
+    const handleBeforeUnload = () => {
+      window.scrollTo(0, 0);
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
   }, []);
 
   // Media & Container References
@@ -318,14 +322,6 @@ export default function Home() {
 
     // Phase 1 Entry Timeline
     const entryTl = gsap.timeline({ delay: 0.2 });
-    entryTl.fromTo(titleRef.current,
-      { opacity: 0, scaleY: 0.01, scaleX: 1.5 },
-      { opacity: 1, scaleX: 1, duration: 0.15, ease: "power2.in" }
-    )
-      .to(titleRef.current, { scaleY: 1, duration: 0.2, ease: "power4.out" })
-      .to(titleRef.current, { opacity: 0.4, skewX: 15, x: -15, duration: 0.04 })
-      .to(titleRef.current, { opacity: 1, skewX: -15, x: 15, duration: 0.04 })
-      .to(titleRef.current, { opacity: 1, skewX: 0, x: 0, duration: 0.05 });
 
     entryTl.fromTo(badgeRef.current, { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.04 }, "+=0.15")
       .to(badgeRef.current, { opacity: 0, duration: 0.03 })
@@ -424,7 +420,7 @@ export default function Home() {
       </div>
 
       {/* NEW COMPONENTS */}
-      <NeonRunner isReady={isReady} />
+      <CalibrationScanner isReady={isReady} />
       <ScrollIndicator isReady={isReady} />
 
       {/* ========================================== */}
@@ -728,11 +724,13 @@ export default function Home() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.7)_0%,transparent_70%)] -z-10"></div>
           <div className="max-w-6xl mx-auto flex flex-col items-center justify-center w-full px-2">
             <h1 ref={titleRef}
-              className={`text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl text-white text-center uppercase mb-4 md:mb-6 lg:mb-10 relative z-10 leading-tight lg:leading-relaxed tracking-[0.1em] lg:tracking-[0.15em] opacity-0 ${corruptedFont.className}`}
+              className={`text-3xl sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl text-white text-center uppercase mb-4 md:mb-6 lg:mb-10 relative z-10 leading-tight lg:leading-relaxed tracking-[0.1em] lg:tracking-[0.15em] ${corruptedFont.className}`}
               style={{ textShadow: `0 0 5px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.3), 0 5px 20px rgba(0,0,0,0.9)` }}>
-              {explodeText("The controller arcade game")}
+              
+              {/* Cinematic Decode animation */}
+              <ScrambleText text="The controller arcade game" isReady={isReady} delay={1500} className="inline-block" />
               <br />
-              {explodeText("that hits different.")}
+              <ScrambleText text="that hits different." isReady={isReady} delay={1800} className="inline-block" />
             </h1>
           </div>
 
