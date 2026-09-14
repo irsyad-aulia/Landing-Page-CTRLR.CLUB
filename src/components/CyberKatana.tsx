@@ -84,25 +84,61 @@ export default function CyberKatana({ isReady }: Props) {
         ctx.translate(this.x, this.y);
         ctx.rotate(this.rotation);
         
+        // Random glitch offset for hologram effect
+        const isGlitch = Math.random() > 0.92;
+        const glitchX = isGlitch ? (Math.random() - 0.5) * 8 : 0;
+        ctx.translate(glitchX, 0);
+
         if (this.isSliced) {
-          // Draw two broken halves
-          ctx.fillStyle = 'rgba(255, 0, 50, 0.4)';
+          // Draw two broken halves with glitch border
+          ctx.fillStyle = 'rgba(255, 0, 50, 0.2)';
+          ctx.strokeStyle = 'rgba(255, 0, 50, 0.6)';
+          ctx.lineWidth = 1;
+
           ctx.fillRect(-this.width/2, -this.height/2, this.width, this.height/2 - 2);
+          ctx.strokeRect(-this.width/2, -this.height/2, this.width, this.height/2 - 2);
+
           ctx.fillRect(-this.width/2, 2, this.width, this.height/2 - 2);
+          ctx.strokeRect(-this.width/2, 2, this.width, this.height/2 - 2);
         } else {
-          // Glowing red block
-          ctx.fillStyle = 'rgba(255, 0, 50, 0.8)';
-          ctx.shadowColor = '#ff0033';
-          ctx.shadowBlur = 15;
-          ctx.fillRect(-this.width/2, -this.height/2, this.width, this.height);
+          // Holographic Glitch Block
           
-          // Hacker text inside
+          // 1. Cyan ghost offset (RGB Split)
+          if (isGlitch) {
+             ctx.fillStyle = 'rgba(34, 211, 238, 0.4)'; // Cyan
+             ctx.fillRect(-this.width/2 - 3, -this.height/2, this.width, this.height);
+          }
+          
+          // 2. Main Red holographic box with border
+          ctx.fillStyle = 'rgba(255, 0, 50, 0.25)';
+          ctx.strokeStyle = 'rgba(255, 0, 50, 0.9)';
+          ctx.lineWidth = 1.5;
+          ctx.shadowColor = '#ff0033';
+          ctx.shadowBlur = 10;
+          ctx.fillRect(-this.width/2, -this.height/2, this.width, this.height);
+          ctx.strokeRect(-this.width/2, -this.height/2, this.width, this.height);
+
+          // 3. Scanlines (Horizontal stripes) for holo effect
+          ctx.shadowBlur = 0;
+          ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+          for(let i = -this.height/2 + 2; i < this.height/2; i += 4) {
+            ctx.fillRect(-this.width/2, i, this.width, 2);
+          }
+          
+          // 4. Hacker text inside
           ctx.fillStyle = 'white';
-          ctx.font = 'bold 14px monospace';
+          ctx.font = 'bold 15px monospace';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
-          ctx.shadowBlur = 0; // Text has no blur to remain crisp
           ctx.fillText(this.text, 0, 0);
+          
+          // 5. Glitch text overlay (RGB Split for text)
+          if (isGlitch) {
+             ctx.fillStyle = 'cyan';
+             ctx.fillText(this.text, -2, 1);
+             ctx.fillStyle = 'fuchsia';
+             ctx.fillText(this.text, 2, -1);
+          }
         }
         ctx.restore();
       }

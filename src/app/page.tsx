@@ -188,16 +188,16 @@ export default function Home() {
         const onComplete = () => {
           loadedCount++;
 
-          // Update loading progress based on loadedCount up to 250
-          if (loadedCount <= 250) {
-            setLoadingProgress(Math.round((loadedCount / 250) * 100));
+          // Update loading progress based on loadedCount up to 500
+          if (loadedCount <= 500) {
+            setLoadingProgress(Math.round((loadedCount / 500) * 100));
           }
 
-          if (loadedCount >= 250) {
+          if (loadedCount >= 500) {
              // We can't use the state 'isReady' directly inside this closure reliably if it's changing,
              // but since setIsReady is safe to call multiple times, we'll just ensure ScrollTrigger refreshes once.
-             // Actually, we'll just check if it hits exactly 250 to trigger the initial reveal.
-             if (loadedCount === 250) {
+             // Actually, we'll just check if it hits exactly 500 to trigger the initial reveal.
+             if (loadedCount === 500) {
                setIsReady(true);
                requestAnimationFrame(() => {
                  if (typeof ScrollTrigger !== 'undefined') {
