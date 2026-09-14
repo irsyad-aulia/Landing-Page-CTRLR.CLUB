@@ -91,6 +91,21 @@ export default function Home() {
     };
   }, []);
 
+  // Phase 1 Entry Animation Trigger (Fires after Loading Screen)
+  useEffect(() => {
+    if (!isReady || !badgeRef.current) return;
+    
+    // Wait for loading screen fade (1.5s) + Scramble delay (0.6s) = 2.1s delay
+    const badgeTl = gsap.timeline({ delay: 2.1 }); 
+    badgeTl.fromTo(badgeRef.current, { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.04 })
+      .to(badgeRef.current, { opacity: 0, duration: 0.03 })
+      .to(badgeRef.current, { opacity: 1, duration: 0.05 })
+      .to(badgeRef.current, { opacity: 0.3, duration: 0.03 })
+      .to(badgeRef.current, { opacity: 1, duration: 0.1 });
+
+    return () => { badgeTl.kill(); };
+  }, [isReady]);
+
   // Media & Container References
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -311,13 +326,9 @@ export default function Home() {
     };
 
     // Phase 1 Entry Timeline
-    const entryTl = gsap.timeline({ delay: 0.2 });
+    // Cinematic Decode handles the Title entrance now
+    // Badge entrance is handled by a separate useEffect triggered by isReady
 
-    entryTl.fromTo(badgeRef.current, { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.04 }, "+=0.15")
-      .to(badgeRef.current, { opacity: 0, duration: 0.03 })
-      .to(badgeRef.current, { opacity: 1, duration: 0.05 })
-      .to(badgeRef.current, { opacity: 0.3, duration: 0.03 })
-      .to(badgeRef.current, { opacity: 1, duration: 0.1 });
 
     const flickerTargets = [titleRef.current, badgeRef.current];
     const flickerTl = gsap.timeline({ repeat: -1, delay: 3 });
