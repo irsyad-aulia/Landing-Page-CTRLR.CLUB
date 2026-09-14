@@ -24,16 +24,6 @@ gsap.registerPlugin(ScrollTrigger);
 // ==========================================
 // HELPER FUNCTIONS (Outside main component)
 // ==========================================
-const explodeText = (text: string) => {
-  const words = text.split(' ');
-  return words.map((word, wordIndex) => (
-    <React.Fragment key={`word-${wordIndex}`}>
-      <span className="inline-block whitespace-nowrap">
-        {word.split('').map((char, charIndex) => (
-          // Added will-change for GPU Hardware Acceleration
-          <span key={`char-${wordIndex}-${charIndex}`} className="ui-particle inline-block" style={{ willChange: "transform, opacity" }}>
-            {char}
-          </span>
 // Utility to render terminal text word by word
 const renderTerminalText = (text: string, baseClass: string) => {
   return text.split(' ').map((word, i) => (
