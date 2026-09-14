@@ -5,6 +5,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SocialIcons from '@/components/sections/SocialIcons';
 import { Rubik_Glitch, Rajdhani } from 'next/font/google';
+import CyberKatana from '@/components/CyberKatana';
+import ScrollIndicator from '@/components/ScrollIndicator';
 
 const corruptedFont = Rubik_Glitch({
   weight: '400',
@@ -405,11 +407,31 @@ export default function Home() {
 
   return (
     <>
+      {/* Full Screen WebGL Canvas */}
+      <div className="fixed inset-0 z-0 w-full h-full pointer-events-none bg-black">
+        <canvas ref={canvasRef} className="w-full h-full object-cover" />
+        <video
+          ref={videoRef}
+          className="w-full h-full object-cover hidden"
+          muted
+          playsInline
+          onEnded={() => {
+            if (videoRef.current) {
+              videoRef.current.style.display = 'none';
+            }
+          }}
+        />
+      </div>
+
+      {/* NEW COMPONENTS */}
+      <CyberKatana isReady={isReady} />
+      <ScrollIndicator isReady={isReady} />
+
       {/* ========================================== */}
       {/* LOADING SCREEN OVERLAY                       */}
       {/* ========================================== */}
       <div 
-        className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-black px-6 text-center transition-opacity duration-1000 ease-in-out ${isReady ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+        className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black transition-all duration-[1500ms] ease-in-out ${isReady ? 'opacity-0 pointer-events-none scale-110 blur-xl' : 'opacity-100 pointer-events-auto scale-100 blur-0'}`}
       >
         
         {/* Real 3D CSS Diamond Spinner (Octagonal Brilliant Cut) */}
