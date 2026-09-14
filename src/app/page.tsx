@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SocialIcons from '@/components/sections/SocialIcons';
 import { Rubik_Glitch, Rajdhani } from 'next/font/google';
-import CalibrationScanner from '@/components/CalibrationScanner';
+import AnomalyPurge from '@/components/AnomalyPurge';
 import ScrollIndicator from '@/components/ScrollIndicator';
 import ScrambleText from '@/components/ScrambleText';
 
@@ -410,7 +410,7 @@ export default function Home() {
       </div>
 
       {/* NEW COMPONENTS */}
-      <CalibrationScanner isReady={isReady} />
+      <AnomalyPurge isReady={isReady} />
       <ScrollIndicator isReady={isReady} />
 
       {/* ========================================== */}
