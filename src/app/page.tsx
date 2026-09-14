@@ -5,7 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import SocialIcons from '@/components/sections/SocialIcons';
 import { Rubik_Glitch, Rajdhani } from 'next/font/google';
-import CyberKatana from '@/components/CyberKatana';
+import NeonRunner from '@/components/NeonRunner';
 import ScrollIndicator from '@/components/ScrollIndicator';
 
 const corruptedFont = Rubik_Glitch({
@@ -424,7 +424,7 @@ export default function Home() {
       </div>
 
       {/* NEW COMPONENTS */}
-      <CyberKatana isReady={isReady} />
+      <NeonRunner isReady={isReady} />
       <ScrollIndicator isReady={isReady} />
 
       {/* ========================================== */}
