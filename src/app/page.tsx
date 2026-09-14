@@ -49,10 +49,51 @@ const renderTerminalText = (text: string, colorClass: string) => {
 };
 
 // ==========================================
+// 3D CSS DIAMOND HELPERS (Octagonal Antiprism)
+// ==========================================
+const DownTriangleTop = () => (
+  <svg viewBox="0 0 15.3 26.6" className="w-full h-full overflow-visible drop-shadow-[0_0_5px_#d946ef]">
+    <polygon points="0,0 15.3,0 7.65,26.6" fill="rgba(217,70,239,0.15)" stroke="#d946ef" strokeWidth="1.5" strokeLinejoin="round" />
+  </svg>
+);
+const UpTriangleTop = () => (
+  <svg viewBox="0 0 27.6 24.0" className="w-full h-full overflow-visible drop-shadow-[0_0_5px_#d946ef]">
+    <polygon points="13.8,0 27.6,24.0 0,24.0" fill="rgba(217,70,239,0.15)" stroke="#d946ef" strokeWidth="1.5" strokeLinejoin="round" />
+  </svg>
+);
+const DownTriangleBot = () => (
+  <svg viewBox="0 0 27.6 56.0" className="w-full h-full overflow-visible drop-shadow-[0_0_5px_#d946ef]">
+    <polygon points="0,0 27.6,0 13.8,56.0" fill="rgba(217,70,239,0.15)" stroke="#d946ef" strokeWidth="1.5" strokeLinejoin="round" />
+  </svg>
+);
+const TopTable = () => (
+  <svg viewBox="0 0 40 40" className="w-full h-full overflow-visible drop-shadow-[0_0_5px_#d946ef]">
+    <polygon points="40,20 34.14,34.14 20,40 5.86,34.14 0,20 5.86,5.86 20,0 34.14,5.86" fill="rgba(217,70,239,0.15)" stroke="#d946ef" strokeWidth="1.5" strokeLinejoin="round" />
+  </svg>
+);
+
+const angles8 = [0, 45, 90, 135, 180, 225, 270, 315];
+const angles8Offset = [22.5, 67.5, 112.5, 157.5, 202.5, 247.5, 292.5, 337.5];
+
+// ==========================================
 // MAIN COMPONENT
 // ==========================================
 export default function Home() {
   const [isReady, setIsReady] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
+
+  // Derived state to determine if loading is fully complete
+  const isFullyLoaded = loadingProgress >= 100;
+
+  useEffect(() => {
+    // Disable automatic browser scroll restoration (fixes the issue where refreshing the page keeps you at the bottom)
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    // Force scroll to top instantly on mount
+    window.scrollTo(0, 0);
+  }, []);
 
   // Media & Container References
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -108,7 +149,7 @@ export default function Home() {
     const sequence = { frame: 0 };
 
     // ==========================================
-    // PERFORMANCE OPTIMIZATION: LAZY LOAD CHUNKING
+    // PERFORMANCE OPTIMIZATION: CONCURRENCY QUEUE
     // ==========================================
     const firstImg = new Image();
     firstImg.src = currentFrame(1);
@@ -116,47 +157,73 @@ export default function Home() {
       images[0] = firstImg;
       render(); // Force render frame 1 immediately
 
-      // FCP Synchronization: Reveal UI ONLY when background is painted
-      setIsReady(true);
-      requestAnimationFrame(() => {
-        if (typeof ScrollTrigger !== 'undefined') {
-          ScrollTrigger.refresh();
-        }
-      });
-
-      // Run the rest of the frame downloads in the background
-      loadRestInChunks();
+      // Start the concurrency pool
+      startConcurrencyPool();
     };
 
-    const loadRestInChunks = () => {
-      let currentIndex = 1;
-      const chunkSize = 25; // 25 images per batch to prevent CPU lock
+    const startConcurrencyPool = () => {
+      const CONCURRENCY_LIMIT = 8;
+      let currentIndex = 1; // Tracks which frame to queue next
+      let loadedCount = 1;  // Tracks how many frames have finished
 
-      const loadNext = async () => {
-        if (currentIndex >= frameCount) return;
-        const end = Math.min(currentIndex + chunkSize, frameCount);
-
-        for (let i = currentIndex; i < end; i++) {
-          const img = new Image();
-          img.src = currentFrame(i + 1);
-
-          try {
-            // CRITICAL FIX: Decode the image in the background thread before storing
-            // This prevents the CPU from choking when canvas.drawImage is called
-            await img.decode();
-          } catch (e) {
-            // Silently catch decoding errors for missing frames
+      const loadNext = () => {
+        if (currentIndex >= frameCount) {
+          // If all frames are queued and we've reached the end
+          if (loadedCount >= frameCount) {
+             if (videoRef.current) {
+               videoRef.current.src = "/assets/CTA Final_processed.webm";
+             }
           }
-
-          images[i] = img;
+          return;
         }
 
-        currentIndex = end;
-        // 50ms pause to give the Main Thread room to breathe
-        setTimeout(loadNext, 50);
+        const indexToLoad = currentIndex;
+        currentIndex++;
+
+        const img = new Image();
+        img.src = currentFrame(indexToLoad + 1);
+
+        const onComplete = () => {
+          loadedCount++;
+
+          // Update loading progress based on loadedCount up to 400
+          if (loadedCount <= 400) {
+            setLoadingProgress(Math.round((loadedCount / 400) * 100));
+          }
+
+          if (loadedCount >= 400) {
+             // We can't use the state 'isReady' directly inside this closure reliably if it's changing,
+             // but since setIsReady is safe to call multiple times, we'll just ensure ScrollTrigger refreshes once.
+             // Actually, we'll just check if it hits exactly 400 to trigger the initial reveal.
+             if (loadedCount === 400) {
+               setIsReady(true);
+               requestAnimationFrame(() => {
+                 if (typeof ScrollTrigger !== 'undefined') {
+                   ScrollTrigger.refresh();
+                 }
+               });
+             }
+          }
+
+          // As soon as this worker finishes, assign it the next frame
+          setTimeout(loadNext, 0); // use setTimeout to yield to main thread
+        };
+
+        img.onload = () => {
+          images[indexToLoad] = img;
+          onComplete();
+        };
+
+        img.onerror = () => {
+          // Skip on error to avoid hanging
+          onComplete();
+        };
       };
 
-      loadNext();
+      // Kick off N concurrent workers
+      for (let i = 0; i < CONCURRENCY_LIMIT; i++) {
+        loadNext();
+      }
     };
 
     const getLifecycleStyle = (frame: number, entryStart: number, exitStart: number) => {
@@ -337,12 +404,168 @@ export default function Home() {
   }, []);
 
   return (
-    <main className={`relative min-h-screen bg-black text-white overflow-x-hidden font-mono selection:bg-green-500/30 transition-opacity duration-1000 ease-in-out ${isReady ? 'opacity-100' : 'opacity-0'}`}>
+    <>
+      {/* ========================================== */}
+      {/* LOADING SCREEN OVERLAY                       */}
+      {/* ========================================== */}
+      <div 
+        className={`fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-black px-6 text-center transition-opacity duration-1000 ease-in-out ${isReady ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}
+      >
+        
+        {/* Real 3D CSS Diamond Spinner (Octagonal Brilliant Cut) */}
+        <div 
+          className="relative mb-24 flex items-center justify-center preserve-3d" 
+          style={{ perspective: '800px' }}
+        >
+
+
+          {/* 3D MRI Ring Scanner (Option 1) */}
+          <div 
+             className="absolute w-[120px] h-[120px] rounded-full border-4 border-cyan-400 opacity-80 mix-blend-screen preserve-3d"
+             style={{ 
+                boxShadow: '0 0 30px #22d3ee, inset 0 0 30px #22d3ee',
+                animation: 'mri-ring 2s ease-in-out infinite alternate'
+             }}
+          />
+
+          <div className="diamond-container">
+            {/* Top Table */}
+            <div className="absolute left-[-20px] top-[-40px] w-[40px] h-[40px] preserve-3d" style={{ transform: `rotateX(90deg)` }}>
+              <TopTable />
+            </div>
+            
+            {/* Zigzag Top Facets */}
+            {angles8Offset.map((a, i) => (
+              <div key={`dt-${i}`} className="absolute left-[-7.65px] top-[-20px] w-[15.3px] h-[26.6px] origin-top preserve-3d" style={{ transform: `rotateY(${a}deg) translateZ(18.5px) rotateX(41.18deg)` }}>
+                <DownTriangleTop />
+              </div>
+            ))}
+            {angles8.map((a, i) => (
+              <div key={`ut-${i}`} className="absolute left-[-13.8px] top-[-24.0px] w-[27.6px] h-[24.0px] origin-bottom preserve-3d" style={{ transform: `rotateY(${a}deg) translateZ(33.3px) rotateX(33.62deg)` }}>
+                <UpTriangleTop />
+              </div>
+            ))}
+            
+            {/* Bottom Facets */}
+            {angles8.map((a, i) => (
+              <div key={`b-${i}`} className="absolute left-[-13.8px] top-[0px] w-[27.6px] h-[56.0px] origin-top preserve-3d" style={{ transform: `rotateY(${a}deg) translateZ(33.3px) rotateX(-36.5deg)` }}>
+                <DownTriangleBot />
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Text UI Section - Elevated Z-Index to prevent occlusion by the 3D mask */}
+        <div className="relative z-[200] flex flex-col items-center">
+          {/* 3D Tube Loading Bar */}
+          <div 
+             className="relative w-[450px] max-w-[90vw] h-5 mb-8 overflow-hidden rounded-full border border-cyan-400/20"
+             style={{
+                backgroundColor: '#05151a', // very dark cyan/black
+                boxShadow: 'inset 0 4px 8px rgba(0,0,0,0.9), inset 0 -1px 3px rgba(255,255,255,0.15), 0 0 15px rgba(34,211,238,0.1)'
+             }}
+          >
+            <div 
+              className="absolute top-0 left-0 h-full transition-all duration-200 ease-out rounded-full"
+              style={{ 
+                 width: `${loadingProgress}%`,
+                 backgroundImage: `
+                   linear-gradient(
+                     to bottom,
+                     rgba(255, 255, 255, 0.9) 0%,
+                     rgba(255, 255, 255, 0.3) 15%,
+                     #22d3ee 35%,
+                     #06b6d4 65%,
+                     #164e63 90%,
+                     rgba(34, 211, 238, 0.5) 100%
+                   )
+                 `,
+                 boxShadow: '0 0 20px rgba(34,211,238,0.8), inset 0 0 4px rgba(255,255,255,0.6)'
+              }}
+            >
+              {/* Optional: Keep the diagonal stripes, but blend them subtly into the liquid tube */}
+              <div 
+                 className="absolute inset-0 opacity-20 mix-blend-multiply rounded-full"
+                 style={{
+                    backgroundImage: 'repeating-linear-gradient(-45deg, transparent, transparent 5px, rgba(0,0,0,1) 5px, rgba(0,0,0,1) 10px)',
+                    backgroundSize: '14.14px 14.14px',
+                    animation: 'stripes-move 0.5s linear infinite'
+                 }}
+              />
+            </div>
+          </div>
+          <h2 className={`text-lg md:text-xl font-bold text-cyan-400 tracking-[0.2em] mb-3 uppercase drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] ${rajdhani.className}`} style={{ animation: 'glitch-text 3s infinite' }}>
+            {[
+              "PRO-TIP: ALWAYS CHECK YOUR BLIND SPOTS",
+              "LORE: THE GRID WAS ESTABLISHED IN 2084",
+              "PRO-TIP: HIGH APM INCREASES SURVIVAL RATE",
+              "LORE: NEON IS THE LIFEBLOOD OF THE CITY",
+              "PRO-TIP: KEEP YOUR HARDWARE UPDATED",
+              "LORE: CTRLR.CLUB WAS BORN FROM THE UNDERGROUND",
+              "SYSTEM READY, INITIATING LOGIN"
+            ][Math.min(Math.floor(loadingProgress / 15), 6)]}
+          </h2>
+          <p className="text-zinc-400 text-xs md:text-sm tracking-[0.3em] uppercase animate-pulse">
+            [ SYSTEM SYNC: {loadingProgress}% ]
+          </p>
+        </div>
+      </div>
+
+      <main className={`relative min-h-screen bg-black text-white overflow-x-hidden font-mono selection:bg-green-500/30 transition-opacity duration-1000 ease-in-out ${isReady ? 'opacity-100' : 'opacity-0'}`}>
 
       {/* ========================================== */}
       {/* CENTRALIZED CSS CONTROL (Keyframes)          */}
       {/* ========================================== */}
       <style>{`
+        /* Square Antiprism 3D CSS Diamond Geometry */
+        .preserve-3d { transform-style: preserve-3d; }
+        
+        .diamond-container {
+          width: 0;
+          height: 0;
+          position: relative;
+          transform-style: preserve-3d;
+          animation: diamond-spin 6s linear infinite;
+        }
+        
+        @keyframes diamond-spin {
+          0% { transform: rotateX(-15deg) rotateY(0deg); }
+          100% { transform: rotateX(-15deg) rotateY(360deg); }
+        }
+
+        @keyframes glitch-box {
+          0%, 94%, 100% { transform: scale(1) translate(0); filter: hue-rotate(0deg); opacity: 0.9; }
+          95% { transform: scale(1.1) translate(-1px, 1px); filter: hue-rotate(90deg); opacity: 1; }
+          96% { transform: scale(0.9) translate(1px, -1px); filter: hue-rotate(-90deg); opacity: 0.6; }
+          97% { transform: scale(1.1) translate(0px, 2px); filter: hue-rotate(45deg); opacity: 1; }
+          98% { transform: scale(0.9) translate(-2px, 0px); filter: hue-rotate(-45deg); opacity: 0.8; }
+        }
+
+        @keyframes mri-ring {
+          0% { transform: rotateX(90deg) translateZ(-80px) scale(0.8); opacity: 0; }
+          20% { opacity: 1; transform: rotateX(90deg) translateZ(-50px) scale(1); }
+          80% { opacity: 1; transform: rotateX(90deg) translateZ(50px) scale(1); }
+          100% { transform: rotateX(90deg) translateZ(80px) scale(0.8); opacity: 0; }
+        }
+
+        @keyframes stripes-move {
+          0% { background-position: 0 0; }
+          100% { background-position: 14.14px 0; }
+        }
+
+        @keyframes hud-spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        @keyframes glitch-text {
+          0%, 95%, 100% { transform: translate(0); opacity: 1; }
+          96% { transform: translate(-2px, 1px); opacity: 0.8; }
+          97% { transform: translate(2px, -1px); opacity: 0.9; filter: hue-rotate(90deg); }
+          98% { transform: translate(-1px, 2px); opacity: 1; }
+          99% { transform: translate(1px, -2px); opacity: 0.8; filter: hue-rotate(-90deg); }
+        }
+
         /* Phase 4: Lockdown Mobile */
         @keyframes mechanical-rotate {
           0%, 15% { transform: rotate(0deg); }
@@ -425,7 +648,6 @@ export default function Home() {
       {/* ========================================== */}
       <video
         ref={videoRef}
-        src="/assets/CTA Final_processed.webm"
         autoPlay loop muted playsInline
         className="fixed inset-0 w-screen h-[100dvh] z-0 object-cover pointer-events-none opacity-0"
       />
@@ -569,5 +791,6 @@ export default function Home() {
 
       </div>
     </main>
+    </>
   );
 }
