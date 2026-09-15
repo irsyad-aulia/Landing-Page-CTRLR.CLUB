@@ -63,9 +63,16 @@ export default function ScrambleText({ text, isReady, className, delay = 0 }: Pr
 
   return (
     <span className={className} style={{ opacity: hasStarted ? 1 : 0 }}>
-      {displayText.split('').map((char, i) => (
-        <span key={i} className="ui-particle inline-block" style={{ willChange: "transform, opacity" }}>
-          {char === ' ' ? '\u00A0' : char}
+      {displayText.split(' ').map((word, wordIndex, wordsArray) => (
+        <span key={`word-${wordIndex}`} className="inline-block whitespace-nowrap">
+          {word.split('').map((char, charIndex) => (
+            <span key={`char-${wordIndex}-${charIndex}`} className="ui-particle inline-block" style={{ willChange: "transform, opacity" }}>
+              {char}
+            </span>
+          ))}
+          {wordIndex < wordsArray.length - 1 && (
+            <span className="ui-particle inline-block">&nbsp;</span>
+          )}
         </span>
       ))}
     </span>
