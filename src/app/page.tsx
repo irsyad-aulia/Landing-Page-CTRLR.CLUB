@@ -814,7 +814,7 @@ export default function Home() {
               } ${rajdhani.className}`}
               style={{ textShadow: ctaStatus === 'denied' ? '0 0 10px rgba(239,68,68,0.8)' : '' }}
             >
-              {ctaStatus === 'denied' ? '[ ACCESS DENIED ]' : 'Secure Early Access'}
+              {ctaStatus === 'denied' ? '[ COMING SOON ]' : 'Secure Early Access'}
             </button>
             <div className="pointer-events-auto scale-[0.55] sm:scale-75 lg:scale-100 origin-bottom">
               <SocialIcons />
