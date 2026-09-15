@@ -531,6 +531,27 @@ export default function Home() {
         </div>
       </div>
 
+      {/* ========================================== */}
+      {/* DEVICE ORIENTATION LOCKDOWN (Mobile Portrait Only) */}
+      {/* ========================================== */}
+      <div className={`fixed inset-0 z-[9999] hidden max-md:portrait:flex flex-col items-center justify-center bg-black px-6 text-center ${rajdhani.className}`}>
+        <div className="relative w-16 h-28 border-2 border-cyan-400 rounded-xl mb-8 flex items-center justify-center animate-mechanical-rotate shadow-[0_0_20px_rgba(34,211,238,0.2)] bg-black">
+          <div className="w-5 h-1 bg-cyan-400/50 rounded-full absolute top-2"></div>
+          <div className="w-4 h-4 border border-fuchsia-500 rounded-full absolute bottom-2 shadow-[0_0_10px_rgba(217,70,239,0.5)]"></div>
+        </div>
+        <h2 className="text-2xl font-bold text-red-500 tracking-[0.2em] mb-4 uppercase" style={{ textShadow: '0 0 10px rgba(239,68,68,0.6)' }}>
+          [ SYS.ERR: ORIENTATION ]
+        </h2>
+        <p className="text-zinc-300 text-lg tracking-[0.1em] max-w-[280px] leading-relaxed">
+          ROTATE DEVICE TO LANDSCAPE TO INITIALIZE THE GRID.
+        </p>
+        <div className="mt-10 flex gap-3">
+          <div className="w-1.5 h-1.5 bg-cyan-400 animate-pulse shadow-[0_0_5px_#22d3ee]"></div>
+          <div className="w-1.5 h-1.5 bg-fuchsia-500 animate-pulse shadow-[0_0_5px_#d946ef]" style={{ animationDelay: '0.2s' }}></div>
+          <div className="w-1.5 h-1.5 bg-cyan-400 animate-pulse shadow-[0_0_5px_#22d3ee]" style={{ animationDelay: '0.4s' }}></div>
+        </div>
+      </div>
+
       <main className={`relative min-h-screen bg-black text-white overflow-x-hidden font-mono selection:bg-green-500/30 transition-opacity duration-1000 ease-in-out ${isReady ? 'opacity-100' : 'opacity-0'}`}>
 
       {/* ========================================== */}
@@ -641,27 +662,6 @@ export default function Home() {
           animation: shimmer-sweep 3.5s infinite ease-in-out; z-index: 10; pointer-events: none;
         }
       `}</style>
-
-      {/* ========================================== */}
-      {/* DEVICE ORIENTATION LOCKDOWN (Mobile Portrait Only) */}
-      {/* ========================================== */}
-      <div className={`fixed inset-0 z-[9999] hidden max-md:portrait:flex flex-col items-center justify-center bg-black px-6 text-center ${rajdhani.className}`}>
-        <div className="relative w-16 h-28 border-2 border-cyan-400 rounded-xl mb-8 flex items-center justify-center animate-mechanical-rotate shadow-[0_0_20px_rgba(34,211,238,0.2)] bg-black">
-          <div className="w-5 h-1 bg-cyan-400/50 rounded-full absolute top-2"></div>
-          <div className="w-4 h-4 border border-fuchsia-500 rounded-full absolute bottom-2 shadow-[0_0_10px_rgba(217,70,239,0.5)]"></div>
-        </div>
-        <h2 className="text-2xl font-bold text-red-500 tracking-[0.2em] mb-4 uppercase" style={{ textShadow: '0 0 10px rgba(239,68,68,0.6)' }}>
-          [ SYS.ERR: ORIENTATION ]
-        </h2>
-        <p className="text-zinc-300 text-lg tracking-[0.1em] max-w-[280px] leading-relaxed">
-          ROTATE DEVICE TO LANDSCAPE TO INITIALIZE THE GRID.
-        </p>
-        <div className="mt-10 flex gap-3">
-          <div className="w-1.5 h-1.5 bg-cyan-400 animate-pulse shadow-[0_0_5px_#22d3ee]"></div>
-          <div className="w-1.5 h-1.5 bg-fuchsia-500 animate-pulse shadow-[0_0_5px_#d946ef]" style={{ animationDelay: '0.2s' }}></div>
-          <div className="w-1.5 h-1.5 bg-cyan-400 animate-pulse shadow-[0_0_5px_#22d3ee]" style={{ animationDelay: '0.4s' }}></div>
-        </div>
-      </div>
 
       {/* ========================================== */}
       {/* BACKGROUND MEDIA                           */}
