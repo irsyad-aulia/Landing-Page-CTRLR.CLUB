@@ -22,6 +22,12 @@ export default function ScrollIndicator({ isReady }: Props) {
       setIsVisible(false);
       clearTimeout(idleTimer);
 
+      const isAtBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 100;
+
+      if (isAtBottom) {
+        return; // Don't show indicator if at the bottom
+      }
+
       // Reset timer if we are at the top, or after 3 seconds of idle anywhere
       if (window.scrollY === 0) {
         setIsVisible(true);
