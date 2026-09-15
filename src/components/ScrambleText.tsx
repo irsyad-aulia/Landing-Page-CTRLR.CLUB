@@ -12,7 +12,7 @@ interface Props {
 const CHARS = '01ABCDEFGHIJKLMNOPQRSTUVWXYZ@#$%^&*()_+{}|[]\\;:",./<>?~';
 
 export default function ScrambleText({ text, isReady, className, delay = 0 }: Props) {
-  const [displayText, setDisplayText] = useState('');
+  const [displayText, setDisplayText] = useState(text);
   const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
@@ -61,21 +61,8 @@ export default function ScrambleText({ text, isReady, className, delay = 0 }: Pr
     return () => clearTimeout(timeoutId);
   }, [isReady, text, delay]);
 
-  // Initial state before ready
-  if (!hasStarted) {
-    return (
-      <span className={className} style={{ opacity: 0 }}>
-        {text.split('').map((char, i) => (
-          <span key={i} className="ui-particle inline-block" style={{ willChange: "transform, opacity" }}>
-            {char === ' ' ? '\u00A0' : char}
-          </span>
-        ))}
-      </span>
-    );
-  }
-
   return (
-    <span className={className}>
+    <span className={className} style={{ opacity: hasStarted ? 1 : 0 }}>
       {displayText.split('').map((char, i) => (
         <span key={i} className="ui-particle inline-block" style={{ willChange: "transform, opacity" }}>
           {char === ' ' ? '\u00A0' : char}
