@@ -297,20 +297,23 @@ export default function AnomalyPurge({ isReady }: Props) {
         }
       }
 
-      // Draw custom targeting crosshair
-      ctx.beginPath();
-      ctx.arc(pointerX, pointerY, 15, 0, Math.PI * 2);
-      ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      
-      ctx.beginPath();
-      ctx.moveTo(pointerX - 20, pointerY);
-      ctx.lineTo(pointerX + 20, pointerY);
-      ctx.moveTo(pointerX, pointerY - 20);
-      ctx.lineTo(pointerX, pointerY + 20);
-      ctx.strokeStyle = 'cyan';
-      ctx.stroke();
+      // Draw custom targeting crosshair (only on non-touch devices)
+      const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+      if (!isTouchDevice) {
+        ctx.beginPath();
+        ctx.arc(pointerX, pointerY, 15, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        
+        ctx.beginPath();
+        ctx.moveTo(pointerX - 20, pointerY);
+        ctx.lineTo(pointerX + 20, pointerY);
+        ctx.moveTo(pointerX, pointerY - 20);
+        ctx.lineTo(pointerX, pointerY + 20);
+        ctx.strokeStyle = 'cyan';
+        ctx.stroke();
+      }
 
       animationId = requestAnimationFrame(loop);
     };
