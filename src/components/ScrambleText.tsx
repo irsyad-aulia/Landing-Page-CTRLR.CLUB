@@ -63,8 +63,24 @@ export default function ScrambleText({ text, isReady, className, delay = 0 }: Pr
 
   // Initial state before ready
   if (!hasStarted) {
-    return <span className={className} style={{ opacity: 0 }}>{text}</span>;
+    return (
+      <span className={className} style={{ opacity: 0 }}>
+        {text.split('').map((char, i) => (
+          <span key={i} className="ui-particle inline-block" style={{ willChange: "transform, opacity" }}>
+            {char === ' ' ? '\u00A0' : char}
+          </span>
+        ))}
+      </span>
+    );
   }
 
-  return <span className={className}>{displayText}</span>;
+  return (
+    <span className={className}>
+      {displayText.split('').map((char, i) => (
+        <span key={i} className="ui-particle inline-block" style={{ willChange: "transform, opacity" }}>
+          {char === ' ' ? '\u00A0' : char}
+        </span>
+      ))}
+    </span>
+  );
 }
