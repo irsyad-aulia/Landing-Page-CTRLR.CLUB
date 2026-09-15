@@ -76,8 +76,10 @@ export default function AnomalyPurge({ isReady }: Props) {
       maxLife: number = 100;
       active: boolean = true;
       glitchOffset: number = 0;
+      type: number;
 
       constructor() {
+        this.type = Math.floor(Math.random() * 4);
         // Spawn on the border of the core
         const angle = Math.random() * Math.PI * 2;
         // Jitter the radius slightly to look like it's on the surface
@@ -111,7 +113,7 @@ export default function AnomalyPurge({ isReady }: Props) {
         ctx.save();
         ctx.translate(this.x + this.glitchOffset, this.y);
         
-        // Pulsing red box
+        // Pulsing scale
         const scale = 1 + Math.sin(Date.now() / 100) * 0.2;
         ctx.scale(scale, scale);
 
@@ -119,21 +121,73 @@ export default function AnomalyPurge({ isReady }: Props) {
         ctx.shadowColor = '#ff0033';
         ctx.shadowBlur = 15 + urgency * 20;
         
-        ctx.fillRect(-this.radius, -this.radius, this.radius * 2, this.radius * 2);
-        
-        // Danger inner core
-        ctx.fillStyle = 'white';
-        ctx.shadowBlur = 0;
-        ctx.fillRect(-this.radius/2, -this.radius/2, this.radius, this.radius);
+        if (this.type === 0) {
+          // Spiky Virus
+          ctx.beginPath();
+          for (let i = 0; i < 12; i++) {
+            const a = (i / 12) * Math.PI * 2 + Date.now()/500;
+            const r = (i % 2 === 0) ? this.radius * 0.8 : this.radius * 1.6;
+            ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+          }
+          ctx.closePath();
+          ctx.fill();
+          
+          ctx.fillStyle = 'white';
+          ctx.shadowBlur = 0;
+          ctx.beginPath();
+          ctx.arc(0, 0, this.radius/2, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (this.type === 1) {
+          // Digital Bug/Hexagon
+          ctx.beginPath();
+          for (let i = 0; i < 6; i++) {
+            const a = (i / 6) * Math.PI * 2 + Date.now()/1000;
+            ctx.lineTo(Math.cos(a) * this.radius * 1.5, Math.sin(a) * this.radius * 1.5);
+          }
+          ctx.closePath();
+          ctx.fill();
+          
+          ctx.fillStyle = 'black';
+          ctx.shadowBlur = 0;
+          ctx.fillRect(-this.radius/2, -this.radius/3, this.radius/2.5, this.radius/2.5);
+          ctx.fillRect(this.radius/2 - this.radius/2.5, -this.radius/3, this.radius/2.5, this.radius/2.5);
+        } else if (this.type === 2) {
+          // Hazard Triangle
+          ctx.beginPath();
+          ctx.moveTo(0, -this.radius * 1.6);
+          ctx.lineTo(this.radius * 1.4, this.radius);
+          ctx.lineTo(-this.radius * 1.4, this.radius);
+          ctx.closePath();
+          ctx.fill();
+          
+          ctx.fillStyle = 'black';
+          ctx.shadowBlur = 0;
+          ctx.fillRect(-2.5, -this.radius/2, 5, this.radius);
+          ctx.fillRect(-2.5, this.radius/2 + 4, 5, 5);
+        } else {
+          // Corrupted File
+          ctx.fillRect(-this.radius*1.2, -this.radius, this.radius*2.4, this.radius*2);
+          ctx.fillStyle = 'black';
+          ctx.shadowBlur = 0;
+          for(let i=0; i<3; i++) {
+             ctx.fillRect(-this.radius*1.5, -this.radius/2 + i*8 + (Math.random()*4-2), this.radius*3, 2);
+          }
+          ctx.font = 'bold 10px monospace';
+          ctx.fillStyle = 'white';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText('ERR', 0, 0);
+        }
 
         // Warning bracket []
         ctx.strokeStyle = 'cyan';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.5;
         ctx.beginPath();
-        ctx.moveTo(-this.radius - 10, -this.radius);
-        ctx.lineTo(-this.radius - 10, this.radius);
-        ctx.moveTo(this.radius + 10, -this.radius);
-        ctx.lineTo(this.radius + 10, this.radius);
+        const br = this.radius + 8;
+        ctx.moveTo(-br - 6, -br);
+        ctx.lineTo(-br - 6, br);
+        ctx.moveTo(br + 6, -br);
+        ctx.lineTo(br + 6, br);
         ctx.stroke();
 
         ctx.restore();
