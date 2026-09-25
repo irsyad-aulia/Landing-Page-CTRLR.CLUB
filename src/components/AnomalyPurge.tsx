@@ -220,15 +220,27 @@ export default function AnomalyPurge({ isReady }: Props) {
          e.preventDefault(); 
       }
       
+      let actionX = pointerX;
+      let actionY = pointerY;
+
+      // Pada perangkat mobile, saat disentuh pointerX/Y mungkin belum update. Ambil kordinat langsung dari event.
+      if (e && 'clientX' in e) {
+        const pointerEvent = e as unknown as PointerEvent;
+        actionX = pointerEvent.clientX;
+        actionY = pointerEvent.clientY;
+        pointerX = actionX;
+        pointerY = actionY;
+      }
+
       let hit = false;
 
       // Check collision with anomalies
       for (let i = anomalies.length - 1; i >= 0; i--) {
         const a = anomalies[i];
-        const dist = Math.hypot(pointerX - a.x, pointerY - a.y);
+        const dist = Math.hypot(actionX - a.x, actionY - a.y);
         
-        // Hit radius is generous (40px)
-        if (dist < 40) {
+        // Hit radius is generous (60px to accommodate mobile taps)
+        if (dist < 60) {
           anomalies.splice(i, 1);
           hit = true;
           localPurged++;
@@ -245,7 +257,7 @@ export default function AnomalyPurge({ isReady }: Props) {
       if (!hit && e?.type === 'pointerdown') {
         // Missed tap particle (Red)
         for(let p=0; p<5; p++) {
-          particles.push(new Particle(pointerX, pointerY, '#ff0033'));
+          particles.push(new Particle(actionX, actionY, '#ff0033'));
         }
       }
     };

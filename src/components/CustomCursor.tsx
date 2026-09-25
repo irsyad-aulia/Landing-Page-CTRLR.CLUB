@@ -9,7 +9,8 @@ export default function CustomCursor() {
   const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
-    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    // Gunakan matchMedia untuk mendeteksi perangkat mobile/tablet secara lebih akurat (bukan laptop layar sentuh)
+    const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
     if (isTouchDevice) {
       setIsTouch(true);
       return;
