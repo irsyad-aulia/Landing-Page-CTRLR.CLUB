@@ -198,16 +198,17 @@ export default function Home() {
         const onComplete = () => {
           loadedCount++;
 
-          // Update loading progress based on loadedCount up to 200 to speed up loading phase
-          if (loadedCount <= 200) {
-            setLoadingProgress(Math.round((loadedCount / 200) * 100));
+          // Update loading progress based on loadedCount up to 20 to speed up loading phase
+          const READY_THRESHOLD = 20;
+          if (loadedCount <= READY_THRESHOLD) {
+            setLoadingProgress(Math.round((loadedCount / READY_THRESHOLD) * 100));
           }
 
-          if (loadedCount >= 200) {
+          if (loadedCount >= READY_THRESHOLD) {
              // We can't use the state 'isReady' directly inside this closure reliably if it's changing,
              // but since setIsReady is safe to call multiple times, we'll just ensure ScrollTrigger refreshes once.
-             // Actually, we'll just check if it hits exactly 200 to trigger the initial reveal.
-             if (loadedCount === 200) {
+             // Actually, we'll just check if it hits exactly the threshold to trigger the initial reveal.
+             if (loadedCount === READY_THRESHOLD) {
                setIsReady(true);
                requestAnimationFrame(() => {
                  if (typeof ScrollTrigger !== 'undefined') {
