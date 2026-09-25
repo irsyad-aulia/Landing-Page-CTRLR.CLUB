@@ -335,9 +335,9 @@ export default function AnomalyPurge({ isReady }: Props) {
       <canvas ref={canvasRef} className="w-full h-full" />
       
       {/* UI Elements */}
-      <div className="absolute top-[2dvh] md:top-[5dvh] left-1/2 flex flex-col items-center pointer-events-none w-full px-2"
+      <div className="absolute top-[2dvh] md:top-[5dvh] left-0 flex flex-col items-center pointer-events-none w-full px-2"
            style={{ 
-             transform: 'translateX(-50%) scale(clamp(0.4, 100dvh / 800, 1.2))', 
+             transform: 'scale(clamp(0.4, 100dvh / 800, 1.2))', 
              transformOrigin: 'top center'
            }}>
         <div className="text-cyan-400/80 font-mono text-xs tracking-[0.3em] uppercase mb-2 opacity-70 animate-pulse whitespace-nowrap text-center">
