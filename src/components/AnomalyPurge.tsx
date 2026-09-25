@@ -335,14 +335,14 @@ export default function AnomalyPurge({ isReady }: Props) {
       <canvas ref={canvasRef} className="w-full h-full" />
       
       {/* UI Elements */}
-      <div className="absolute top-12 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none w-full">
-        <div className="text-cyan-400/80 font-mono text-[10px] md:text-xs tracking-[0.4em] uppercase mb-2 opacity-70 animate-pulse">
+      <div className="absolute top-4 md:top-12 [@media(max-height:500px)]:top-2 left-1/2 -translate-x-1/2 flex flex-col items-center pointer-events-none w-full px-2">
+        <div className="text-cyan-400/80 font-mono text-[8px] sm:text-[10px] md:text-xs tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.4em] uppercase mb-1 md:mb-2 opacity-70 animate-pulse whitespace-nowrap text-center">
           WARNING: ANOMALIES DETECTED ON CORE SURFACE
         </div>
-        <div className="text-white font-mono text-xl md:text-2xl font-bold tracking-[0.2em] drop-shadow-[0_0_10px_white]">
+        <div className="text-white font-mono text-base md:text-xl lg:text-2xl font-bold tracking-[0.2em] drop-shadow-[0_0_10px_white]">
           PURGED: {purgedCount}
         </div>
-        <div className="mt-4 text-cyan-400/60 font-mono text-[10px] md:text-xs tracking-widest uppercase text-center px-4 max-w-sm">
+        <div className="mt-1 md:mt-4 text-cyan-400/60 font-mono text-[8px] md:text-xs tracking-wider md:tracking-widest uppercase text-center px-2 w-full md:max-w-sm">
           &lt; TAP THE RED INFECTIONS BEFORE THEY BREACH &gt;
         </div>
       </div>
