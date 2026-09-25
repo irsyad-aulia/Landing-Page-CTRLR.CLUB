@@ -70,6 +70,33 @@ export default function Home() {
   const [scrollY, setScrollY] = useState(0);
   const [ctaStatus, setCtaStatus] = useState<'idle' | 'denied'>('idle');
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<{title: string, desc: string} | null>(null);
+
+  // Handle Return from Steam (BFCache or Reload)
+  useEffect(() => {
+    const checkToast = () => {
+      if (sessionStorage.getItem('ctrlr_access_granted') === 'true') {
+        sessionStorage.removeItem('ctrlr_access_granted');
+        setToastMessage({
+          title: "[ DATA SECURED ]",
+          desc: "You're on the list, Operator. Prepare for the Grid."
+        });
+        setTimeout(() => setToastMessage(null), 6000); // Hide after 6 seconds
+      }
+    };
+
+    checkToast(); // Check on initial load
+
+    const handlePageShow = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        setIsModalOpen(false); // Force close modal if returning via BFCache
+        checkToast();
+      }
+    };
+
+    window.addEventListener('pageshow', handlePageShow);
+    return () => window.removeEventListener('pageshow', handlePageShow);
+  }, []);
 
   // Derived state to determine if loading is fully complete
   const isFullyLoaded = loadingProgress >= 100;
@@ -829,6 +856,25 @@ export default function Home() {
       </div>
     </main>
     <EarlyAccessModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+
+    {/* CYBERPUNK TOAST NOTIFICATION */}
+    <div 
+      className={`fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[10000] max-w-[300px] md:max-w-sm bg-black/90 border-l-2 border-cyan-500/80 border-t border-b border-r border-cyan-500/20 p-4 md:p-5 backdrop-blur-md transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) ${
+        toastMessage ? 'translate-x-0 opacity-100' : 'translate-x-[150%] opacity-0 pointer-events-none'
+      } ${rajdhani.className}`}
+      style={{ boxShadow: '0 0 30px rgba(34,211,238,0.15), inset 0 0 15px rgba(217,70,239,0.05)' }}
+    >
+      <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-400"></div>
+      <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-fuchsia-500"></div>
+      
+      <h3 className="text-cyan-400 font-bold text-base md:text-lg tracking-[0.1em] mb-1" style={{ textShadow: '0 0 10px rgba(34,211,238,0.5)', animation: 'glitch-text 4s infinite' }}>
+        {toastMessage?.title || '[ SYNC COMPLETE ]'}
+      </h3>
+      <p className="text-zinc-300 font-mono text-xs md:text-sm tracking-tight leading-relaxed">
+        {toastMessage?.desc}
+      </p>
+    </div>
+
     </>
   );
 }

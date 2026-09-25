@@ -59,6 +59,9 @@ const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onClose }) 
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     setStatus('success');
+    
+    // Set flag so we know they succeeded when they return via Back button
+    sessionStorage.setItem('ctrlr_access_granted', 'true');
 
     // Redirect to Steam after 2 seconds
     setTimeout(() => {
