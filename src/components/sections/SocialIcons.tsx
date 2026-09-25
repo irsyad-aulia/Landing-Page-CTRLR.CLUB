@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Instagram, Facebook, Twitter, Twitch } from 'lucide-react';
+import { Instagram, Facebook, Twitter, Twitch, Youtube } from 'lucide-react';
 import { SiTiktok, SiDiscord, SiPinterest, SiKick } from 'react-icons/si';
 
 const SocialIcons = () => {
@@ -15,6 +15,7 @@ const SocialIcons = () => {
         { name: 'X', id: 'x', url: 'https://x.com/CtrlrClub', icon: <Twitter className="w-3 h-3" /> },
         { name: 'Twitch', id: 'twitch', url: 'https://www.twitch.tv/ctrlrclub', icon: <Twitch className="w-3 h-3" /> },
         { name: 'Kick', id: 'kick', url: 'https://kick.com/ctrlrclub', icon: <SiKick className="w-3 h-3" /> },
+        { name: 'YouTube', id: 'youtube', url: 'https://www.youtube.com/@ctrlrclub', icon: <Youtube className="w-3 h-3" /> },
     ];
 
     return (
