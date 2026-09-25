@@ -14,6 +14,7 @@ const SocialIcons = () => {
         { name: 'Twitch', id: 'twitch', url: 'https://www.twitch.tv/ctrlrclub', icon: <Twitch className="w-3 h-3" /> },
         { name: 'Kick', id: 'kick', url: 'https://kick.com/ctrlrclub', icon: <SiKick className="w-3 h-3" /> },
         { name: 'Threads', id: 'threads', url: 'https://www.threads.com/@ctrlr_club', icon: <SiThreads className="w-3 h-3" /> },
+        { name: 'Instagram', id: 'instagram', url: 'https://www.instagram.com/ctrlr_club?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==', icon: <Instagram className="w-3 h-3" /> },
         { name: 'Facebook', id: 'facebook', url: 'https://www.facebook.com/profile.php?id=61580303012615', icon: <Facebook className="w-3 h-3" /> },
         { name: 'Pinterest', id: 'pinterest', url: 'https://www.pinterest.com/ctrlrclub/', icon: <SiPinterest className="w-3 h-3" /> },
     ];
