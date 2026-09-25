@@ -198,16 +198,16 @@ export default function Home() {
         const onComplete = () => {
           loadedCount++;
 
-          // Update loading progress based on loadedCount up to 500
-          if (loadedCount <= 500) {
-            setLoadingProgress(Math.round((loadedCount / 500) * 100));
+          // Update loading progress based on loadedCount up to 200 to speed up loading phase
+          if (loadedCount <= 200) {
+            setLoadingProgress(Math.round((loadedCount / 200) * 100));
           }
 
-          if (loadedCount >= 500) {
+          if (loadedCount >= 200) {
              // We can't use the state 'isReady' directly inside this closure reliably if it's changing,
              // but since setIsReady is safe to call multiple times, we'll just ensure ScrollTrigger refreshes once.
-             // Actually, we'll just check if it hits exactly 500 to trigger the initial reveal.
-             if (loadedCount === 500) {
+             // Actually, we'll just check if it hits exactly 200 to trigger the initial reveal.
+             if (loadedCount === 200) {
                setIsReady(true);
                requestAnimationFrame(() => {
                  if (typeof ScrollTrigger !== 'undefined') {
@@ -348,9 +348,9 @@ export default function Home() {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.5,
+        scrub: 1, // Smooth inertia sync
       },
-      onUpdate: () => requestAnimationFrame(render),
+      onUpdate: render, // Removed redundant requestAnimationFrame to fix lag
     });
 
     const tl = gsap.timeline({
@@ -358,7 +358,7 @@ export default function Home() {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: true,
+        scrub: 1, // Sync with sequence scrub to prevent disjointed scrolling
       }
     });
 
