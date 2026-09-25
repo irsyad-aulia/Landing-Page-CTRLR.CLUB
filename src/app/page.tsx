@@ -348,9 +348,9 @@ export default function Home() {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: 0.5,
+        scrub: 0.5, // 0.5s smooth inertia
       },
-      onUpdate: () => requestAnimationFrame(render),
+      onUpdate: render, // GSAP is already in rAF. Removing redundant rAF eliminates 1 frame of input lag.
     });
 
     const tl = gsap.timeline({
@@ -358,7 +358,7 @@ export default function Home() {
         trigger: containerRef.current,
         start: "top top",
         end: "bottom bottom",
-        scrub: true,
+        scrub: 0.5, // MATCHED with canvas scrub above so foreground and background scroll perfectly in sync!
       }
     });
 
