@@ -9,9 +9,11 @@ interface Props {
 export default function ScrollIndicator({ isReady }: Props) {
   // Only show if the page is ready (loading screen finished)
   const [isVisible, setIsVisible] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
     if (!isReady) return;
+    setIsTouch(('ontouchstart' in window) || (navigator.maxTouchPoints > 0));
 
     setIsVisible(window.scrollY === 0);
     
@@ -53,14 +55,20 @@ export default function ScrollIndicator({ isReady }: Props) {
       }`}
     >
       <div className="text-cyan-400/80 font-mono text-[10px] tracking-[0.3em] uppercase mb-3 animate-pulse">
-        Scroll to Explore
+        {isTouch ? "Swipe to Explore" : "Scroll to Explore"}
       </div>
       
-      {/* Mouse Icon */}
-      <div className="w-[26px] h-[42px] rounded-full border-2 border-cyan-500/50 flex justify-center pt-2 relative drop-shadow-[0_0_10px_rgba(34,211,238,0.3)] bg-black/20 backdrop-blur-sm">
-        {/* Scrolling Wheel */}
-        <div className="w-[2px] h-[6px] rounded-full bg-cyan-400 animate-bounce" />
-      </div>
+      {isTouch ? (
+        <div className="flex flex-col items-center animate-bounce mt-1" aria-label="Swipe Down Icon">
+          <div className="w-3.5 h-3.5 border-b-2 border-r-2 border-cyan-400 rotate-45 mb-1" />
+          <div className="w-2.5 h-2.5 border-b-2 border-r-2 border-cyan-400 rotate-45 mb-1 opacity-75" />
+          <div className="w-1.5 h-1.5 border-b-2 border-r-2 border-cyan-400 rotate-45 opacity-50" />
+        </div>
+      ) : (
+        <div className="w-[26px] h-[42px] rounded-full border-2 border-cyan-500/50 flex justify-center pt-2 relative drop-shadow-[0_0_10px_rgba(34,211,238,0.3)] bg-black/20 backdrop-blur-sm" aria-label="Mouse Icon">
+          <div className="w-[2px] h-[6px] rounded-full bg-cyan-400 animate-bounce" />
+        </div>
+      )}
     </div>
   );
 }

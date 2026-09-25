@@ -1,13 +1,20 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 export default function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const coreRef = useRef<HTMLDivElement>(null);
   const trailContainerRef = useRef<HTMLDivElement>(null);
+  const [isTouch, setIsTouch] = useState(false);
 
   useEffect(() => {
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isTouchDevice) {
+      setIsTouch(true);
+      return;
+    }
+
     // Immediately hide the native cursor
     document.body.style.cursor = 'none';
     document.documentElement.classList.add('hide-native-cursor');
@@ -96,6 +103,8 @@ export default function CustomCursor() {
       document.documentElement.classList.remove('hide-native-cursor');
     };
   }, []);
+
+  if (isTouch) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[99999] overflow-hidden">
