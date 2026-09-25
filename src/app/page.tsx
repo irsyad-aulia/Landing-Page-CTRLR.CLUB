@@ -432,11 +432,17 @@ export default function Home() {
         className={`fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black transition-all duration-[1500ms] ease-in-out ${isReady ? 'opacity-0 pointer-events-none scale-110 blur-xl' : 'opacity-100 pointer-events-auto scale-100 blur-0'}`}
       >
         
-        {/* Real 3D CSS Diamond Spinner (Octagonal Brilliant Cut) */}
+        {/* DYNAMIC SCALING WRAPPER FOR LOADING SCREEN */}
         <div 
-          className="relative mb-8 md:mb-24 [@media(max-height:500px)]:mb-2 flex items-center justify-center preserve-3d [@media(max-height:500px)]:scale-50 transition-transform" 
-          style={{ perspective: '800px' }}
+          className="flex flex-col items-center justify-center w-full"
+          style={{ transform: 'scale(clamp(0.4, 100dvh / 800, 1.2))' }}
         >
+
+          {/* Real 3D CSS Diamond Spinner (Octagonal Brilliant Cut) */}
+          <div 
+            className="relative mb-24 flex items-center justify-center preserve-3d transition-transform" 
+            style={{ perspective: '800px' }}
+          >
 
 
           {/* 3D MRI Ring Scanner (Option 1) */}
@@ -479,7 +485,7 @@ export default function Home() {
         <div className="relative z-[200] flex flex-col items-center w-full px-4">
           {/* 3D Tube Loading Bar */}
           <div 
-             className="relative w-[450px] max-w-[80vw] h-3 md:h-5 mb-4 md:mb-8 [@media(max-height:500px)]:mb-2 overflow-hidden rounded-full border border-cyan-400/20"
+             className="relative w-[450px] max-w-[80vw] h-5 mb-8 overflow-hidden rounded-full border border-cyan-400/20"
              style={{
                 backgroundColor: '#05151a', // very dark cyan/black
                 boxShadow: 'inset 0 4px 8px rgba(0,0,0,0.9), inset 0 -1px 3px rgba(255,255,255,0.15), 0 0 15px rgba(34,211,238,0.1)'
@@ -514,7 +520,7 @@ export default function Home() {
               />
             </div>
           </div>
-          <h2 className={`text-[10px] sm:text-xs md:text-lg lg:text-xl font-bold text-cyan-400 tracking-[0.1em] md:tracking-[0.2em] mb-1 md:mb-3 uppercase drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] text-center ${rajdhani.className}`} style={{ animation: 'glitch-text 3s infinite' }}>
+          <h2 className={`text-xl font-bold text-cyan-400 tracking-[0.2em] mb-3 uppercase drop-shadow-[0_0_10px_rgba(34,211,238,0.8)] text-center ${rajdhani.className}`} style={{ animation: 'glitch-text 3s infinite' }}>
             {[
               "PRO-TIP: ALWAYS CHECK YOUR BLIND SPOTS",
               "LORE: THE GRID WAS ESTABLISHED IN 2084",
@@ -525,10 +531,13 @@ export default function Home() {
               "SYSTEM READY, INITIATING LOGIN"
             ][Math.min(Math.floor(loadingProgress / 15), 6)]}
           </h2>
-          <p className="text-zinc-400 text-[9px] sm:text-[10px] md:text-sm lg:text-base tracking-[0.2em] md:tracking-[0.3em] uppercase animate-pulse">
+          <p className="text-zinc-400 text-sm tracking-[0.3em] uppercase animate-pulse">
             [ SYSTEM SYNC: {loadingProgress}% ]
           </p>
         </div>
+        
+        </div> {/* End of Dynamic Scaling Wrapper */}
+
       </div>
 
       {/* ========================================== */}
