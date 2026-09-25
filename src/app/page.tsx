@@ -217,8 +217,9 @@ export default function Home() {
              }
           }
 
-          // As soon as this worker finishes, assign it the next frame
-          setTimeout(loadNext, 0); // use setTimeout to yield to main thread
+          // Use queueMicrotask to yield to main thread without triggering macro-task throttling.
+          // Browsers throttle setTimeout to 1000ms per call in inactive tabs, pausing the loading!
+          queueMicrotask(loadNext);
         };
 
         img.onload = () => {
