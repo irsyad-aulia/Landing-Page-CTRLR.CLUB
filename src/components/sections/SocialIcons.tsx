@@ -2,20 +2,20 @@
 
 import React from 'react';
 import { Instagram, Facebook, Twitter, Twitch, Youtube } from 'lucide-react';
-import { SiTiktok, SiDiscord, SiPinterest, SiKick } from 'react-icons/si';
+import { SiTiktok, SiDiscord, SiPinterest, SiKick, SiThreads } from 'react-icons/si';
 
 const SocialIcons = () => {
     // PERUBAHAN: Semua icon SVG dikecilkan ukurannya menjadi w-4 h-4 (Kick menjadi w-5 h-5 agar proporsional)
     const socialLinks = [
-        { name: 'Discord', id: 'discord', url: 'https://discord.com/channels/1420669550609043581/1430214185580630027', icon: <SiDiscord className="w-3 h-3" /> },
-        { name: 'TikTok', id: 'tiktok', url: 'https://www.tiktok.com/@ctrlrclub', icon: <SiTiktok className="w-3 h-3" /> },
-        { name: 'Instagram', id: 'instagram', url: 'https://www.instagram.com/ctrlr_club/', icon: <Instagram className="w-3 h-3" /> },
-        { name: 'Facebook', id: 'facebook', url: 'https://www.facebook.com/profile.php?id=61580303012615', icon: <Facebook className="w-3 h-3" /> },
-        { name: 'Pinterest', id: 'pinterest', url: 'https://www.pinterest.com/ctrlrclub/', icon: <SiPinterest className="w-3 h-3" /> },
+        { name: 'Discord', id: 'discord', url: 'https://discord.gg/heqTqqyWk', icon: <SiDiscord className="w-3 h-3" /> },
         { name: 'X', id: 'x', url: 'https://x.com/CtrlrClub', icon: <Twitter className="w-3 h-3" /> },
+        { name: 'TikTok', id: 'tiktok', url: 'https://www.tiktok.com/@ctrlrclub', icon: <SiTiktok className="w-3 h-3" /> },
+        { name: 'YouTube', id: 'youtube', url: 'https://www.youtube.com/@CTRLRCLUB', icon: <Youtube className="w-3 h-3" /> },
         { name: 'Twitch', id: 'twitch', url: 'https://www.twitch.tv/ctrlrclub', icon: <Twitch className="w-3 h-3" /> },
         { name: 'Kick', id: 'kick', url: 'https://kick.com/ctrlrclub', icon: <SiKick className="w-3 h-3" /> },
-        { name: 'YouTube', id: 'youtube', url: 'https://www.youtube.com/@ctrlrclub', icon: <Youtube className="w-3 h-3" /> },
+        { name: 'Threads', id: 'threads', url: 'https://www.threads.com/@ctrlr_club', icon: <SiThreads className="w-3 h-3" /> },
+        { name: 'Facebook', id: 'facebook', url: 'https://www.facebook.com/profile.php?id=61580303012615', icon: <Facebook className="w-3 h-3" /> },
+        { name: 'Pinterest', id: 'pinterest', url: 'https://www.pinterest.com/ctrlrclub/', icon: <SiPinterest className="w-3 h-3" /> },
     ];
 
     return (

@@ -812,20 +812,14 @@ export default function Home() {
             </h2>
           </div>
           <div className="w-full flex flex-col items-center pb-1 lg:pb-0">
-            <button 
-              onClick={() => {
-                setCtaStatus('denied');
-                setTimeout(() => setCtaStatus('idle'), 2500);
-              }}
-              className={`btn-shimmer pointer-events-auto mb-1.5 sm:mb-2 lg:mb-6 px-4 py-1.5 sm:px-5 sm:py-2 lg:px-8 lg:py-3.5 border bg-black/40 backdrop-blur-md font-bold text-[9px] sm:text-[10px] md:text-xs lg:text-base tracking-[0.2em] uppercase transition-all duration-300 ${
-                ctaStatus === 'denied' 
-                  ? 'border-red-500/80 text-red-500 shadow-[0_0_25px_rgba(239,68,68,0.8)]'
-                  : 'border-cyan-400/80 text-cyan-400 hover:bg-cyan-400 hover:text-black hover:shadow-[0_0_25px_rgba(34,211,238,0.8)]'
-              } ${rajdhani.className}`}
-              style={{ textShadow: ctaStatus === 'denied' ? '0 0 10px rgba(239,68,68,0.8)' : '' }}
+            <a 
+              href="https://store.steampowered.com/app/4537750/CTRLRCLUB/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`btn-shimmer pointer-events-auto mb-1.5 sm:mb-2 lg:mb-6 px-4 py-1.5 sm:px-5 sm:py-2 lg:px-8 lg:py-3.5 border bg-black/40 backdrop-blur-md font-bold text-[9px] sm:text-[10px] md:text-xs lg:text-base tracking-[0.2em] uppercase transition-all duration-300 border-cyan-400/80 text-cyan-400 hover:bg-cyan-400 hover:text-black hover:shadow-[0_0_25px_rgba(34,211,238,0.8)] ${rajdhani.className}`}
             >
-              {ctaStatus === 'denied' ? '[ COMING SOON ]' : 'Secure Early Access'}
-            </button>
+              Secure Early Access
+            </a>
             <div className="pointer-events-auto scale-[0.55] sm:scale-75 lg:scale-100 origin-bottom">
               <SocialIcons />
             </div>
