@@ -78,6 +78,7 @@ const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onClose }) 
         className={`relative w-full max-w-lg bg-zinc-950 border border-cyan-500/50 p-6 md:p-8 shadow-[0_0_30px_rgba(34,211,238,0.2)] animate-in zoom-in-95 duration-300 ${rajdhani.className}`}
         style={{
           boxShadow: '0 0 20px rgba(34, 211, 238, 0.15), inset 0 0 20px rgba(217, 70, 239, 0.1)',
+          animation: 'glitch-box 6s infinite',
         }}
       >
         {/* Animated Corner Accents */}
@@ -99,7 +100,7 @@ const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onClose }) 
         {status === 'success' ? (
           /* SUCCESS STATE */
           <div className="flex flex-col items-center justify-center text-center py-10 space-y-6">
-            <h2 className="text-3xl md:text-4xl font-bold text-cyan-400 tracking-[0.2em] uppercase" style={{ textShadow: '0 0 15px rgba(34,211,238,0.8)' }}>
+            <h2 className="text-3xl md:text-4xl font-bold text-cyan-400 tracking-[0.2em] uppercase" style={{ textShadow: '0 0 15px rgba(34,211,238,0.8)', animation: 'glitch-text 3s infinite' }}>
               [ ACCESS GRANTED ]
             </h2>
             <div className="flex flex-col items-center space-y-3">
@@ -117,7 +118,7 @@ const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onClose }) 
           /* IDLE / SUBMITTING STATE */
           <div className="flex flex-col space-y-6">
             <div className="space-y-2">
-              <h2 className="text-2xl md:text-3xl font-bold text-white tracking-[0.15em] uppercase border-b border-zinc-800 pb-2 inline-block">
+              <h2 className="text-2xl md:text-3xl font-bold text-white tracking-[0.15em] uppercase border-b border-zinc-800 pb-2 inline-block" style={{ animation: 'glitch-text 4s infinite' }}>
                 CTRLR.CLUB // <span className="text-cyan-400" style={{ textShadow: '0 0 10px rgba(34,211,238,0.5)' }}>ACCESS PROTOCOL</span>
               </h2>
               <p className="text-zinc-400 text-sm md:text-base tracking-[0.05em] font-mono pt-2">
@@ -145,7 +146,7 @@ const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onClose }) 
               <button
                 type="submit"
                 disabled={status === 'submitting'}
-                className="relative w-full group overflow-hidden border border-cyan-500/50 bg-black/40 py-3 md:py-4 transition-all duration-300 hover:bg-cyan-500/10 hover:border-cyan-400 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
+                className="btn-shimmer relative w-full group overflow-hidden border border-cyan-500/50 bg-black/40 py-3 md:py-4 transition-all duration-300 hover:bg-cyan-500/10 hover:border-cyan-400 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none"
               >
                 {/* Button Glow Effect */}
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gradient-to-r from-cyan-500/0 via-cyan-400/20 to-fuchsia-500/0"></div>
