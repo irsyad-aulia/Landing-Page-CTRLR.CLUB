@@ -62,6 +62,7 @@ const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onClose }) 
     
     // Set flag so we know they succeeded when they return via Back button
     sessionStorage.setItem('ctrlr_access_granted', 'true');
+    sessionStorage.setItem('skip_scroll_reset', 'true');
 
     // Redirect to Steam after 2 seconds
     setTimeout(() => {

@@ -89,6 +89,7 @@ export default function Home() {
 
     const handlePageShow = (e: PageTransitionEvent) => {
       if (e.persisted) {
+        sessionStorage.removeItem('skip_scroll_reset'); // Clean up
         setIsModalOpen(false); // Force close modal if returning via BFCache
         checkToast();
       }
@@ -102,8 +103,16 @@ export default function Home() {
   const isFullyLoaded = loadingProgress >= 100;
 
   useEffect(() => {
-    // Force scroll to top instantly on mount
-    window.scrollTo(0, 0);
+    // If returning from Steam (Full Reload), bypass scroll to top
+    if (sessionStorage.getItem('skip_scroll_reset') === 'true') {
+      sessionStorage.removeItem('skip_scroll_reset');
+      // Jump loading progress and scroll to bottom
+      setTimeout(() => setLoadingProgress(100), 100);
+      setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 500);
+    } else {
+      // Force scroll to top instantly on normal mount
+      window.scrollTo(0, 0);
+    }
     
     // Disable automatic browser scroll restoration (fixes the issue where refreshing the page keeps you at the bottom)
     if ('scrollRestoration' in window.history) {
@@ -112,7 +121,9 @@ export default function Home() {
 
     // STRICT SCROLL RESET: Force scroll reset immediately before unload
     const handleBeforeUnload = () => {
-      window.scrollTo(0, 0);
+      if (sessionStorage.getItem('skip_scroll_reset') !== 'true') {
+        window.scrollTo(0, 0);
+      }
     };
     window.addEventListener('beforeunload', handleBeforeUnload);
 
@@ -857,23 +868,36 @@ export default function Home() {
     </main>
     <EarlyAccessModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
-    {/* CYBERPUNK TOAST NOTIFICATION */}
-    <div 
-      className={`fixed bottom-6 right-6 md:bottom-10 md:right-10 z-[10000] max-w-[300px] md:max-w-sm bg-black/90 border-l-2 border-cyan-500/80 border-t border-b border-r border-cyan-500/20 p-4 md:p-5 backdrop-blur-md transition-all duration-700 cubic-bezier(0.16, 1, 0.3, 1) ${
-        toastMessage ? 'translate-x-0 opacity-100' : 'translate-x-[150%] opacity-0 pointer-events-none'
-      } ${rajdhani.className}`}
-      style={{ boxShadow: '0 0 30px rgba(34,211,238,0.15), inset 0 0 15px rgba(217,70,239,0.05)' }}
-    >
-      <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-400"></div>
-      <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-fuchsia-500"></div>
-      
-      <h3 className="text-cyan-400 font-bold text-base md:text-lg tracking-[0.1em] mb-1" style={{ textShadow: '0 0 10px rgba(34,211,238,0.5)', animation: 'glitch-text 4s infinite' }}>
-        {toastMessage?.title || '[ SYNC COMPLETE ]'}
-      </h3>
-      <p className="text-zinc-300 font-mono text-xs md:text-sm tracking-tight leading-relaxed">
-        {toastMessage?.desc}
-      </p>
-    </div>
+    {/* CYBERPUNK THANK YOU POPUP */}
+    {toastMessage && (
+      <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-300">
+        <div 
+          className={`relative w-full max-w-md bg-zinc-950 border-l-2 border-cyan-500/80 border-t border-b border-r border-cyan-500/20 p-8 md:p-10 shadow-[0_0_30px_rgba(34,211,238,0.2)] animate-in zoom-in-95 duration-500 ${rajdhani.className}`}
+          style={{ boxShadow: '0 0 30px rgba(34, 211, 238, 0.15), inset 0 0 20px rgba(217, 70, 239, 0.1)', animation: 'glitch-box 6s infinite' }}
+        >
+          {/* Animated Corner Accents */}
+          <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-cyan-400"></div>
+          <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-fuchsia-500"></div>
+          <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-fuchsia-500"></div>
+          <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-cyan-400"></div>
+
+          <div className="flex flex-col items-center text-center space-y-4">
+            <h3 className="text-2xl md:text-3xl font-bold text-cyan-400 tracking-[0.2em] uppercase" style={{ textShadow: '0 0 15px rgba(34,211,238,0.8)', animation: 'glitch-text 4s infinite' }}>
+              {toastMessage.title || '[ SYNC COMPLETE ]'}
+            </h3>
+            <p className="text-zinc-300 font-mono text-sm md:text-base tracking-widest leading-relaxed">
+              {toastMessage.desc}
+            </p>
+            <button
+              onClick={() => setToastMessage(null)}
+              className="mt-6 border border-cyan-500/50 bg-black/40 px-6 py-2 text-cyan-400 font-bold tracking-[0.2em] hover:bg-cyan-500/20 hover:shadow-[0_0_15px_rgba(34,211,238,0.5)] transition-all uppercase"
+            >
+              CLOSE
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
 
     </>
   );
