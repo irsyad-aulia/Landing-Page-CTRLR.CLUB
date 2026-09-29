@@ -54,20 +54,35 @@ const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onClose }) 
 
     setStatus('submitting');
 
-    // Simulate network sync/Mailchimp AJAX request
-    // In production, use fetch() to send the email to your API or Mailchimp
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const formData = new FormData();
+      formData.append('EMAIL', email);
 
-    setStatus('success');
-    
-    // Set flag so we know they succeeded when they return via Back button
-    sessionStorage.setItem('ctrlr_access_granted', 'true');
-    sessionStorage.setItem('skip_scroll_reset', 'true');
+      if (MAILCHIMP_URL && MAILCHIMP_URL !== "#") {
+        await fetch(MAILCHIMP_URL, {
+          method: 'POST',
+          body: formData,
+          mode: 'no-cors',
+        });
+      } else {
+        // Fallback simulate if URL is not set
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+      }
+      
+      setStatus('success');
+      
+      // Set flag so we know they succeeded when they return via Back button
+      sessionStorage.setItem('ctrlr_access_granted', 'true');
+      sessionStorage.setItem('skip_scroll_reset', 'true');
 
-    // Redirect to Steam after 2 seconds
-    setTimeout(() => {
-      window.location.href = "https://store.steampowered.com/app/4537750/CTRLRCLUB";
-    }, 2000);
+      // Redirect to Steam after 2 seconds
+      setTimeout(() => {
+        window.location.href = "https://store.steampowered.com/app/4537750/CTRLRCLUB";
+      }, 2000);
+    } catch (error) {
+      console.error("Mailchimp Error:", error);
+      setStatus('idle');
+    }
   };
 
   if (!isOpen) return null;
@@ -137,6 +152,7 @@ const EarlyAccessModal: React.FC<EarlyAccessModalProps> = ({ isOpen, onClose }) 
                 </div>
                 <input
                   type="email"
+                  name="EMAIL"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
